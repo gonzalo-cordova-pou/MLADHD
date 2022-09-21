@@ -1,23 +1,16 @@
 import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-from os.path import isfile, join
 
 def main():
-    all = os.listdir("data")
     labels = open("data/labels.csv", "w")
-    #dirs = []
-    #print(all)
-    #for a in all:
-    #    if not isfile(a):
-    #        dirs+=a
-    #print(dirs)
+    all = os.listdir("data")
+    class_id = 0
     for i in range(len(all)):
-        if all[i] != "data/labels.csv":
+        if not '.' in all[i]:
             files = os.listdir("data/"+all[i])
             for f in files:
-                labels.write(f+ ", "+str(i)+ "\n")
+                labels.write(all[i]+"/"+f+ ", "+str(class_id)+ "\n")
+            class_id += 1
         
 main()
-
-
