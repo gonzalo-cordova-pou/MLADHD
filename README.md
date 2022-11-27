@@ -13,9 +13,24 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 
 ## Index
 
-1. [Installation](#installation)
-2. [Related Work](#related-work)
+1. [Data](#data)
+2. [Installation](#installation)
+3. [Related Work](#related-work)
 ---
+
+## Data
+
+Some ideas for the data:
+- As mentioned in the TODOs, we should migrate the data to a cloud storage. This will make it easier to share the data with the team and to access it from different machines.
+- We should also consider using a data versioning tool like [DVC](https://dvc.org/) to keep track of the data and to make it easier to reproduce the results.
+- We should discuss:
+    - How many classes do we want to classify?
+    - How many samples do we want to use for training and testing?
+    - Can we do some data augmentation to increase the number of samples?
+    - We should agree on a file format for the images (e.g. PNG, JPG, etc.)
+
+- We could explore the possibility of scraping the data using automated image search from search engines like Google or Bing.
+
 
 ## Installation
 
