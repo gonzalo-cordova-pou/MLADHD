@@ -47,7 +47,7 @@ def create_model(train):
     model.to(device)
 
     running_loss = []
-    #for epoch in range(epochs):
+    #just one epoch
     for inputs, labels in train:
         #send to GPU
         inputs, labels = inputs.to(device), labels.to(device)
