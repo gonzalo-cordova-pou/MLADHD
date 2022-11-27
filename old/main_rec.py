@@ -1,10 +1,6 @@
 import torch
-from torch.utils.data import Dataset
 from torchvision import datasets
 from torchvision.transforms import ToTensor
-import matplotlib.pyplot as plt
-from torch.utils.data import DataLoader
-from torch import nn
 import cv2
 
 from torch.autograd import Variable

@@ -29,13 +29,7 @@ def load_split_dataset(data_dir, valid_size = .2):
     testloader = DataLoader(test_data, sampler=test_sampler, batch_size=64)
     return trainloader, testloader
 
-
-def create_model():
-    data_dir = 'data/'
-    #define datasets and the percent of train and test
-    train, test = load_split_dataset(data_dir, .2)
-    print(train.dataset.classes)
-
+def create_model(train):
     #define the model
     model = resnet50(weights=ResNet50_Weights.DEFAULT)
     for p in model.parameters():
@@ -55,20 +49,50 @@ def create_model():
     running_loss = []
     #for epoch in range(epochs):
     for inputs, labels in train:
-            #send to GPU
-            inputs, labels = inputs.to(device), labels.to(device)
-            optimizer.zero_grad()
-            logps = model.forward(inputs)
-            loss = criterio(logps, labels)
-            loss.backward()
-            optimizer.step()
-            running_loss.append(loss.item()*100/len(train))
+        #send to GPU
+        inputs, labels = inputs.to(device), labels.to(device)
+        optimizer.zero_grad()
+        logps = model.forward(inputs)
+        loss = criterio(logps, labels)
+        loss.backward()
+        optimizer.step()
+        running_loss.append(loss.item()*100/len(train))
     torch.save(model, 'projectmodel.pth')
-    return running_loss
+    return model,running_loss
+
+def test_model(model,test):
+    #define GPU
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+    criterio = nn.NLLLoss()
+
+    test_loss = 0
+    accuracy = 0
+    model.eval()
+    with torch.no_grad():
+        for inputs, labels in test:
+            inputs, labels = inputs.to(device), labels.to(device)
+            logps = model.forward(inputs)
+            batch_loss = criterio(logps, labels)
+            test_loss += batch_loss.item()
+                        
+            ps = torch.exp(logps)
+            top_p, top_class = ps.topk(1, dim=1)
+            equals = top_class == labels.view(*top_class.shape)
+            accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
+    loss = test_loss/len(test)
+    accuracy = accuracy/len(test)
+    return loss, accuracy  
 
 def main():
-    loss = create_model(); 
-    plt.plot(label='Training loss')
+    data_dir = 'data/'
+    #define datasets and the percent of train and test
+    train, test = load_split_dataset(data_dir, .3)
+    model,loss = create_model(train)
+    test_loss,accuracy = test_model(model,test)
+
+    print(test_loss,accuracy)
+    plt.plot(loss,label='Training loss')
     plt.legend(frameon=False)
     plt.show()
 
