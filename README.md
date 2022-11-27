@@ -6,7 +6,7 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 
 ## TODOs
 
-- [ ] Add a README.md file to the repository
+- [X] Add a README.md file to the repository
 - [ ] Agree on a Python version (suggestion: 3.10)
 - [ ] Migrate data to a cloud stroage (suggestion: AWS S3 or Google Drive)
 - [ ] Document related work
