@@ -25,9 +25,11 @@ Some ideas for the data:
 - We should also consider using a data versioning tool like [DVC](https://dvc.org/) to keep track of the data and to make it easier to reproduce the results.
 - We should discuss:
     - How many classes do we want to classify?
+        - For now, two: working and not working (not working will be separated in different classes to suport future works). 
     - How many samples do we want to use for training and testing?
     - Can we do some data augmentation to increase the number of samples?
     - We should agree on a file format for the images (e.g. PNG, JPG, etc.)
+        - JPG (1280 x 720, 96dpi)
 
 - We could explore the possibility of scraping the data using automated image search from search engines like Google or Bing.
 
