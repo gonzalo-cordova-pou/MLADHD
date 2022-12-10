@@ -84,6 +84,10 @@ def test_model(model,test):
     accuracy = accuracy/len(test)
     return loss, accuracy  
 
+'''
+Note: I remove this because I import this file in the DEMO.ipynb notebook and I
+execute the main function in the notebook
+
 def main():
     data_dir = 'data/'
     #define datasets and the percent of train and test
@@ -97,3 +101,4 @@ def main():
     plt.show()
 
 main()
+'''
