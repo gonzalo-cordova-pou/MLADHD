@@ -13,10 +13,15 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 
 ## Index
 
-1. [Data](#data)
-2. [Installation](#installation)
-3. [Related Work](#related-work)
+1. [New updates](#new-updates)
+2. [Data](#data)
+3. [Installation](#installation)
+4. [Related Work](#related-work)
 ---
+
+## New updates
+
+- I have created a notebook (DEMO.ipynb) to be executed in Google Colaboratory (you can open a GitHub file in Google Colab). This notebook mounts the Drive data (from the shared folder) and clones the repo. By doing this, we can train / test models in Google GPUs using the updated data from the Drive and the functions we code in the repo.
 
 ## Data
 
