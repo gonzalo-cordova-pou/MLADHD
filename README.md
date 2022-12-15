@@ -7,9 +7,15 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 ## TODOs
 
 - [X] Add a README.md file to the repository
-- [ ] Agree on a Python version (suggestion: 3.10)
-- [ ] Migrate data to a cloud stroage (suggestion: AWS S3 or Google Drive)
-- [ ] Document related work
+- [X] Agree on a Python version (suggestion: 3.10)
+- [X] Migrate data to a cloud stroage (suggestion: AWS S3 or Google Drive)
+- [ ] Finish related work document
+- [ ] Create ML Training System
+    - [X] Create a notebook to train models
+    - [X] Mount data in Google Colab from Google Drive
+    - [X] Clone repo in Google Colab
+    - [ ] Set hyperparameters as global variables
+    - [ ] implement ML tracking tool (suggestion: MLFlow)
 
 ## Index
 
@@ -25,16 +31,33 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 
 ## Data
 
+- Data is now stored in the shared folder in Google Drive.
+- Screenshots should be full screen (size to be defined: e.g. 1280 x 720) and saved in JPG format.
+- The data is divided in 5 classes for now:
+    - Work
+        - Ideas: Word, Excel, PowerPoint, Google Docs, Google Slides, Google Sheets, PDF, Google Drive, Coding, Microsoft Teams, Google Classroom, Google Translate, Calendar, Prezi, Edmodo, Wikipedia, Mentimeter, Miro, Moodle, Canvas [More ideas link](https://www.toptools4learning.com/)
+    - Not Work
+        - Ideas: online shopping, news, Twitter, Facebook, Google Photos, Google Maps, Reddit, Pinterest, TikTok, Instagram, Streaming (Netflix, Prime Video, Disney+...)
+    - Video / Tutorials
+        - Ideas: Youtube, Twitch, Recorded classes in Drive
+    - Gamming
+        - Ideas: Minecraft, Solitaire, Minesweeper, Agar.io, Slither.io, LoL, CSGO, Dino Game, online gamming platforms like Friv, Age of Empires, Epic Games, Steam, Akinator, Quick Draw, Catan Universe, Sudoku, Pacman, Wordle, Geoguessr, Freeciv-Web, War Brokers, Powerline.io, Skribbl, Diep.io. [More ideas Link](https://beebom.com/browser-games/)
+    - Chatting
+        - Ideas: Whatsapp, Messenger, Web forum, Discord, Telegram, 
+        
+    \
+    Other ideas: Slack, Skype, Zoom, Google Meet, Google Hangouts, Facebook Messenger, Snapchat, LinkedIn, Tumblr, Quora, Stack Overflow, GitHub, GitLab, Bitbucket...
+
 Some ideas for the data:
-- As mentioned in the TODOs, we should migrate the data to a cloud storage. This will make it easier to share the data with the team and to access it from different machines.
-- We should also consider using a data versioning tool like [DVC](https://dvc.org/) to keep track of the data and to make it easier to reproduce the results.
+- We should consider using a data versioning tool like [DVC](https://dvc.org/) to keep track of the data and to make it easier to reproduce the results.
+- We need to include educational apps that look like games (e.g. Scratch)
+    - Kahoot
+    - Duolingo
+    - Khan Academy
+    - Socrative
 - We should discuss:
-    - How many classes do we want to classify?
-        - For now, two: working and not working (not working will be separated in different classes to suport future works). 
     - How many samples do we want to use for training and testing?
     - Can we do some data augmentation to increase the number of samples?
-    - We should agree on a file format for the images (e.g. PNG, JPG, etc.)
-        - JPG (1280 x 720, 96dpi)
 
 - We could explore the possibility of scraping the data using automated image search from search engines like Google or Bing.
 
