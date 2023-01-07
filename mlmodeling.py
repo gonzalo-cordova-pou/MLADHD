@@ -60,8 +60,8 @@ class MLADHD():
         train_sampler =  sampler.SubsetRandomSampler(train_idx)
         test_sampler = sampler.SubsetRandomSampler(test_idx)
         #batch_size is how many images will be analysed in each iteration, minimize noise
-        trainloader = DataLoader(train_data, sampler=train_sampler, batch_size=64)
-        testloader = DataLoader(test_data, sampler=test_sampler, batch_size=64)
+        trainloader = DataLoader(train_data, sampler=train_sampler, batch_size=self.hyperparams['batch_size'])
+        testloader = DataLoader(test_data, sampler=test_sampler, batch_size=self.hyperparams['batch_size'])
         self.train = trainloader
         self.test = testloader
         print('Train size: ', len(trainloader))
