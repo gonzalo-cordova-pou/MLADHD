@@ -14,8 +14,8 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - [X] Create a notebook to train models
     - [X] Mount data in Google Colab from Google Drive
     - [X] Clone repo in Google Colab
-    - [ ] Set hyperparameters as global variables
-    - [ ] implement ML tracking tool (suggestion: MLFlow)
+    - [X] Set hyperparameters as global variables
+    - [ ] implement ML tracking tool (suggestion: MLFlow or WandB)
 
 ## Index
 
