@@ -6,10 +6,11 @@ from torch import nn, optim
 from torchvision import datasets, transforms
 from torch.utils.data import sampler, DataLoader
 import matplotlib.pyplot as plt
+import wandb
 
 class MLADHD():
 
-    def __init__(self, name, data_dir, models_dir, hyperparams, date=None):
+    def __init__(self, name, data_dir, models_dir, hyperparams, date=None, wandb=False):
         
         self.name = name
         if date is None:
@@ -19,6 +20,7 @@ class MLADHD():
         self.data_dir = data_dir
         self.models_dir = models_dir
         self.hyperparams = hyperparams
+        self.wandb = wandb
         
         self.running_loss = None
         self.criterio = None
@@ -135,6 +137,8 @@ class MLADHD():
                 running_loss.append(loss.item()*100/len(self.train))
             print("Epoch: {}/{}.. ".format(e+1, self.hyperparams['epochs']),
                     "Training Loss: {:.3f}.. ".format(running_loss[-1]))
+            if self.wandb:
+                wandb.log({"train_loss": running_loss[-1]})
             self.running_loss.append(running_loss)
         
         print("Training finished!")
