@@ -2,9 +2,10 @@
 
 ## Index
 
-- [Article 1](#Article-1) CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems
-- [Article 2](#Article-2) Guess What's on my Screen? Clustering Smartphone Screenshots with Active Learning
-- [Article 3](#Article-3) Understanding Screen Relationships from Screenshots of Smartphone Applications
+- [Article 1](#article-1) CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems
+- [Article 2](#article-2) Guess What's on my Screen? Clustering Smartphone Screenshots with Active Learning
+- [Article 3](#article-3) Understanding Screen Relationships from Screenshots of Smartphone Applications
+- [Article 4](#article-4) Detecting Developers’ Task Switches and Types
 - [Other references](#Other-references)
 
 ## Article 1
@@ -34,7 +35,8 @@
 
 
 
-## Article 2 (in progress...)
+## Article 2 
+**(in progress...)**
 
 [Link to the article](https://arxiv.org/pdf/1805.07964.pdf)
 
@@ -56,13 +58,37 @@
 **Conclusion:**
 
 
-## Article 3 (in progress...)
+## Article 3
+**(in progress...)**
 
 [Link to the article](https://dl.acm.org/doi/pdf/10.1145/3490099.3511109)
 
 **Title:** Understanding Screen Relationships from Screenshots of Smartphone Applications
 
 **Authors:**  Shirin Feiz, Jason Wu, Xiaoyi Zhang, Amanda Swearngin, Titus Barik, Jeffrey Nichols
+
+**Context:**
+
+<br>
+
+**Summary:**
+
+<br>
+
+**Core idea:**
+
+<br>
+
+**Conclusion:**
+
+## Article 4
+**(in progress...)**
+
+[Link to the article](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9069309)
+
+**Title:** Detecting Developers’ Task Switches and Types
+
+**Authors:** Andre N. Meyer, Chris Satterfield, Manuela Zuger, Katja Kevic, Gail C. Murphy, Thomas Zimmermann, and Thomas Fritz
 
 **Context:**
 
