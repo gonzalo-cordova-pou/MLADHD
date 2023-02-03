@@ -63,6 +63,11 @@ Some ideas for the data:
 
 - We could explore the possibility of scraping the data using automated image search from search engines like Google or Bing.
 
+## Possible OCR (optical character recognition) Python Package 
+
+- [pytesseract](https://pypi.org/project/pytesseract/)
+- [OpenCV](https://pypi.org/project/opencv-python/)
+
 
 ## Installation
 
