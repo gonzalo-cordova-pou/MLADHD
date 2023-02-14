@@ -45,7 +45,7 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - Gamming
         - Ideas: Minecraft, Solitaire, Minesweeper, Agar.io, Slither.io, LoL, CSGO, Dino Game, online gamming platforms like Friv, Age of Empires, Epic Games, Steam, Akinator, Quick Draw, Catan Universe, Sudoku, Pacman, Wordle, Geoguessr, Freeciv-Web, War Brokers, Powerline.io, Skribbl, Diep.io. [More ideas Link](https://beebom.com/browser-games/)
     - Chatting
-        - Ideas: Whatsapp, Messenger, Web forum, Discord, Telegram, 
+        - Ideas: Whatsapp, Messenger, Web forum, Discord, Telegram, Groupme, Google Chat
         
     \
     Other ideas: Slack, Skype, Zoom, Google Meet, Google Hangouts, Facebook Messenger, Snapchat, LinkedIn, Tumblr, Quora, Stack Overflow, GitHub, GitLab, Bitbucket...
