@@ -29,6 +29,7 @@ class MLADHD():
         self.test = None
         self.loss = None
         self.accuracy = None
+        self.classes = None
     
     def set_hyperparams(self, hyperparams):
         self.hyperparams = hyperparams
@@ -54,6 +55,7 @@ class MLADHD():
         #The number of classes will be the number of dirs
         train_data = datasets.ImageFolder(self.data_dir, transform=train_transf)
         test_data = datasets.ImageFolder(self.data_dir, transform=test_transf)
+        self.classes = len(train_data.classes)
         n_train = len(train_data)
         indices = list(range(n_train))
         split = int(np.floor(valid_size * n_train))
@@ -94,10 +96,11 @@ class MLADHD():
             for p in self.model.parameters():
                 p.requires_grad = False
         
-        self.model.fc = nn.Sequential(nn.Linear(2048, 512),
+        fc_inputs = self.model.fc.in_features
+        self.model.fc = nn.Sequential(nn.Linear(fc_inputs, 512),
                                         nn.ReLU(),
                                         nn.Dropout(0.2),
-                                        nn.Linear(512, 10),
+                                        nn.Linear(512, self.classes),
                                         nn.LogSoftmax(dim=1))
         
         # define the loss function
