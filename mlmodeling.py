@@ -119,9 +119,9 @@ class MLADHD():
 
         # define the optimizer
         if self.hyperparams['optimizer'] == 'Adam':
-            optimizer = optim.Adam(self.model.fc.parameters(), lr=self.hyperparams['lr'])
+            optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparams['lr'])
         elif self.hyperparams['optimizer'] == 'SGD':
-            optimizer = optim.SGD(self.model.fc.parameters(), lr=self.hyperparams['lr'])
+            optimizer = optim.SGD(self.model.parameters(), lr=self.hyperparams['lr'])
         else:
             print("Choose a valid optimizer: Adam, SGD")
             return None
