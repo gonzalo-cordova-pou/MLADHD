@@ -165,7 +165,6 @@ class MLADHD():
             transforms.ToTensor(),
         ])
         image = Image.open(image_path)
-        plt.imshow(image)
         image = transform(image)
         image = image.unsqueeze(0)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -175,15 +174,32 @@ class MLADHD():
             output = self.model(image)
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
-
-            # Print results
-            print("Predicted class: ", idx_to_class[top_class.cpu().numpy()[0][0]])
-            print("Real class: ", image_path.split('/')[-2])
+        return image_path.split('/')[-2], idx_to_class[top_class.cpu().numpy()[0][0]]
     
     def test_random_images(self, data_dir, n_images=3):
+        # create a plot for the images
+        fig, axs = plt.subplots(n_images, 1, figsize=(30,30))
         for i in range(n_images):
+            # get a random image
             image_path = random.choice(glob.glob(data_dir+'/*/*'))
-            self.predict(image_path)
+            image = Image.open(image_path)
+            # predict the image
+            label, pred = self.predict(image_path)
+            # add the image to the plot
+            axs[i].imshow(image)
+            # set the title of the plot
+            # prediction is correct
+            if label == pred:
+                axs[i].set_title('Label: '+label+' - Prediction: '+pred, color='green')
+            # prediction is wrong
+            else:
+                axs[i].set_title('Label: '+label+' - Prediction: '+pred, color='red')
+            # add image filename to the subplot x axis
+            axs[i].set_xlabel(image_path.split('/')[-1])
+            # remove the y axis
+            axs[i].set_yticklabels([])
+            axs[i].set_yticks([])
+        plt.show()
 
     def test_model(self):
         #define GPU
