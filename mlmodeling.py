@@ -8,6 +8,9 @@ from torch.utils.data import sampler, DataLoader
 import matplotlib.pyplot as plt
 from PIL import Image
 import wandb
+import random
+import os
+import glob
 
 idx_to_class = {0: 'not_work', 1: 'work'}
 
@@ -164,10 +167,9 @@ class MLADHD():
         image = Image.open(image_path)
         plt.imshow(image)
         image = transform(image)
-        if torch.cuda.is_available():
-            image = image.view(1, 3, 224, 224).cuda()
-        else:
-            image = image.view(1, 3, 224, 224)
+        image = image.unsqueeze(0)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        image = image.to(device)
         with torch.no_grad():
             self.model.eval() # set model to evaluation mode
             output = self.model(image)
@@ -178,6 +180,11 @@ class MLADHD():
             print("Predicted class: ", idx_to_class[top_class.cpu().numpy()[0][0]])
             print("Real class: ", image_path.split('/')[-2])
     
+    def test_random_images(self, data_dir, n_images=3):
+        for i in range(n_images):
+            image_path = random.choice(glob.glob(data_dir+'/*/*'))
+            self.predict(image_path)
+
     def test_model(self):
         #define GPU
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -198,7 +205,11 @@ class MLADHD():
                 accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
         loss = test_loss/len(self.test)
         accuracy = accuracy/len(self.test)
-        return loss, accuracy  
+        return loss, accuracy
+
+    def load_model(self, model_path):
+        self.model = torch.load(model_path)
+        print("Model loaded from: ", model_path)
 
 def main():
     """
