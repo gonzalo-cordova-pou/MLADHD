@@ -6,7 +6,10 @@ from torch import nn, optim
 from torchvision import datasets, transforms
 from torch.utils.data import sampler, DataLoader
 import matplotlib.pyplot as plt
+from PIL import Image
 import wandb
+
+idx_to_class = {0: 'not_work', 1: 'work'}
 
 class MLADHD():
 
@@ -152,7 +155,29 @@ class MLADHD():
             with open(self.models_dir+self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.json', 'w') as fp:
                 json.dump(self.hyperparams, fp)
             print("Model saved as: ", self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.pth')
+    
+    def predict(self, image_path):
+        transform = transforms.Compose([
+            transforms.Resize(224),
+            transforms.ToTensor(),
+        ])
+        image = Image.open(image_path)
+        plt.imshow(image)
+        image = transform(image)
+        if torch.cuda.is_available():
+            image = image.view(1, 3, 224, 224).cuda()
+        else:
+            image = image.view(1, 3, 224, 224)
+        with torch.no_grad():
+            self.model.eval() # set model to evaluation mode
+            output = self.model(image)
+            ps = torch.exp(output)
+            top_p, top_class = ps.topk(1, dim=1)
 
+            # Print results
+            print("Predicted class: ", idx_to_class[top_class.cpu().numpy()[0][0]])
+            print("Real class: ", image_path.split('/')[-2])
+    
     def test_model(self):
         #define GPU
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
