@@ -211,7 +211,7 @@ class MLADHD():
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
             # probability
-        return image_path.split('/')[-2], idx_to_class[top_class.cpu().numpy()[0][0]], top_p.cpu().numpy()[0][0]
+        return image_path.split('/')[-2], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
     
     def test_random_images(self, data_dir, n_images=3):
         """
@@ -234,10 +234,10 @@ class MLADHD():
             # set the title of the plot
             # prediction is correct
             if label == pred:
-                axs[i].set_title('Label: '+label+' - Prediction: '+pred+' - Probability: '+str(round(prob,2)), color='green')
+                axs[i].set_title('Label: '+label+' - Prediction: '+pred+' - Probability: '+str(prob), color='green')
             # prediction is wrong
             else:
-                axs[i].set_title('Label: '+label+' - Prediction: '+pred+' - Probability: '+str(round(prob,2)), color='red')
+                axs[i].set_title('Label: '+label+' - Prediction: '+pred+' - Probability: '+str(prob), color='red')
             # add image filename to the subplot x axis
             axs[i].set_xlabel(image_path.split('/')[-1])
             # remove the y axis
