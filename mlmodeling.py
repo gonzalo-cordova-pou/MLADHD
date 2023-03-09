@@ -15,8 +15,20 @@ import glob
 idx_to_class = {0: 'not_work', 1: 'work'}
 
 class MLADHD():
+    """
+    This class is a wrapper for the ML models. It will be used to train and test the models.
+    It will also save the models and the results.
+    """
 
     def __init__(self, name, data_dir, models_dir, hyperparams, date=None, wandb=False):
+        """
+        :param name: Name of the model
+        :param data_dir: Directory where the data is stored
+        :param models_dir: Directory where the models will be stored
+        :param hyperparams: Dictionary with the hyperparameters
+        :param date: Date of the model. If None, it will be the current date
+        :param wandb: If True, it will use wandb to log the results
+        """
         
         self.name = name
         if date is None:
@@ -41,7 +53,13 @@ class MLADHD():
         self.hyperparams = hyperparams
 
     def load_split_dataset(self, valid_size = .2):
-        #What kind of transforms can help solve the problem?
+        """
+        This function will load the dataset and split it into train and test
+        :param valid_size: Percentage of the dataset that will be used for validation
+        :return: None
+        """
+        
+        # TBD: What kind of transforms can help solve the problem?
         try:
             if self.hyperparams['train_transforms'] == 'default':
                 train_transf = transforms.Compose([transforms.Resize(224), transforms.ToTensor(),])
@@ -67,9 +85,11 @@ class MLADHD():
         split = int(np.floor(valid_size * n_train))
         np.random.shuffle(indices)
         train_idx, test_idx = indices[split:], indices[:split]
+        
         train_sampler =  sampler.SubsetRandomSampler(train_idx)
         test_sampler = sampler.SubsetRandomSampler(test_idx)
-        #batch_size is how many images will be analysed in each iteration, minimize noise
+        
+        # batch_size is the number of images that will be processed at the same time
         trainloader = DataLoader(train_data, sampler=train_sampler, batch_size=self.hyperparams['batch_size'])
         testloader = DataLoader(test_data, sampler=test_sampler, batch_size=self.hyperparams['batch_size'])
         self.train = trainloader
@@ -78,7 +98,12 @@ class MLADHD():
         print('Test size: ', len(testloader))
         print("Trainloader and Testloader created. Access them with self.train and self.test")
 
-    def create_model(self):   
+    def create_model(self): 
+        """
+        This function will create the model from a pretrained model and add
+        a new classifier to it to fit the problem at hand (number of classes)
+        """
+
         if self.hyperparams is None:
             print("You need to set the hyperparams first")
             return None
@@ -119,6 +144,12 @@ class MLADHD():
             return None
     
     def train_model(self, save_model=True):
+        """
+        This function will train the model
+        :param save_model: If True, it will save the model after training it
+        :return: None
+        """
+
         #define GPU
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
@@ -160,6 +191,11 @@ class MLADHD():
             print("Model saved as: ", self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.pth')
     
     def predict(self, image_path):
+        """
+        This function will predict the class of an image given its path
+        :param image_path: path to the image
+        :return: the real class and the predicted class (and the probability)
+        """
         transform = transforms.Compose([
             transforms.Resize(224),
             transforms.ToTensor(),
@@ -174,9 +210,17 @@ class MLADHD():
             output = self.model(image)
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
-        return image_path.split('/')[-2], idx_to_class[top_class.cpu().numpy()[0][0]]
+            # probability
+        return image_path.split('/')[-2], idx_to_class[top_class.cpu().numpy()[0][0]], top_p.cpu().numpy()[0][0]
     
     def test_random_images(self, data_dir, n_images=3):
+        """
+        This function will test the model with random images from a directory
+        :param data_dir: directory with the images
+        :param n_images: number of images to test
+        :return: None
+        """
+
         # create a plot for the images
         fig, axs = plt.subplots(n_images, 1, figsize=(30,30))
         for i in range(n_images):
@@ -184,16 +228,16 @@ class MLADHD():
             image_path = random.choice(glob.glob(data_dir+'/*/*'))
             image = Image.open(image_path)
             # predict the image
-            label, pred = self.predict(image_path)
+            label, pred, prob = self.predict(image_path)
             # add the image to the plot
             axs[i].imshow(image)
             # set the title of the plot
             # prediction is correct
             if label == pred:
-                axs[i].set_title('Label: '+label+' - Prediction: '+pred, color='green')
+                axs[i].set_title('Label: '+label+' - Prediction: '+pred+' - Probability: '+str(round(prob,2)), color='green')
             # prediction is wrong
             else:
-                axs[i].set_title('Label: '+label+' - Prediction: '+pred, color='red')
+                axs[i].set_title('Label: '+label+' - Prediction: '+pred+' - Probability: '+str(round(prob,2)), color='red')
             # add image filename to the subplot x axis
             axs[i].set_xlabel(image_path.split('/')[-1])
             # remove the y axis
@@ -202,6 +246,10 @@ class MLADHD():
         plt.show()
 
     def test_model(self):
+        """
+        This function will test the model with the test dataset and return the loss and accuracy 
+        :return: loss and accuracy
+        """
         #define GPU
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
@@ -224,6 +272,11 @@ class MLADHD():
         return loss, accuracy
 
     def load_model(self, model_path):
+        """
+        This function will load a model from a path and save it in the model attribute
+        :param model_path: path to the model
+        :return: None
+        """
         self.model = torch.load(model_path)
         print("Model loaded from: ", model_path)
 
