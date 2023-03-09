@@ -35,6 +35,14 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 - **[07 Jan 2023]** I have made quite a few modifications to the `mlmodeling.py` file. These include a refactoring of code to handle experiments with a class. I have also parameterized all the hyperparameters so that I can initialize them with the experiment.
 - **[07 Jan 2023]** I have created a new notebook (`DEMO_wandb.ipynb`) and made the necessary modifications to include experiment tracking with [Weights & Biases](https://wandb.ai/site). This is not the final version, but a preliminary to show how can it be used. WandB is a central dashboard to keep track of your hyperparameters, system metrics, and predictions so you can compare models live, and share your findings.
 - **[23 Feb 2023]** We decided to work with a binary classifier for now. See [Experiment guide](#experiment-guide) for more info.
+- **[09 Mar 2023]** Updates in the MLADHD class in `mlmodeling.py` file:
+    - *load_model* method to load a model from pretrained weights
+    - *predict* to make a prediction of a single image
+    - *test_random_images* to make prediction of N random images and see results
+- **[09 Mar 2023]** The (`DEMO.ipynb`) notebook has been updated with new sections:
+    - A one image prediction
+    - N random images prediction
+    - Wrong predictions analysis
 
 ## Data
 
