@@ -16,9 +16,14 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - [X] Mount data in Google Colab from Google Drive
     - [X] Clone repo in Google Colab
     - [X] Set hyperparameters as global variables
-    - [ ] implement ML tracking tool (suggestion: MLFlow or WandB)
-- [ ] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
-- [ ] Create a notebook for wrong output analysis
+    - [ ] Implement ML tracking tool (suggestion: MLFlow or WandB)
+    - [ ] Energy Consumption Tracker [NVIDIA System Management Interface program](https://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf)
+    - [ ] Add new metrics: Precision and F1-Score
+- [X] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
+- [X] Create a notebook for wrong output analysis
+- [ ] Read: [Requirements Engineering for Machine Learning:
+Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
+- [ ] Start Overleaf project
 
 ## Index
 
