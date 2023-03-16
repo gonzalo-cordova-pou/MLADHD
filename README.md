@@ -21,9 +21,9 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - [ ] Add new metrics: Precision and F1-Score
 - [X] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
 - [X] Create a notebook for wrong output analysis
-- [ ] Read: [Requirements Engineering for Machine Learning:
+- [X] Read: [Requirements Engineering for Machine Learning:
 Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
-- [ ] Start Overleaf project
+- [X] Start Overleaf project
 
 ## Index
 
