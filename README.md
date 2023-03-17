@@ -79,6 +79,10 @@ Some ideas for the data:
 
 - [❌ Discarded] We could explore the possibility of scraping the data using automated image search from search engines like Google or Bing.
 
+#### Resizing
+
+- *Downsampling*: For now we are using `transforms.Resize(224)`. This keeps the proportion of the image (there is no point in changing the proportion) and lowers the size of the images (we have images of 1920x1080 and 3840x2160). This is a common practice in CNNs. It may seem contraintuitive to feed the model with lower quality images, but models train faster on smaller images. An input image that is twice the size requires our network to learn from four times as many pixels, with more memory need and times that add up. [Reference](https://blog.roboflow.com/you-might-be-resizing-your-images-incorrectly/)
+
 ## Possible OCR (optical character recognition) Python Package 
 
 - [pytesseract](https://pypi.org/project/pytesseract/)
