@@ -12,7 +12,11 @@ import random
 import os
 import glob
 
-idx_to_class = {0: 'not_work', 1: 'work'}
+# Binary classification problem
+idx_to_class = {0: 'focused', 1: 'distracted'}
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print("Using {} device".format(device))
 
 class MLADHD():
     """
@@ -62,13 +66,19 @@ class MLADHD():
         # TBD: What kind of transforms can help solve the problem?
         try:
             if self.hyperparams['train_transforms'] == 'default':
-                train_transf = transforms.Compose([transforms.Resize(224), transforms.ToTensor(),])
+                train_transf = transforms.Compose([
+                    transforms.Resize(224),
+                    transforms.ToTensor(),
+                ])
             else:
                 print("Choose a valid train_transforms: default")
                 return None
             
             if self.hyperparams['test_transforms'] == 'default':
-                test_transf = transforms.Compose([transforms.Resize(224), transforms.ToTensor(), ])
+                test_transf = transforms.Compose([
+                    transforms.Resize(224),
+                    transforms.ToTensor(),
+                ])
             else:
                 print("Choose a valid test_transforms: default")
                 return None
@@ -90,8 +100,8 @@ class MLADHD():
         test_sampler = sampler.SubsetRandomSampler(test_idx)
         
         # batch_size is the number of images that will be processed at the same time
-        trainloader = DataLoader(train_data, sampler=train_sampler, batch_size=self.hyperparams['batch_size'])
-        testloader = DataLoader(test_data, sampler=test_sampler, batch_size=self.hyperparams['batch_size'])
+        trainloader = DataLoader(train_data, sampler=train_sampler, batch_size=self.hyperparams['batch_size'], num_workers=os.cpu_count())
+        testloader = DataLoader(test_data, sampler=test_sampler, batch_size=self.hyperparams['batch_size'], num_workers=os.cpu_count())
         self.train = trainloader
         self.test = testloader
         print('Train size: ', len(trainloader))
@@ -203,7 +213,6 @@ class MLADHD():
         image = Image.open(image_path)
         image = transform(image)
         image = image.unsqueeze(0)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         image = image.to(device)
         with torch.no_grad():
             self.model.eval() # set model to evaluation mode
@@ -211,7 +220,7 @@ class MLADHD():
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
             # probability
-        return image_path.split('/')[-2], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
+        return image_path.split('/')[-2].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
     
     def test_random_images(self, data_dir, n_images=3):
         """
