@@ -16,9 +16,14 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - [X] Mount data in Google Colab from Google Drive
     - [X] Clone repo in Google Colab
     - [X] Set hyperparameters as global variables
-    - [ ] implement ML tracking tool (suggestion: MLFlow or WandB)
-- [ ] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
-- [ ] Create a notebook for wrong output analysis
+    - [ ] Implement ML tracking tool (suggestion: MLFlow or WandB)
+    - [ ] Energy Consumption Tracker [NVIDIA System Management Interface program](https://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf)
+    - [ ] Add new metrics: Precision and F1-Score
+- [X] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
+- [X] Create a notebook for wrong output analysis
+- [X] Read: [Requirements Engineering for Machine Learning:
+Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
+- [X] Start Overleaf project
 
 ## Index
 
@@ -73,6 +78,19 @@ Some ideas for the data:
     - Can we do some data augmentation to increase the number of samples?
 
 - [❌ Discarded] We could explore the possibility of scraping the data using automated image search from search engines like Google or Bing.
+
+#### Data Transformations and Data Augmentation
+
+When working with screenshots in a specific software with a controlled environment and fixed image format, common transformations such as crop and rotation may not be necessary and can even be detrimental to the model's performance. This is because in a controlled environment, the screenshots are likely to have consistent layouts and structures, and the objects of interest will be in the same position and orientation in each screenshot. As a result, cropping or rotating the images may cause the model to lose important information or even introduce noise, which can negatively impact its ability to make accurate predictions.
+
+However, as with any application of Deep Learning for Computer Vision, it is still important to carefully evaluate the specific requirements of the problem at hand and determine whether additional transformations or techniques may be necessary for optimal performance. For example, if the screenshots may have variations in lighting or color, applying data augmentation techniques such as brightness adjustment or color jittering may help to improve the model's robustness and accuracy.
+
+##### Resizing
+
+- *Downsampling*: For now we are using `transforms.Resize(224)`. This keeps the proportion of the image (there is no point in changing the proportion) and lowers the size of the images (we have images of 1920x1080 and 3840x2160) making them all with same format (398x224). This is a common practice in CNNs. It may seem contraintuitive to feed the model with lower quality images, but models train faster on smaller images. An input image that is twice the size requires our network to learn from four times as many pixels, with more memory need and times that add up. [Reference](https://blog.roboflow.com/you-might-be-resizing-your-images-incorrectly/)
+
+![img1](https://user-images.githubusercontent.com/71346949/225948123-11ed82f4-e9f4-4d9c-9051-5a3137c273ea.png) ![image](https://user-images.githubusercontent.com/71346949/225976126-06261c12-1024-4a1f-b492-fec5d61288ae.png)
+
 
 ## Possible OCR (optical character recognition) Python Package 
 
