@@ -5,7 +5,9 @@ from datetime import datetime as dt
 from torch import nn, optim
 from torchvision import datasets, transforms
 from torch.utils.data import sampler, DataLoader
+from sklearn.metrics import precision_recall_fscore_support, confusion_matrix
 import matplotlib.pyplot as plt
+import seaborn as sns
 from PIL import Image
 import wandb
 import random
@@ -57,6 +59,9 @@ class MLADHD():
         }
         self.test_loss = None
         self.test_acc = None
+        self.test_precision = None
+        self.test_recall = None
+        self.test_f1 = None
 
         self.criterion = None
         self.model = None
@@ -287,11 +292,21 @@ class MLADHD():
 
     def test_model(self):
         """
-        This function will test the model
+        This function will test the model with the following metrics:
+        - Accuracy
+        - Precision
+        - Recall
+        - F1 Score
+        - Confusion Matrix
         :return: None
         """
         test_loss = 0.0
         test_acc = 0.0
+        test_precision = 0.0
+        test_recall = 0.0
+        test_f1 = 0.0
+        y_true = []
+        y_pred = []
         self.model.eval()
         with torch.no_grad():
             for j, (inputs, labels) in enumerate(self.testloader):
@@ -309,13 +324,26 @@ class MLADHD():
                 acc = torch.mean(correct_counts.type(torch.FloatTensor))
                 # Compute total accuracy in the whole batch and add to test_acc
                 test_acc += acc.item()*inputs.size(0)
-                print("Test Batch number: {:03d}, Test: Loss: {:.4f}, Accuracy: {:.4f}".format(j, loss.item(), acc.item()))
-        # Compute the average losses and accuracy
+                # Compute precision, recall and f1 score
+                precision, recall, f1, _ = precision_recall_fscore_support(labels.cpu().numpy(), predictions.cpu().numpy(), average='weighted')
+                test_precision += precision*inputs.size(0)
+                test_recall += recall*inputs.size(0)
+                test_f1 += f1*inputs.size(0)
+                # Add true and predicted labels for the confusion matrix
+                y_true += labels.cpu().numpy().tolist()
+                y_pred += predictions.cpu().numpy().tolist()
+                print("Test Batch number: {:03d}, Test: Loss: {:.4f}, Accuracy: {:.4f}, Precision: {:.4f}, Recall: {:.4f}, F1 Score: {:.4f}".format(j, loss.item(), acc.item(), precision, recall, f1))
+        # Compute the average losses, accuracy, precision, recall and f1 score
         self.test_loss = test_loss/len(self.testloader.dataset)
         self.test_acc = test_acc/float(len(self.testloader.dataset))
-        print("Test: Loss: {:.4f}, Accuracy: {:.4f}%".format(self.test_loss, self.test_acc*100))
+        self.test_precision = test_precision/float(len(self.testloader.dataset))
+        self.test_recall = test_recall/float(len(self.testloader.dataset))
+        self.test_f1 = test_f1/float(len(self.testloader.dataset))
+        print("Test: Loss: {:.4f}, Accuracy: {:.4f}%, Precision: {:.4f}%, Recall: {:.4f}%, F1 Score: {:.4f}%".format(self.test_loss, self.test_acc*100, self.test_precision*100, self.test_recall*100, self.test_f1*100))
         if self.wandb:
-            wandb.log({"Test Loss": self.test_loss, "Test Accuracy": self.test_acc})
+            wandb.log({"Test Loss": self.test_loss, "Test Accuracy": self.test_acc, "Test Precision": self.test_precision, "Test Recall": self.test_recall, "Test F1 Score": self.test_f1})
+        # Plot the confusion matrix
+        plot_confusion_matrix(y_true, y_pred)
 
     def predict(self, image_path):
         """
@@ -327,16 +355,13 @@ class MLADHD():
             transforms.Resize(224),
             transforms.ToTensor(),
         ])
-        test_image = Image.open(image_path)
-        test_image = transform(test_image)
-        test_image = test_image.unsqueeze(0)
-        if device == 'cuda':
-            test_image = test_image.view(3, 398, 224).cuda()
-        else:
-            test_image = test_image.view(3, 398, 224)
+        image = Image.open(image_path)
+        image = transform(image)
+        image = image.unsqueeze(0)
+        image = image.to(device)
         with torch.no_grad():
             self.model.eval()
-            output = self.model(test_image)
+            output = self.model(image)
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
         return image_path.split('/')[-2].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
@@ -381,6 +406,15 @@ class MLADHD():
         """
         self.model = torch.load(model_path)
         print("Model loaded from: ", model_path)
+
+def plot_confusion_matrix(y_true, y_pred, cmap=plt.cm.Blues):
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(10,10))
+    sns.heatmap(cm, annot=True, fmt="g", cmap=cmap)
+    plt.title("Confusion Matrix")
+    plt.ylabel("True Labels")
+    plt.xlabel("Predicted Labels")
+    plt.show()
 
 def main():
     """
