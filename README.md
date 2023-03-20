@@ -18,7 +18,7 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - [X] Set hyperparameters as global variables
     - [ ] Implement ML tracking tool (suggestion: MLFlow or WandB)
     - [ ] Energy Consumption Tracker [NVIDIA System Management Interface program](https://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf)
-    - [ ] Add new metrics: Precision and F1-Score
+    - [X] Add new metrics: Precision and F1-Score
 - [X] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
 - [X] Create a notebook for wrong output analysis
 - [X] Read: [Requirements Engineering for Machine Learning:
