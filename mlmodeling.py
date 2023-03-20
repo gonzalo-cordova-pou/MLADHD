@@ -11,6 +11,7 @@ import wandb
 import random
 import os
 import glob
+import time
 
 # Binary classification problem
 idx_to_class = {0: 'focused', 1: 'distracted'}
@@ -43,27 +44,33 @@ class MLADHD():
         self.models_dir = models_dir
         self.hyperparams = hyperparams
         self.wandb = wandb
+
+        self.trainloader = None
+        self.validloader = None
+        self.testloader = None
         
-        self.running_loss = None
-        self.criterio = None
+        self.training_history = {
+            'train_loss': [],
+            'valid_loss': [],
+            'train_acc': [],
+            'valid_acc': []
+        }
+        self.test_loss = None
+        self.test_acc = None
+
+        self.criterion = None
         self.model = None
-        self.train = None
-        self.test = None
-        self.loss = None
-        self.accuracy = None
         self.classes = None
     
     def set_hyperparams(self, hyperparams):
         self.hyperparams = hyperparams
 
-    def load_split_dataset(self, valid_size = .2):
+    def load_split_dataset(self, percent=(0.8, 0.1, 0.1)):
         """
-        This function will load the dataset and split it into train and test
-        :param valid_size: Percentage of the dataset that will be used for validation
-        :return: None
+        This function will load the dataset and split it into train, valid and test
+        :param percent: Tuple with the percentage of train, valid and test
         """
         
-        # TBD: What kind of transforms can help solve the problem?
         try:
             if self.hyperparams['train_transforms'] == 'default':
                 train_transf = transforms.Compose([
@@ -74,6 +81,15 @@ class MLADHD():
                 print("Choose a valid train_transforms: default")
                 return None
             
+            if self.hyperparams['valid_transforms'] == 'default':
+                valid_transf = transforms.Compose([
+                    transforms.Resize(224),
+                    transforms.ToTensor(),
+                ])
+            else:
+                print("Choose a valid valid_transforms: default")
+                return None
+            
             if self.hyperparams['test_transforms'] == 'default':
                 test_transf = transforms.Compose([
                     transforms.Resize(224),
@@ -82,31 +98,29 @@ class MLADHD():
             else:
                 print("Choose a valid test_transforms: default")
                 return None
+            
         except:
             raise Exception("You need to set the hyperparams first")
         
         #Creating the datasets
         #The number of classes will be the number of dirs
-        train_data = datasets.ImageFolder(self.data_dir, transform=train_transf)
-        test_data = datasets.ImageFolder(self.data_dir, transform=test_transf)
-        self.classes = len(train_data.classes)
-        n_train = len(train_data)
-        indices = list(range(n_train))
-        split = int(np.floor(valid_size * n_train))
-        np.random.shuffle(indices)
-        train_idx, test_idx = indices[split:], indices[:split]
-        
-        train_sampler =  sampler.SubsetRandomSampler(train_idx)
-        test_sampler = sampler.SubsetRandomSampler(test_idx)
-        
-        # batch_size is the number of images that will be processed at the same time
-        trainloader = DataLoader(train_data, sampler=train_sampler, batch_size=self.hyperparams['batch_size'], num_workers=os.cpu_count())
-        testloader = DataLoader(test_data, sampler=test_sampler, batch_size=self.hyperparams['batch_size'], num_workers=os.cpu_count())
-        self.train = trainloader
-        self.test = testloader
-        print('Train size: ', len(trainloader))
-        print('Test size: ', len(testloader))
-        print("Trainloader and Testloader created. Access them with self.train and self.test")
+        data = datasets.ImageFolder(self.data_dir, transform=train_transf)
+        self.classes = len(data.classes)
+
+        #Creating the train, valid and test sets using random_split
+        train_size = int(percent[0] * len(data))
+        valid_size = int(percent[1] * len(data))
+        test_size = len(data) - train_size - valid_size
+        train_data, valid_data, test_data = torch.utils.data.random_split(data, [train_size, valid_size, test_size])
+
+        #Creating the dataloaders
+        self.trainloader = DataLoader(train_data, batch_size=self.hyperparams['batch_size'], shuffle=True)
+        self.validloader = DataLoader(valid_data, batch_size=self.hyperparams['batch_size'], shuffle=True)
+        self.testloader = DataLoader(test_data, batch_size=self.hyperparams['batch_size'], shuffle=True)
+
+        print("Train size: ", len(train_data))
+        print("Valid size: ", len(valid_data))
+        print("Test size: ", len(test_data))
 
     def create_model(self): 
         """
@@ -117,10 +131,9 @@ class MLADHD():
         if self.hyperparams is None:
             print("You need to set the hyperparams first")
             return None
-        if self.train is None:
+        if self.trainloader is None:
             print("You need to load the dataset first")
             return None
-        
         #define the model
         if self.hyperparams['pretrained_model'] == 'resnet50':
             # import the pretrained model
@@ -146,9 +159,9 @@ class MLADHD():
         
         # define the loss function
         if self.hyperparams['loss'] == 'NLLLoss':
-            self.criterio = nn.NLLLoss()
+            self.criterion = nn.NLLLoss()
         elif self.hyperparams['loss'] == 'CrossEntropyLoss':
-            self.criterio = nn.CrossEntropyLoss()
+            self.criterion = nn.CrossEntropyLoss()
         else:
             print("Choose a valid loss: NLLLoss, CrossEntropyLoss")
             return None
@@ -161,7 +174,6 @@ class MLADHD():
         """
 
         #define GPU
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
 
         # define the optimizer
@@ -173,25 +185,79 @@ class MLADHD():
             print("Choose a valid optimizer: Adam, SGD")
             return None
 
-        self.running_loss = []
-        for e in range(self.hyperparams['epochs']):
-            running_loss = []
-            for inputs, labels in self.train:
-                #send to GPU
+        for epoch in range(self.hyperparams['epochs']):
+            epoch_start = time.time()
+            print("Epoch: {}/{}".format(epoch+1, self.hyperparams['epochs']))
+            # Loss and Accuracy within the epoch
+            train_loss = 0.0
+            train_acc = 0.0
+            valid_loss = 0.0
+            valid_acc = 0.0
+            self.model.train()
+            for i, (inputs, labels) in enumerate(self.trainloader):
                 inputs, labels = inputs.to(device), labels.to(device)
+                # Clean existing gradients
                 optimizer.zero_grad()
-                logps = self.model.forward(inputs)
-                loss = self.criterio(logps, labels)
+                # Forward pass - compute outputs on input data using the model
+                outputs = self.model(inputs)
+                # Compute loss
+                loss = self.criterion(outputs, labels)
+                # Backpropagate the gradients
                 loss.backward()
+                # Update the parameters
                 optimizer.step()
-                running_loss.append(loss.item()*100/len(self.train))
-            print("Epoch: {}/{}.. ".format(e+1, self.hyperparams['epochs']),
-                    "Training Loss: {:.3f}.. ".format(running_loss[-1]))
-            if self.wandb:
-                wandb.log({"train_loss": running_loss[-1]})
-            self.running_loss.append(running_loss)
+                # Compute the total loss for the batch and add it to train_loss
+                train_loss += loss.item() * inputs.size(0)
+                # Compute the accuracy
+                ret, predictions = torch.max(outputs.data, 1)
+                correct_counts = predictions.eq(labels.data.view_as(predictions))
+                # Convert correct_counts to float and then compute the mean
+                acc = torch.mean(correct_counts.type(torch.FloatTensor))
+                # Compute total accuracy in the whole batch and add to train_acc
+                train_acc += acc.item() * inputs.size(0)
+                if i % 5 == 0:
+                    print("Batch number: {:03d}/{:03d}, Training: Loss: {:.4f}, Accuracy: {:.4f}".format(i, len(self.trainloader), loss.item(), acc.item()))
+                if self.wandb:
+                    wandb.log({"Train Loss": loss.item(), "Train Accuracy": acc.item()})
         
-        print("Training finished!")
+            # Validation - No gradient tracking needed
+            with torch.no_grad():
+                # Set to evaluation mode
+                self.model.eval()
+                # Validation loop
+                for j, (inputs, labels) in enumerate(self.validloader):
+                    inputs, labels = inputs.to(device), labels.to(device)
+                    # Forward pass - compute outputs on input data using the model
+                    outputs = self.model(inputs)
+                    # Compute loss
+                    loss = self.criterion(outputs, labels)
+                    # Compute the total loss for the batch and add it to test_loss
+                    valid_loss += loss.item() * inputs.size(0)
+                    # Calculate accuracy
+                    ret, predictions = torch.max(outputs.data, 1)
+                    correct_counts = predictions.eq(labels.data.view_as(predictions))
+                    # Convert correct_counts to float and then compute the mean
+                    acc = torch.mean(correct_counts.type(torch.FloatTensor))
+                    # Compute total accuracy in the whole batch and add to valid_acc
+                    valid_acc += acc.item() * inputs.size(0)
+                    print("Valid. Batch number: {:03d}/{:03d}, Valid: Loss: {:.4f}, Accuracy: {:.4f}".format(j, len(self.validloader), loss.item(), acc.item()))
+                    if self.wandb:
+                        wandb.log({"Valid Loss": loss.item(), "Valid Accuracy": acc.item()})
+            # Compute the average losses and accuracy (for both training and validation) for the epoch
+            avg_train_loss = train_loss/float(len(self.trainloader.dataset))
+            avg_train_acc = train_acc/float(len(self.trainloader.dataset))
+            avg_valid_loss = valid_loss/float(len(self.validloader.dataset))
+            avg_valid_acc = valid_acc/float(len(self.validloader.dataset))
+            self.training_history['train_loss'].append(avg_train_loss)
+            self.training_history['train_acc'].append(avg_train_acc)
+            self.training_history['valid_loss'].append(avg_valid_loss)
+            self.training_history['valid_acc'].append(avg_valid_acc)
+            epoch_end = time.time()
+            print("_"*10)
+            print("Epoch : {:03d}\nTraining: Loss: {:.4f}, Accuracy: {:.4f}\nValidation: Loss: {:.4f}, Accuracy: {:.4f}".format(epoch+1, avg_train_loss, avg_train_acc, avg_valid_loss, avg_valid_acc))
+            print("_"*10)
+            if self.wandb:
+                wandb.log({"Epoch": epoch+1, "Train Loss": avg_train_loss, "Train Accuracy": avg_train_acc, "Valid Loss": avg_valid_loss, "Valid Accuracy": avg_valid_acc})
 
         if save_model:
             torch.save(self.model,self.models_dir+self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.pth')
@@ -199,29 +265,82 @@ class MLADHD():
             with open(self.models_dir+self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.json', 'w') as fp:
                 json.dump(self.hyperparams, fp)
             print("Model saved as: ", self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.pth')
-    
+
+    def plot_training(self):
+        """
+        This function will plot the training and validation loss and accuracy
+        :return: None
+        """
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1, 2, 1)
+        plt.plot(self.training_history['train_loss'], label='Training Loss')
+        plt.plot(self.training_history['valid_loss'], label='Validation Loss')
+        plt.legend()
+        plt.title('Loss')
+        plt.subplot(1, 2, 2)
+        plt.plot(self.training_history['train_acc'], label='Training Accuracy')
+        plt.plot(self.training_history['valid_acc'], label='Validation Accuracy')
+        plt.legend()
+        plt.title('Accuracy')
+        plt.xlabel('Epoch')
+        plt.show()
+
+    def test_model(self):
+        """
+        This function will test the model
+        :return: None
+        """
+        test_loss = 0.0
+        test_acc = 0.0
+        self.model.eval()
+        with torch.no_grad():
+            for j, (inputs, labels) in enumerate(self.testloader):
+                inputs, labels = inputs.to(device), labels.to(device)
+                # Forward pass - compute outputs on input data using the model
+                outputs = self.model(inputs)
+                # Compute loss
+                loss = self.criterion(outputs, labels)
+                # Compute the total loss for the batch and add it to test_loss
+                test_loss += loss.item()*inputs.size(0)
+                # Calculate accuracy
+                ret, predictions = torch.max(outputs.data, 1)
+                correct_counts = predictions.eq(labels.data.view_as(predictions))
+                # Convert correct_counts to float and then compute the mean
+                acc = torch.mean(correct_counts.type(torch.FloatTensor))
+                # Compute total accuracy in the whole batch and add to test_acc
+                test_acc += acc.item()*inputs.size(0)
+                print("Test Batch number: {:03d}, Test: Loss: {:.4f}, Accuracy: {:.4f}".format(j, loss.item(), acc.item()))
+        # Compute the average losses and accuracy
+        self.test_loss = test_loss/len(self.testloader.dataset)
+        self.test_acc = test_acc/float(len(self.testloader.dataset))
+        print("Test: Loss: {:.4f}, Accuracy: {:.4f}%".format(self.test_loss, self.test_acc*100))
+        if self.wandb:
+            wandb.log({"Test Loss": self.test_loss, "Test Accuracy": self.test_acc})
+
     def predict(self, image_path):
         """
-        This function will predict the class of an image given its path
-        :param image_path: path to the image
-        :return: the real class and the predicted class (and the probability)
+        This function will predict the class of an image
+        :param image_path: The path of the image
+        :return: Tuple (real class, predicted class, probability)
         """
         transform = transforms.Compose([
             transforms.Resize(224),
             transforms.ToTensor(),
         ])
-        image = Image.open(image_path)
-        image = transform(image)
-        image = image.unsqueeze(0)
-        image = image.to(device)
+        test_image = Image.open(image_path)
+        test_image = transform(test_image)
+        test_image = test_image.unsqueeze(0)
+        if device == 'cuda':
+            test_image = test_image.view(3, 398, 224).cuda()
+        else:
+            test_image = test_image.view(3, 398, 224)
         with torch.no_grad():
-            self.model.eval() # set model to evaluation mode
-            output = self.model(image)
+            self.model.eval()
+            output = self.model(test_image)
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
-            # probability
         return image_path.split('/')[-2].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
-    
+
     def test_random_images(self, data_dir, n_images=3):
         """
         This function will test the model with random images from a directory
@@ -254,32 +373,6 @@ class MLADHD():
             axs[i].set_yticks([])
         plt.show()
 
-    def test_model(self):
-        """
-        This function will test the model with the test dataset and return the loss and accuracy 
-        :return: loss and accuracy
-        """
-        #define GPU
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model.to(device)
-
-        test_loss = 0
-        accuracy = 0
-        self.model.eval()
-        with torch.no_grad():
-            for inputs, labels in self.test:
-                inputs, labels = inputs.to(device), labels.to(device)
-                logps = self.model.forward(inputs)
-                batch_loss = self.criterio(logps, labels)
-                test_loss += batch_loss.item()
-                ps = torch.exp(logps)
-                top_p, top_class = ps.topk(1, dim=1)
-                equals = top_class == labels.view(*top_class.shape)
-                accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
-        loss = test_loss/len(self.test)
-        accuracy = accuracy/len(self.test)
-        return loss, accuracy
-
     def load_model(self, model_path):
         """
         This function will load a model from a path and save it in the model attribute
@@ -298,7 +391,6 @@ def main():
     model_name = 'projectmodel'
     data_dir = './data/'
     models_dir = './models/'
-    valid_size = 0.2
     
     hyperparams = {
         'lr': 0.003, 
@@ -309,11 +401,12 @@ def main():
         'pretrained_model': 'resnet50', # options: resnet50, vgg16
         'freeze_pretrained_model': True,# options: True, False
         'train_transforms': 'default',  # options: default
+        'valid_transforms': 'default',  # options: default
         'test_transforms': 'default'    # options: default
     }
 
     MLADHD = MLADHD(model_name, data_dir, models_dir, hyperparams)
-    MLADHD.load_split_dataset(valid_size)
+    MLADHD.load_split_dataset((0.8, 0.1, 0.1))
     MLADHD.create_model()
     MLADHD.train_model()
     loss, accuracy = MLADHD.test_model()
@@ -346,22 +439,3 @@ def main2():
     MLADHD.load_split_dataset()
     loss, accuracy = MLADHD.test_model()
     print(loss, accuracy)
-
-'''
-Note: I remove this because I import this file in the DEMO.ipynb notebook and I
-execute the main function in the notebook
-
-def main():
-    data_dir = 'data/'
-    #define datasets and the percent of train and test
-    train, test = load_split_dataset(data_dir, .3)
-    model,loss = create_model(train)
-    test_loss,accuracy = test_model(model,test)
-
-    print(test_loss,accuracy)
-    plt.plot(loss,label='Training loss')
-    plt.legend(frameon=False)
-    plt.show()
-
-main()
-'''
