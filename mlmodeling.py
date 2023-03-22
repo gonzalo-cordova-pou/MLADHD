@@ -9,7 +9,7 @@ from sklearn.metrics import precision_recall_fscore_support, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
-import wandb
+import mlflow
 import random
 import os
 import glob
@@ -27,14 +27,13 @@ class MLADHD():
     It will also save the models and the results.
     """
 
-    def __init__(self, name, data_dir, models_dir, hyperparams, date=None, wandb=False):
+    def __init__(self, name, data_dir, models_dir, hyperparams, date=None):
         """
         :param name: Name of the model
         :param data_dir: Directory where the data is stored
         :param models_dir: Directory where the models will be stored
         :param hyperparams: Dictionary with the hyperparameters
         :param date: Date of the model. If None, it will be the current date
-        :param wandb: If True, it will use wandb to log the results
         """
         
         self.name = name
@@ -45,7 +44,6 @@ class MLADHD():
         self.data_dir = data_dir
         self.models_dir = models_dir
         self.hyperparams = hyperparams
-        self.wandb = wandb
 
         self.trainloader = None
         self.validloader = None
@@ -173,7 +171,7 @@ class MLADHD():
     
     def train_model(self, save_model=True):
         """
-        This function will train the model
+        This function will train the model and log the training history using mlflow
         :param save_model: If True, it will save the model after training it
         :return: None
         """
@@ -222,8 +220,6 @@ class MLADHD():
                 train_acc += acc.item() * inputs.size(0)
                 if i % 5 == 0:
                     print("Batch number: {:03d}/{:03d}, Training: Loss: {:.4f}, Accuracy: {:.4f}".format(i, len(self.trainloader), loss.item(), acc.item()))
-                if self.wandb:
-                    wandb.log({"Train Loss": loss.item(), "Train Accuracy": acc.item()})
         
             # Validation - No gradient tracking needed
             with torch.no_grad():
@@ -246,8 +242,7 @@ class MLADHD():
                     # Compute total accuracy in the whole batch and add to valid_acc
                     valid_acc += acc.item() * inputs.size(0)
                     print("Valid. Batch number: {:03d}/{:03d}, Valid: Loss: {:.4f}, Accuracy: {:.4f}".format(j, len(self.validloader), loss.item(), acc.item()))
-                    if self.wandb:
-                        wandb.log({"Valid Loss": loss.item(), "Valid Accuracy": acc.item()})
+
             # Compute the average losses and accuracy (for both training and validation) for the epoch
             avg_train_loss = train_loss/float(len(self.trainloader.dataset))
             avg_train_acc = train_acc/float(len(self.trainloader.dataset))
@@ -258,18 +253,26 @@ class MLADHD():
             self.training_history['valid_loss'].append(avg_valid_loss)
             self.training_history['valid_acc'].append(avg_valid_acc)
             epoch_end = time.time()
+            # Log all the metrics to mlflow
+            mlflow.log_metric("train_loss", avg_train_loss, step=epoch)
+            mlflow.log_metric("train_acc", avg_train_acc, step=epoch)
+            mlflow.log_metric("valid_loss", avg_valid_loss, step=epoch)
+            mlflow.log_metric("valid_acc", avg_valid_acc, step=epoch)
+            mlflow.log_metric("epoch_time", epoch_end-epoch_start, step=epoch)
             print("_"*10)
             print("Epoch : {:03d}\nTraining: Loss: {:.4f}, Accuracy: {:.4f}\nValidation: Loss: {:.4f}, Accuracy: {:.4f}".format(epoch+1, avg_train_loss, avg_train_acc, avg_valid_loss, avg_valid_acc))
             print("_"*10)
-            if self.wandb:
-                wandb.log({"Epoch": epoch+1, "Train Loss": avg_train_loss, "Train Accuracy": avg_train_acc, "Valid Loss": avg_valid_loss, "Valid Accuracy": avg_valid_acc})
 
         if save_model:
-            torch.save(self.model,self.models_dir+self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.pth')
+            model_name = self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date
+            model_path = self.models_dir + model_name
+            torch.save(self.model, model_path+'.pth')
             # save the hyperparams in a json file
-            with open(self.models_dir+self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.json', 'w') as fp:
+            with open(model_path + '.json', 'w') as fp:
                 json.dump(self.hyperparams, fp)
-            print("Model saved as: ", self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date+'.pth')
+            print("Model saved as: ", model_name + '.pth')
+            # Log model to mlflow
+            mlflow.pytorch.log_model(self.model, "models", registered_model_name=model_name)
 
     def plot_training(self):
         """
@@ -288,6 +291,8 @@ class MLADHD():
         plt.legend()
         plt.title('Accuracy')
         plt.xlabel('Epoch')
+        # Log the plot to mlflow
+        mlflow.log_figure(plt.gcf(), "training_plot.png")
         plt.show()
 
     def test_model(self):
@@ -298,6 +303,7 @@ class MLADHD():
         - Recall
         - F1 Score
         - Confusion Matrix
+        and log them to mlflow
         :return: None
         """
         test_loss = 0.0
@@ -339,9 +345,13 @@ class MLADHD():
         self.test_precision = test_precision/float(len(self.testloader.dataset))
         self.test_recall = test_recall/float(len(self.testloader.dataset))
         self.test_f1 = test_f1/float(len(self.testloader.dataset))
+        # Log the metrics to mlflow
+        mlflow.log_metric("test_loss", self.test_loss)
+        mlflow.log_metric("test_acc", self.test_acc)
+        mlflow.log_metric("test_precision", self.test_precision)
+        mlflow.log_metric("test_recall", self.test_recall)
+        mlflow.log_metric("test_f1", self.test_f1)
         print("Test: Loss: {:.4f}, Accuracy: {:.4f}%, Precision: {:.4f}%, Recall: {:.4f}%, F1 Score: {:.4f}%".format(self.test_loss, self.test_acc*100, self.test_precision*100, self.test_recall*100, self.test_f1*100))
-        if self.wandb:
-            wandb.log({"Test Loss": self.test_loss, "Test Accuracy": self.test_acc, "Test Precision": self.test_precision, "Test Recall": self.test_recall, "Test F1 Score": self.test_f1})
         # Plot the confusion matrix
         plot_confusion_matrix(y_true, y_pred)
 
@@ -364,7 +374,7 @@ class MLADHD():
             output = self.model(image)
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
-        return image_path.split('/')[-2].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
+        return os.path.split(os.path.split(image_path)[0])[1].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
 
     def test_random_images(self, data_dir, n_images=3):
         """
@@ -377,8 +387,8 @@ class MLADHD():
         # create a plot for the images
         fig, axs = plt.subplots(n_images, 1, figsize=(30,30))
         for i in range(n_images):
-            # get a random image
-            image_path = random.choice(glob.glob(data_dir+'/*/*'))
+            # get a random image from the directory (OS independent)
+            image_path = random.choice(glob.glob(data_dir + os.path.sep + '*' + os.path.sep + '*'))
             image = Image.open(image_path)
             # predict the image
             label, pred, prob = self.predict(image_path)
@@ -392,7 +402,7 @@ class MLADHD():
             else:
                 axs[i].set_title('Label: '+label+' - Prediction: '+pred+' - Probability: '+str(prob), color='red')
             # add image filename to the subplot x axis
-            axs[i].set_xlabel(image_path.split('/')[-1])
+            axs[i].set_xlabel(os.path.basename(image_path))
             # remove the y axis
             axs[i].set_yticklabels([])
             axs[i].set_yticks([])
@@ -415,61 +425,3 @@ def plot_confusion_matrix(y_true, y_pred, cmap=plt.cm.Blues):
     plt.ylabel("True Labels")
     plt.xlabel("Predicted Labels")
     plt.show()
-
-def main():
-    """
-    Example of how to use the functions in this module
-    CREATING A NEW MODEL FROM SCRATCH (with a pytorch pretrained model)
-    """
-    
-    model_name = 'projectmodel'
-    data_dir = './data/'
-    models_dir = './models/'
-    
-    hyperparams = {
-        'lr': 0.003, 
-        'epochs': 1, 
-        'batch_size': 64,
-        'optimizer': 'Adam',            # options: Adam, SGD
-        'loss': 'NLLLoss',              # options: NLLLoss, CrossEntropyLoss
-        'pretrained_model': 'resnet50', # options: resnet50, vgg16
-        'freeze_pretrained_model': True,# options: True, False
-        'train_transforms': 'default',  # options: default
-        'valid_transforms': 'default',  # options: default
-        'test_transforms': 'default'    # options: default
-    }
-
-    MLADHD = MLADHD(model_name, data_dir, models_dir, hyperparams)
-    MLADHD.load_split_dataset((0.8, 0.1, 0.1))
-    MLADHD.create_model()
-    MLADHD.train_model()
-    loss, accuracy = MLADHD.test_model()
-    print(loss, accuracy)
-
-def main2():
-    """
-    Example of how to use the functions in this module loading
-    FROM OUR PRETRAINED MODEL
-    """
-
-    data_dir = './data/'
-    models_dir = './models/'
-    pretrained_model = 'projectmodel_resnet50_2020-05-05_16-00-00.pth'
-    hyperparams = 'projectmodel_resnet50_2020-05-05_16-00-00.json'
-    
-    model_name = pretrained_model.split('_')[0]
-
-    print("Loading hyperparams...")
-    with open(hyperparams, 'r') as fp:
-        hyperparams = json.load(fp)
-    
-    # when loading a pretrained model, the date is updated to the current date
-    # so that the model is not overwritten (see __init__)
-    MLADHD = MLADHD(model_name, data_dir, models_dir, hyperparams)
-
-    print("Loading model...")
-    MLADHD.model = torch.load(models_dir+pretrained_model)
-
-    MLADHD.load_split_dataset()
-    loss, accuracy = MLADHD.test_model()
-    print(loss, accuracy)
