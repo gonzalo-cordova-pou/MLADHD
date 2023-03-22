@@ -30,8 +30,9 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 1. [New updates](#new-updates)
 2. [Data](#data)
 3. [Experiment guide](#experiment-guide)
-4. [Installation](#installation)
-5. [Related Work](#related-work)
+4. [Experiment tracking](#experiment-tracking)
+5. [Wrong predictions analysis](#wrong-predictions-analysis)
+6. [Related Work](#related-work)
 ---
 
 ## New updates
@@ -54,10 +55,10 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - Data is now stored in the shared folder in Google Drive.
 - Screenshots should be full screen (size to be defined: e.g. 1280 x 720) and saved in JPG format using always the same format.
 - The data is divided in 2 classes for now:
-    - Work
+    - Focused
         - Ideas: Word, Excel, PowerPoint, Google Docs, Google Slides, Google Sheets, PDF, Google Drive, Coding, Microsoft Teams, Google Classroom, Google Translate, Calendar, Prezi, Edmodo, Wikipedia, Mentimeter, Miro, Moodle, Canvas [More ideas link](https://www.toptools4learning.com/)
             - Educational apps that look like games (Ideas: Scratch, Kahoot, Duolingo, Khan Academy, Socrative)
-    - Not Work
+    - Distracted
         - Ideas: online shopping, news, Twitter, Facebook, Google Photos, Google Maps, Reddit, Pinterest, TikTok, Instagram, Streaming (Netflix, Prime Video, Disney+...)
             - Gaming (Ideas: Minecraft, Solitaire, Minesweeper, Agar.io, Slither.io, LoL, CSGO, Dino Game, online gamming platforms like Friv, Age of Empires, Epic Games, Steam, Akinator, Quick Draw, Catan Universe, Sudoku, Pacman, Wordle, Geoguessr, Freeciv-Web, War Brokers, Powerline.io, Skribbl, Diep.io. [More ideas Link](https://beebom.com/browser-games/))
 - Potential classes that may cause problems:
@@ -109,39 +110,34 @@ However, as with any application of Deep Learning for Computer Vision, it is sti
     - Performance metrics analysis
     - Wrong output analysis
 
-## Installation
+## Experiment tracking
 
-It is recommended to use a virtual environment to avoid problems with libraries and dependencies. It is also important to agree on a Python version.
+We decided to use [mlflow](https://mlflow.org/) to track our experiments. You can read the official documentation [here](https://mlflow.org/docs/latest/tracking.html).
 
-For Linux and MacOS:
+## Wrong predictions analysis
 
-```bash
-pip install virtualenv # if not installed
-python3 -m venv /path/to/new/virtual/environment
-source venv/bin/activate
-deactivate # to deactivate the virtual environment
-```
+In this section we will analyze the wrong predictions made by the model. We will try to understand why the model made the wrong prediction and try to improve the model.
 
-For Windows:
+- **Experiment 1**
+    - **Model**: test_newData_resnet50_2023-03-08_16-51-52
+    - **Dataset**: 2219 images (66.79% focused, 33.21% distracted)
+    - **Training**: 1553 images
+    - **Validation**: 221 images
+    - **Testing**: 200 images
+    - **Results**:
+        - **Accuracy**: 0.99
+        - **Precision**: 0.99
+        - **Recall**: 0.99
+        - **F1**: 0.99
+    - **Wrong predictions for the full dataset**:
+        - 6 focused images classified as distracted
+        - 2 distracted images classified as focused
 
-```bash
-pip install virtualenv # if not installed
-virtualenv myenv # create a virtual environment in the current directory
-myenv\Scripts\activate
-deactivate # to deactivate the virtual environment
-```
+Interesting cases:
 
-Install the required libraries:
+- work_Genetics_partial_767.jpg and work_Literature_one_811.jpg: The model classified these images as distracted because it is a screenshot of the desktop + the OBS window. For a human, it is not clear if the person is focused or distracted. The model predicts distracted, but the probability () shows that the decision is not very clear.
 
-```bash
-pip install -r requirements.txt
-```
-
-Add required libraries to requirements.txt:
-
-```bash
-pip freeze > requirements.txt
-```
+- work_Genetics_partial_789.jpg: in this case we see a divided screen. One side is focused (the person is reading a document in WordPad) and the other side could be considered distracted (you can see gossip news in the browser). The model predicts distracted, but the probability () shows that the decision is not very clear.
 
 ## Related Work
 
