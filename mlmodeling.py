@@ -353,7 +353,7 @@ class MLADHD():
         mlflow.log_metric("test_f1", self.test_f1)
         print("Test: Loss: {:.4f}, Accuracy: {:.4f}%, Precision: {:.4f}%, Recall: {:.4f}%, F1 Score: {:.4f}%".format(self.test_loss, self.test_acc*100, self.test_precision*100, self.test_recall*100, self.test_f1*100))
         # Plot the confusion matrix
-        plot_confusion_matrix(y_true, y_pred)
+        self.plot_confusion_matrix(y_true, y_pred)
 
     def predict(self, image_path):
         """
@@ -417,11 +417,13 @@ class MLADHD():
         self.model = torch.load(model_path)
         print("Model loaded from: ", model_path)
 
-def plot_confusion_matrix(y_true, y_pred, cmap=plt.cm.Blues):
-    cm = confusion_matrix(y_true, y_pred)
-    plt.figure(figsize=(10,10))
-    sns.heatmap(cm, annot=True, fmt="g", cmap=cmap)
-    plt.title("Confusion Matrix")
-    plt.ylabel("True Labels")
-    plt.xlabel("Predicted Labels")
-    plt.show()
+    def plot_confusion_matrix(self, y_true, y_pred, cmap=plt.cm.Blues):
+        cm = confusion_matrix(y_true, y_pred)
+        plt.figure(figsize=(10,10))
+        sns.heatmap(cm, annot=True, fmt="g", cmap=cmap)
+        plt.title("Confusion Matrix")
+        plt.ylabel("True Labels")
+        plt.xlabel("Predicted Labels")
+        # Log the confusion matrix to mlflow
+        mlflow.log_figure(plt.gcf(), "confusion_matrix.png")
+        plt.show()
