@@ -5,6 +5,12 @@
 # Jupyter Notebook
 .ipynb_checkpoints
 
+# MLflow
+mlruns/
+
+# Visual Studio
+.vs/
+
 # Environments
 .env
 .venv
