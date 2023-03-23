@@ -16,7 +16,8 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - [X] Mount data in Google Colab from Google Drive
     - [X] Clone repo in Google Colab
     - [X] Set hyperparameters as global variables
-    - [ ] Implement ML tracking tool (suggestion: MLFlow or WandB)
+    - [X] Implement ML tracking tool (suggestion: MLFlow or WandB)
+    - [X] Set up GPU (cuda) local training
     - [ ] Energy Consumption Tracker [NVIDIA System Management Interface program](https://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf)
     - [X] Add new metrics: Precision and F1-Score
 - [X] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
@@ -49,6 +50,11 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
     - A one image prediction
     - N random images prediction
     - Wrong predictions analysis
+- **[23 Mar 2023]** The (`Experiment.ipynb`) notebook has been forked to two versions:
+    - (`Experiment_colab.ipynb`) For training in Google Colab (+ Drive) enviroment.
+    - (`Experiment_local.ipynb`) For training in Local (+ Local storage) enviroment.\
+    **ML Tracking system** is up and running in local enviroment.\
+    **GPU is available** for use in local enviroment (empirical boost on speed shown).
 
 ## Data
 
