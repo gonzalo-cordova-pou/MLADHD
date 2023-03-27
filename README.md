@@ -18,7 +18,7 @@ This repository contains the code for the project "Machine Learning for ADHD" at
     - [X] Set hyperparameters as global variables
     - [X] Implement ML tracking tool (suggestion: MLFlow or WandB)
     - [X] Set up GPU (cuda) local training
-    - [ ] Energy Consumption Tracker [NVIDIA System Management Interface program](https://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf)
+    - [X] Energy Consumption Tracker ~[NVIDIA System Management Interface program](https://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf)~ using [CodeCarbon](https://github.com/mlco2/codecarbon)
     - [X] Add new metrics: Precision and F1-Score
 - [X] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
 - [X] Create a notebook for wrong output analysis
@@ -55,6 +55,8 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
     - (`Experiment_local.ipynb`) For training in Local (+ Local storage) enviroment.\
     **ML Tracking system** is up and running in local enviroment.\
     **GPU is available** for use in local enviroment (empirical boost on speed shown).
+- **[27 Mar 2023]** New dataset with +92% samples.
+- **[27 Mar 2023]** CO2 Emission tracker implemented.
 
 ## Data
 
