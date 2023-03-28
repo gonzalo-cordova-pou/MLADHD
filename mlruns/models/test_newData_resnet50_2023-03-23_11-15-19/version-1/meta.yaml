@@ -1,0 +1,12 @@
+creation_timestamp: 1679584791998
+current_stage: None
+description: null
+last_updated_timestamp: 1679584791998
+name: test_newData_resnet50_2023-03-23_11-15-19
+run_id: 0eae635120f04589b11da257a5a42af4
+run_link: null
+source: file:///E:/mladhd/MLADHD/mlruns/171971568197065632/0eae635120f04589b11da257a5a42af4/artifacts/models
+status: READY
+status_message: null
+user_id: null
+version: 1

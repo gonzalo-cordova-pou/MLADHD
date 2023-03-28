@@ -1,0 +1,12 @@
+creation_timestamp: 1679942667134
+current_stage: None
+description: null
+last_updated_timestamp: 1679942667134
+name: model_with_extended_dataset_resnet50_2023-03-27_13-23-33
+run_id: 2c511cad42dd46c9951883ce87a939e5
+run_link: null
+source: file:///E:/mladhd/MLADHD/mlruns/171971568197065632/2c511cad42dd46c9951883ce87a939e5/artifacts/models
+status: READY
+status_message: null
+user_id: null
+version: 1
