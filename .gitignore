@@ -6,7 +6,10 @@
 .ipynb_checkpoints
 
 # MLflow
-mlruns/
+# mlruns/
+
+# Models
+./mlruns/*/*/artifacts/models/
 
 # Visual Studio
 .vs/
@@ -19,3 +22,5 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+
