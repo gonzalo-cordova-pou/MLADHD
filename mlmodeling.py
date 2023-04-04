@@ -6,6 +6,7 @@ from torch import nn, optim
 from torchvision import datasets, transforms
 from torch.utils.data import sampler, DataLoader
 from sklearn.metrics import precision_recall_fscore_support, confusion_matrix
+from codecarbon import EmissionsTracker
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
