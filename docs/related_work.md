@@ -9,6 +9,8 @@
 - [Article 5](#article-5) Text Extraction from Smartphone Screenshots to Archive in situ
 Media Behavior
 - [Article 6](#article-6) Understanding Screen Relationships from Screenshots of Smartphone Applications
+- [Article 7](#article-7) Time for the human screenome project. Nature, 577(7790), 314-317.
+- [Article 8](#article-8) The Fragmentation of Work, Entertainment, E-Mail, and News on a Personal Computer: Motivational Predictors of Switching Between Media Content
 
 ### Article 1
 #### **CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems.**
@@ -399,24 +401,64 @@ Results associated with the application of the marginal noise removal heuristic 
 University
 **Keywords:** user interface similarity, ui modeling, ui semantics
 **Abstract:** The text describes the challenge of identifying and understanding different screens in a graphical user interface and the type of changes that occur on them, which is useful for tasks such as automatic app crawling and large-scale app dataset analysis. The paper proposes two machine learning models: a screen similarity model that combines a UI object detector with a transformer model architecture, and a screen transition model that uses a siamese network architecture to identify similarity and events such as keyboards or dialog boxes appearing or disappearing. The models achieve high accuracy in identifying and understanding screens and transitions, improving on comparable baselines.
+
+### Article 7
+#### **Time for the Human Screenome Project**
+
+[Link to the article](https://www.nature.com/articles/d41586-020-00032-5)
+
+**Authors:** Reeves, B., Robinson, T., & Ram, N. (2020)\
+**Context:** Cited by: 4; Institution: Apple, Stony Brook University,  Carnegie Mellon
+University
 **Takeaways:**
-- The text describes the challenge of identifying and understanding different screens in a graphical user interface and the type of changes that occur on them, which is useful for tasks such as automatic app crawling and large-scale app dataset analysis. The paper proposes two machine learning models: a screen similarity model that combines a UI object detector with a transformer model architecture, and a screen transition model that uses a siamese network architecture to identify similarity and events such as keyboards or dialog boxes appearing or disappearing. The models achieve high accuracy in identifying and understanding screens and transitions, improving on comparable baselines.
+- "Most use self-reports of ‘screen time’. These are people’s own estimates of the time they spend engaging with screens or with platforms that are categorized as ‘smartphone’, ’television’, ‘social media’, ‘political news’ or ‘entertainment media’. Yet today’s media experiences defy such simplistic characterization: the range of content has become too broad, patterns of consumption too fragmented1, information diets too idiosyncratic2, experiences too interactive and devices too mobile."
+- "We call for a Human Screenome Project — a collective effort to produce and analyse recordings of everything people see and do on their screens."
+- Problems with previous methods (responses to interviews or questionnaires about how long people had spent on social media, say, the previous day.):
+   - time spent on Facebook’ could involve finding out what your friends are doing, attending a business meeting, shopping, fundraising, reading a news article, bullying, even stalking someone. These are vastly different activities that are likely to have very different effects on a person’s health and behaviour.
+   - Another problem is that people are unlikely to recollect exactly when they did what4,5. Recent studies that compared survey responses with computer logs of behaviour indicate that people both under- and over-report media exposure — often by as much as several hours per day6–8. In today’s complex media environment, survey questions about the past month or even the past day might be almost useless. How many times did you look at your phone yesterday?
+   - :star: "In any one screenome, screenshots are the fundamental unit of media use. But **the particular pieces or features of the screenome that will be most valuable will depend on the question posed** — as is true for other ‘omes’. If the concern is possible addiction to mobile devices, then arousal responses (detected by a change in heart rate, say) associated with the first screen experienced during a session might be important to measure. If the concern is the extent to which social relationships dictate how political news is evaluated, then the screenshots that exist between ‘social’ and ‘political’ fragments in the screenome sequence might be the crucial data to analyse. (News items flagged by a close friend might be perceived as more trustworthy than the same news obtained independently, for example.)"
+
+### Article 8
+#### **The Fragmentation of Work, Entertainment, E-Mail, and News on a Personal Computer: Motivational Predictors of Switching Between Media Content**
+
+[Link to the article](https://www.tandfonline.com/doi/full/10.1080/15213269.2017.1406805)
+
+**Authors:** Leo Yeykelisa, James J. Cummingsb, and Byron Reeves \
+**Context:** Cited by: 24; Institutions: Alphanet. Boston University, Stanford University; Journal: Journal of Media Psychology
+**Abstract:** Personal computers allow multitasking among a greater varietyof content than has ever been possible on a single device. Welogged all switches made for 4 days for 30 people on personalcomputers used in natural environments. The median timebefore a switch occurred was 11 sec, shorter than previouslyobserved. We also measured individual differences in appeti-tive versus defensive motivations to switch.
+**Takeaways:**
+- One field study (Yeykelis, Cummings, & Reeves,2014)showed that individuals switched frequently between content on a laptopcomputer, with the median length of a content segment only 19 sec. Thatstudy used novel custom-designed software to log computer use by unobtru-sively taking screenshots every 5 sec as participants used their laptops innatural environments. One other study (Mark, Wang, & Niiya,2014)reported  similar  findings,  although  slightly  longer  segment  lengths(M= 47.9 sec). These were the first field studies to report precise timingfor switches between content on a personal computer
+- **Data collection**: Two custom software programs were developed and installed onparticipants’laptops for the 4-day duration of the study.
+  1. The first was acontext-aware sampling aid developed in the form of a web browser add-on. As participants used their browser, the add-on tracked and logged unique web site domain URL switches unobtrusively in the background
+  2. The second software program unobtrusively recorded laptop screen content by taking a screenshot every 5 sec. 
+  
+  - **Taskcontent** Media experience was split into online and offline content. For analysis, both online and offline content types were then aggregated into larger categories of media content, as follows:
+    - Entertainment—e.g., television, music, movies, games, blogs, tabloids,video sites such as Netflix, Hulu, YouTube;
+    - Work—applications such as word processing, spreadsheet, and slidepresentation software; school-related web sites and homework; referencematerials; specialized web sites and apps for job functions;
+    - E-mail—web and application based e-mail application
+    - Services—service-related web sites and apps, e.g., search engines, doc-tor’s appointment web sites, food delivery forms;
+    - News—newspaper web sites (e.g.,NY Times, Huffington Post), televisionnews broadcasts, industry-related news blogs; and
+    - Other—content that does not fall into any of the aforementioned cate-gories, such as blank open tabs, folder navigation, settings dialogs, andsystem prompts.
+   - To this end, online content was coded automatically as the URLfor that content, while offline content was coded manually. Offline contentwas coded by a team of research assistants based on an established codebookof content types. explicit heuristic cues as to which offline program is indeedtargeted or in current use (e.g., application name listed in menu bar at thetop of the screen)
     
 ## Other references
+
+:mag_right: -> References that will be mentioned in the article, but not necessarily analyzed in detail.
+:white_check_mark: -> References that have already been analyzed in detail.
 
 
 1. T. Kekec, R. Emonet,E. Fromont,A. Tremeau,and C. Wolf ”**Contextually Constrained Deep Networks for Scene Labeling**”. [http://www.bmva.org/ bmvc/2014/files/paper032.pdf]
 2. B. Zhou, A. Lapedriza, J. Xiao, A. Torralba, and A. Oliva. ”Learning Deep **Features for Scene Recognition** using Places Database.” Advances in Neural Information Processing Systems 27 (NIPS), 2014 [http: //places.csail.mit.edu/]
 3. A. Krizhevsky,I. Sutskevar, G. Hinton. **ImageNet Classification with Deep Convolutional Neural Networks**. Advances in Neural Information Processing Systems 25 (NIPS) 2012 [http://papers.nips.cc/paper/ 4824-imagenet-classification-with-deep-convolutpdf]
 4. J. Long,E. Shelhamer, and T. Darell. **Fully Convolutional Networks for Semantic Segmentation**.[http: //arxiv.org/pdf/1411.4038v1.pdf]
-5. **Canny edge detection** (OpenCV) http://opencv-python-tutroals. readthedocs.org/en/latest/py_ tutorials/py_imgproc/py_canny/py_ canny.html
-6. M. D. Zeiler and R. Fergus. ”Visualizing and Understanding Convolutional Networks. [http:// arxiv.org/pdf/1311.2901v3.pdf]
-7. Chiatti, A., Yang, X., Brinberg, M., Cho, M. J., Gagneja, A., Ram, N., … Giles, C. L. (2017). Text extraction from smartphone screenshots to archive in situ media behavior. Proceedings of the Ninth International Conference on Knowledge Capture, Austin, TX. ACM.. [Crossref], [Google Scholar]
+5. :mag_right: **Canny edge detection** (OpenCV) http://opencv-python-tutroals. readthedocs.org/en/latest/py_ tutorials/py_imgproc/py_canny/py_ canny.html
+6. :mag_right: M. D. Zeiler and R. Fergus. ”Visualizing and Understanding Convolutional Networks. [http:// arxiv.org/pdf/1311.2901v3.pdf]
+7. :white_check_mark: Chiatti, A., Yang, X., Brinberg, M., Cho, M. J., Gagneja, A., Ram, N., … Giles, C. L. (2017). Text extraction from smartphone screenshots to archive in situ media behavior. Proceedings of the Ninth International Conference on Knowledge Capture, Austin, TX. ACM.. [Crossref], [Google Scholar]
 8. Chittaranjan, G., Blom, J., & Gatica-Perez, D. (2013). Mining large-scale smartphone data for personality studies. Personal and Ubiquitous Computing, 17(3), 433–450. doi:10.1007/s00779-011-0490-1 [Crossref], [Web of Science ®], [Google Scholar]
 9. Brown, J. S. (2000). Growing up: Digital: How the web changes work, education, and the ways people learn. Change: the Magazine of Higher Learning, 32(2), 11–20. doi:10.1080/00091380009601719 [Taylor & Francis Online], [Google Scholar]
 10. Breuel, T. M. (2008). The OCRopus open source OCR system. In Proc. SPIE 6815, document recognition and retrieval XV (Vol. 6815, pp. 68150F1–68150F15). Bellingham, WA: International Society for Photonics and Electronics. [Crossref], [Google Scholar]
 11. Vogelsang, Andreas, and Markus Borg. "Requirements engineering for machine learning: Perspectives from data scientists." 2019 IEEE 27th International Requirements Engineering Conference Workshops (REW). IEEE, 2019.
-12. Reeves, Byron, Thomas Robinson, and Nilam Ram. "Time for the human screenome project." Nature 577.7790 (2020): 314-317.
+12. :white_check_mark: Reeves, Byron, Thomas Robinson, and Nilam Ram. "Time for the human screenome project." Nature 577.7790 (2020): 314-317.
 13. Suatap, Chayanin, and Karn Patanukhom. "Game genre classification from icon and screenshot images using convolutional neural networks." Proceedings of the 2019 2nd Artificial Intelligence and Cloud Computing Conference. 2019.
 14. :white_check_mark: Ram, Nilam, et al. "Screenomics: A new approach for observing and studying individuals’ digital lives." Journal of Adolescent Research 35.1 (2020): 16-50.
 15. :white_check_mark: Reeves, Byron, et al. "Screenomics: A framework to capture and analyze personal life experiences and the ways that technology shapes them." Human–Computer Interaction 36.2 (2021): 150-201.
@@ -435,7 +477,7 @@ University
 28. Tossell, C., Kortum, P., Rahmati, A., Shepard, C., & Zhong, L. (2012, May). Characterizing web use on smartphones. In Proceedings of the SIGCHI conference on human factors in computing systems, Austin, TX (pp. 2769–2778). ACM. [Crossref], [Google Scholar]
 29. Wang, R., Chen, F., Chen, Z., Li, T., Harari, G., Tignor, S., … Campbell, A. T. (2014, September). StudentLife: Assessing mental health, academic performance and behavioral trends of college students using smartphones. Proceedings of the 2014 ACM international joint conference on pervasive and ubiquitous computing, Seattle, WA (pp. 3–14). ACM. [Crossref], [Google Scholar]
 30. Yeykelis, L., Cummings, J. J., & Reeves, B. (2014). Multitasking on a single device: Arousal and the frequency, anticipation, and prediction of switching between media content on a computer. Journal of Communication, 64(1), 167–192. doi:10.1111/jcom.12070 [Crossref], [PubMed], [Web of Science ®], [Google Scholar]
-31. Yeykelis, L., Cummings, J. J., & Reeves, B. (2018). The fragmentation of work, entertainment, E-Mail, and news on a personal computer: Motivational predictors of switching between media content. Media Psychology, 21(3), 377–402. doi:10.1080/15213269.2017.1406805 [Taylor & Francis Online], [Web of Science ®], [Google Scholar]
+31. :white_check_mark: Yeykelis, L., Cummings, J. J., & Reeves, B. (2018). The fragmentation of work, entertainment, E-Mail, and news on a personal computer: Motivational predictors of switching between media content. Media Psychology, 21(3), 377–402. doi:10.1080/15213269.2017.1406805 [Taylor & Francis Online], [Web of Science ®], [Google Scholar]
 32. Chiatti, Agnese. "Information Extraction and Retrieval from Digital Screenshots–Archiving in situ Media Behavior." (2019).
 33. Suatap, Chayanin, and Karn Patanukhom. "Development of Convolutional Neural Networks for Analyzing Game Icon and Screenshot Images." International Journal of Pattern Recognition and Artificial Intelligence 36.14 (2022): 2254023.
 34. Muise, Daniel, et al. "Selectively localized: Temporal and visual structure of smartphone screen activity across media environments." Mobile Media & Communication 10.3 (2022): 487-509.
@@ -458,3 +500,5 @@ interface software and technology. ACM, 183–192
 45. R. Smith. 2007. An overview of the Tesseract OCR engine. In Document Analysis
 and Recognition, 2007. ICDAR 2007. Ninth International Conference on, Vol. 2. IEEE,
 629–633.
+46. Naab, Teresa K., Veronika Karnowski, and Daniela Schlütz. "Reporting mobile social media use: How survey and experience sampling measures differ." Communication Methods and Measures 13.2 (2019): 126-147.
+47. Yeykelis, L., Cummings, J. J., & Reeves, B. (2018). The fragmentation of work, entertainment, E-Mail, and news on a personal computer: Motivational predictors of switching between media content. Media psychology, 21(3), 377-402.
