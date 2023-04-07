@@ -7,8 +7,10 @@
 - [Article 3](#article-3) Understanding Screen Relationships from Screenshots of Smartphone Applications
 - :star: [Article 4](#article-4) Screenomics: A New Approach for Observing and Studying Individuals’ Digital Lives
 - :star: [Article 5](#article-5) Screenomics: A Framework to Capture and AnalyzePersonal Life Experiences and the Ways thatTechnology Shapes Them 
+- [Article 6](#article-6) Text Extraction from Smartphone Screenshots to Archive in situ
+Media Behavior
 
-## Article 1
+### Article 1
 
 [Link to the article](http://cs231n.stanford.edu/reports/2015/pdfs/anand_avery_final.pdf)
 
@@ -35,7 +37,7 @@
 
 
 
-## Article 2 
+### Article 2 
 **(in progress...)**
 
 [Link to the article](https://arxiv.org/pdf/1805.07964.pdf)
@@ -81,7 +83,7 @@
 
 **Conclusion:**
 
-## Article 4
+### Article 4
 
 [Link to the article](https://journals.sagepub.com/doi/pdf/10.1177/0743558419883362)
 **Title:** Screenomics: A New Approach for Observing and Studying Individuals’ Digital Lives\
@@ -240,7 +242,7 @@ staff. Our protocols underscore that the richness of the data come with social
 responsibility for protection of the data contributors.
 <br>
 
-## Article 5
+### Article 5
 
 [Link to the article](https://www.tandfonline.com/doi/full/10.1080/07370024.2019.1578652)
 **Title:** Screenomics: A Framework to Capture and Analyze Personal Life Experiences and the Ways that Technology Shapes Them\
@@ -264,6 +266,99 @@ responsibility for protection of the data contributors.
     - Time-Scales: All of the screenomes reported here were constructed using screenshots takenat 5-s intervals. That interval, which is considerably faster than many experiencesampling techniques used in research, was only a first attempt to define the bestsampling frequency. The switching time results (Section 5.1) suggest using evenshorter intervals. Indeed, with 5-s intervals, we are only able to model behaviorsmanifesting at a ten-second time-scale. Screenshots taken every one or 2 s couldbetter characterize, for example, quick switches between sending and receipt ofScreenomics189messages in a synchronous text exchange or observations of how swiping orpinching content accelerates and decelerates across context and time.
 - :star: **Use of the Screenome for Interventions**: One promising future use of the system and approach presented here is theability to“interact”with an individual’s screenome and to deliver interventions thatalter how people think, learn, feel and behave. This may help realize the promise ofprecision interventions to preempt or treat unwanted thoughts, emotions or beha-viors, and to promote desirable ones. Delivering the right intervention to the rightperson at the right time and in the right context with the lowest risks of adverse sideeffects could close the loop between feedback and optimization in real time. Someof the most exciting potentials for precision interventions are in health. Many healthparameters are dynamic, in that they change and vary over time (e.g., bloodpressure). The screenome may allow researchers to identify causal relations ata timescale that matches the speed at which symptoms and diseases actually vary.
 - **Privacy**: ... The screenome project collected data using strict privacy protocols and the data are securely stored and viewed only by trained staff in the lab. However, some people declined to participate due to concerns about privacy, particularly regarding text messages. Two-thirds of people accepted participation, higher than previous research, but additional research is needed to address privacy issues. The screenome framework is suggested as a new way to study human behavior and technology's impact, and data transfer risks can be reduced through local analysis and transferring only summary results.
+
+### Article 6
+
+[Link to the article](https://dl.acm.org/doi/10.1145/3148011.3154468)
+
+**Title:** Text Extraction from Smartphone Screenshots to Archive in situ Media Behavior\
+**Authors:** Agnese Chiatti, Xiao Yang, Miriam Brinberg, Mu Jung Cho, Anupriya Gagneja, Nilam Ram, Byron Reeves, C. Lee Giles\
+**Keywords:** information extraction, image processing, OCR, Information systems → Digital libraries and archives; Applied computing → Optical character recognition; • Computing
+methodologies → Image processing;
+\
+**Abstract:** This paper introduced the findings and implications raised by exploiting an experimental workflow for text extraction from smartphone screenshots based on OpenCV image-processing and Tesseract OCR modules.\
+**Takeaways:**
+* Smartphone screenshots offer the opportunity to:
+   1. Gather data sources that are traditionallyassessed separately (e.g., analyzing only data coming from a particular social media app).
+   2. Explore context and interdependence of behavior and their evolution over time.
+   3. Test theory, with respect to whether and how media behavior and digital technologies mutually shape one another. The described scenario suggests the need for unobtrusive methods to sample media experience at the scale of seconds. 
+* The novelty of high velocity screen capture poses some unique challenges:
+   1. Text extraction from heterogeneous natural scene images is known to be a much harder problem [10], due to the higher occurrence o "scene text" over "graphic text" [11].
+   2. Information Extraction from digital screenshots requires developing a general purpose framework managing unpredictable and rapidly-evolving mixtures of both graphic text and scene text. Screen layouts often include natural scenes carrying textual contents as well as embedded blocks of graphic text (e.g. videos are streamed on the screen while the associated user comments are visible below).
+   3. Screenshot processing must generalize to a variety of fonts and effectively disambiguate icons from purely textual glyphs.
+* Background:
+   - Text in imagery can generally be characterized as either machineprinted (graphic) orscene text, i.e. captured within natural scenes[11]. Text Information Extraction [11], in both cases, seeks to identify, localize and ultimately recognize the textual content carried by image data. Even though Text Detection and Optical Character
+Recognition (OCR) have reached optimal performance on scanned
+documents and are sometimes perceived as "solved" problems, many
+hurdles related to other classes of images are still under active exploration [11], specifically with respect to natural scene images,
+ancient manuscripts, and handwritten pieces [9, 10]. While scanned
+document accuracy typically exceeds 99%, state-of-the-art method
+recognition rates drop to a significantly lower range (i.e., near 60
+%) when applied to degraded or more complex images [11].
+- Further, smartphone screenshots present
+a valuable case study on hybrid scenarios, mixing "graphic text"
+and "scene text" in varying proportions over time, making OCR
+evaluation a worthwhile exploration per se. While text orientation
+and luminance conditions can be assumed as relatively stationary
+compared to natural scenes, other challenges (e.g. alignment of
+icons and text, variability of fonts and templates) are predominant
+issues in this case[11]. The need for high quality text as a key unit
+of analysis for studies of media behavior and "just-in-time" health
+interventions motivates the testing and evaluation of state-of-theart Image Processing and OCR techniques on screenshot image
+- **Dataset**: Mention privacy, number of participants, demographics, number of total screenshots, frequency of screenshots, OS, method of screenshotting, software, device, etc.
+- **Image Pre-preprocessing:** To obtain high quality extracted text, we setup a pipeline, built
+on top of the OpenCV library [2], to facilitate the recognition of
+textual content from the background.
+   1. **Conversion to grayscale:** All of the screenshot images were first
+converted from RGB to gray scale in preparation for the binarization
+step.
+   2. **Binarization:** Binarization methods were conceived for parsing
+the grayscale images to their binary (i.e., black and white) counterpart. Thresholds to categorize pixels as either black or white can be
+applied at a global or local scale respectively, based on whether the
+cutoff remains constant or adapts to the local illumination conditions throughout the image. We could assume uniform luminance
+relative to each screenshot and thus adopted a hybrid approach
+by combining simple inverse thresholding with Otsu’s binarization. We also assumed that text orientation was predominantly
+horizontal, supporting the avoidance of skew estimation procedures, to leverage quality with computational complexity and time
+optimization.
+   3. **Segmentation:** This step identified rectangular bounding boxes
+wrapping the textual content of the images, using a Connected
+Component based approach [7]. This procedure:
+      - Dilated the white pixels to create more organic white regions
+      - Detected the uniform regions
+      - Drew a rectangle around the identified area.
+   
+   :star: To limit the identification of duplicated regions (i.e., when a smaller rectangle was completely enclosed in a larger area), an additional
+check was performed to take only the outermost rectangles into
+account. However, overlapping rectangles could still be present
+(Figure 1c), leading to partially duplicated text, as each bounding
+box was fed individually to the OCR engine.
+ - **OCR:** each segmented region was passed to the
+OCR engine, based on the Python wrapper for Tesseract. Tesseract
+recognizes text in a "two-pass process" that employs backtracking
+to improve the quality of the adaptive classifier’s output [6].  First,
+recognition is tackled one word at a time. Second, after preliminary
+evaluation, part of the words are used to train the adaptive classifier.
+We show the results obtained by exploiting Tesseract v. 4.0 (alpha)
+for OCR. This release introduced an LSTM-based line recognition
+module within the former Tesseract routines. The OCR architecture (pre-trained on approximately 4500 fonts) was adopted as-is,
+without fine-tuning on our specific data. For each screenshot, we
+obtain a Unicode text file formatted for easy comparison with the
+reference data.
+- **Ground Truth Data Collection:** dealing with highly sensitive data, we developed a solution that
+combined a customized open-source localturk tool [8] and three
+human annotators trained in human subjects research and confidentiality
+- **Extracted Text Evaluation:** Metrics for the evaluation: WER, CER, PER. To record these three metrics, we used the ocrevalUAtion open source tool [1], which also provide aligned bitext comparison for
+each document match.
+- **Results:**
+   ![Comparison of Tesseract 4 extracted text accuracy before and after integration with the Image Pre-processing module.
+Results associated with the application of the marginal noise removal heuristic are listed separately.](./OCR_Tesseract_Results.png)
+   - **Error Analysis:** Overall, the most prominent errors found seem associated with:
+      1. the presence of mixed icons and text
+      2. the presence of peculiar fonts
+      3. the text color blended with background colors
+      4. the partially overlapping segmented regions leading to duplicated recognition of characters (e.g. Figure 1c)
+      5. the human error inherent in the transcription loop.
+
     
 ## Other references
 
@@ -281,8 +376,8 @@ responsibility for protection of the data contributors.
 11. Vogelsang, Andreas, and Markus Borg. "Requirements engineering for machine learning: Perspectives from data scientists." 2019 IEEE 27th International Requirements Engineering Conference Workshops (REW). IEEE, 2019.
 12. Reeves, Byron, Thomas Robinson, and Nilam Ram. "Time for the human screenome project." Nature 577.7790 (2020): 314-317.
 13. Suatap, Chayanin, and Karn Patanukhom. "Game genre classification from icon and screenshot images using convolutional neural networks." Proceedings of the 2019 2nd Artificial Intelligence and Cloud Computing Conference. 2019.
-14. Ram, Nilam, et al. "Screenomics: A new approach for observing and studying individuals’ digital lives." Journal of Adolescent Research 35.1 (2020): 16-50.
-15. Reeves, Byron, et al. "Screenomics: A framework to capture and analyze personal life experiences and the ways that technology shapes them." Human–Computer Interaction 36.2 (2021): 150-201.
+14. :white_check_mark: Ram, Nilam, et al. "Screenomics: A new approach for observing and studying individuals’ digital lives." Journal of Adolescent Research 35.1 (2020): 16-50.
+15. :white_check_mark: Reeves, Byron, et al. "Screenomics: A framework to capture and analyze personal life experiences and the ways that technology shapes them." Human–Computer Interaction 36.2 (2021): 150-201.
 16. Abdali, Sara, et al. "Identifying Misinformation from Website Screenshots." Proceedings of the International AAAI Conference on Web and Social Media. Vol. 15. 2021.
 17. Cockburn, A., & McKenzie, B. (2001). What do web users do? An empirical analysis of web use. International Journal of Human-Computer Studies, 54(6), 903–922. doi:10.1006/ijhc.2001.0459 [Crossref], [Web of Science ®], [Google Scholar]
 18. Culjak, I., Abram, D., Pribanic, T., Dzapo, H., & Cifrek, M. (2012, May). A brief introduction to OpenCV. MIPRO, 2012 Proceedings of the 35th international convention, Opatija, Croatia, 2012 (pp. 1725–1730). IEEE. [Google Scholar]
@@ -308,3 +403,16 @@ responsibility for protection of the data contributors.
 38. Alahmadi, Mohammad, Abdulkarim Malkadi, and Sonia Haiduc. "UI screens identification and extraction from mobile programming screencasts." Proceedings of the 28th International Conference on Program Comprehension. 2020.
 39. Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., ... & Chintala, S. (2019). Pytorch: An imperative style, high-performance deep learning library. Advances in neural information processing systems, 32.
 40. Meyer, A. N., Satterfield, C., Züger, M., Kevic, K., Murphy, G. C., Zimmermann, T., & Fritz, T. (2020). Detecting developers’ task switches and types. IEEE Transactions on Software Engineering, 48(1), 225-240.
+41. Ye, Qixiang, and David Doermann. "Text detection and recognition in imagery: A survey." IEEE transactions on pattern analysis and machine intelligence 37.7 (2014): 1480-1500.
+42. T. Wang, D. J. Wu, A. Coates, and A. Y. Ng. 2012. End-to-end text recognition with
+convolutional neural networks. In Proceedings of the 21ist International Conference
+on Pattern Recognition (ICPR’12). IEEE, 3304–3308.
+43. X. Yang, D. He, Z. Zhou, D. Kifer, and C. L. Giles. 2017. Learning to Read Irregular
+Text with Attention Mechanisms. In Proceedings of the Twenty-Sixth International
+Joint Conference on Artificial Intelligence, IJCAI-17. 3280–3286.
+44. T. Yeh, T. Chang, and R. C. Miller. 2009. Sikuli: using GUI screenshots for search
+and automation. In Proceedings of the 22nd annual ACM symposium on User
+interface software and technology. ACM, 183–192
+45. R. Smith. 2007. An overview of the Tesseract OCR engine. In Document Analysis
+and Recognition, 2007. ICDAR 2007. Ninth International Conference on, Vol. 2. IEEE,
+629–633.
