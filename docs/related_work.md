@@ -38,7 +38,7 @@ Media Behavior
 ### Article 2
 #### **Guess What's on my Screen? Clustering Smartphone Screenshots with Active Learning**
 
-[Link to the article](https://arxiv.org/pdf/1805.07964.pdf)
+[Link to the article](https://arxiv.org/abs/1901.02701)
 
 **Authors:** Agnese Chiatti, Dolzodmaa Davaasuren, Nilam Ram, Prasenjit Mitra, Byron Reeves, Thomas Robinson - The Pennsylvania State University & Stanford University
 
