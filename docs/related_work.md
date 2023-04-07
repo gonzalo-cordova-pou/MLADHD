@@ -4,18 +4,16 @@
 
 - [Article 1](#article-1) CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems
 - [Article 2](#article-2) Guess What's on my Screen? Clustering Smartphone Screenshots with Active Learning
-- [Article 3](#article-3) Understanding Screen Relationships from Screenshots of Smartphone Applications
-- :star: [Article 4](#article-4) Screenomics: A New Approach for Observing and Studying Individuals’ Digital Lives
-- :star: [Article 5](#article-5) Screenomics: A Framework to Capture and AnalyzePersonal Life Experiences and the Ways thatTechnology Shapes Them 
-- [Article 6](#article-6) Text Extraction from Smartphone Screenshots to Archive in situ
+- :star: [Article 3](#article-3) Screenomics: A New Approach for Observing and Studying Individuals’ Digital Lives
+- :star: [Article 4](#article-4) Screenomics: A Framework to Capture and AnalyzePersonal Life Experiences and the Ways thatTechnology Shapes Them 
+- [Article 5](#article-5) Text Extraction from Smartphone Screenshots to Archive in situ
 Media Behavior
+- [Article 6](#article-6) Understanding Screen Relationships from Screenshots of Smartphone Applications
 
 ### Article 1
+#### **CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems.**
 
-[Link to the article](http://cs231n.stanford.edu/reports/2015/pdfs/anand_avery_final.pdf)
-
-**Title:** CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems.<br>
-
+[Link to the article](http://cs231n.stanford.edu/reports/2015/pdfs/anand_avery_final.pdf)\
 **Authors:** Anand Sampat, Avery Haskell - Stanford University<br>
 
 **Context:** This is an unpublished manuscript of 2015 that appears to be cited in 5 other published articles according to Google Scholar.<br>
@@ -37,57 +35,85 @@ Media Behavior
 
 
 
-### Article 2 
-**(in progress...)**
+### Article 2
+#### **Guess What's on my Screen? Clustering Smartphone Screenshots with Active Learning**
 
 [Link to the article](https://arxiv.org/pdf/1805.07964.pdf)
 
-**Title:** Guess What's on my Screen? Clustering Smartphone Screenshots with Active Learning
-
 **Authors:** Agnese Chiatti, Dolzodmaa Davaasuren, Nilam Ram, Prasenjit Mitra, Byron Reeves, Thomas Robinson - The Pennsylvania State University & Stanford University
 
-**Context:** This paper was published in January 2019 as a collaboration between The Pennsylvania State University and Stanford University. Stanford University involved their [Screenomics Lab](https://screenomics.stanford.edu/) members for useful discussions and acknowledge the data and computational support provided for the experiments.
+**Context:** This paper was published in January 2019 as a collaboration between The Pennsylvania State University and Stanford University. Stanford University involved their [Screenomics Lab](https://screenomics.stanford.edu/) members for useful discussions and acknowledge the data and computational support provided for the experiments. Cited by: 2;
 <br>
 
-**Summary:**
-
+**Abstract:** The heterogeneous content in screenshot images makes manual annotation cumbersome and costly. Thus, the paper proposes a framework that combines K-Means clustering with Active Learning to efficiently classify large screenshot sets when only a limited amount of labels is available. The framework uses SVM-embedded or XGBoost-embedded solutions for class probability propagation to discover latent classes and assess the relative contribution of multimodal features to overall performance.
 <br>
 
-**Core idea:**
+**Takeaways:**
+- "Classification, however, can be cumbersome especially for screenshots, that include nested data streams (images, text),
+presented over diverse templates. For instance, if Figures 1a and 1b are compared, one can see how the proportion
+of text over icons and graphical content is different. Plus, in Figure 1b specifically, more complex frames (i.e., video
+previews) are alternated with textual contents and titles. As such, smartphone screenshots form a unique, yet rather
+unexplored, data typology, providing opportunities to test state-of-the-art methods for data clustering and classification
+on an unusual collection."
+- **Related work**:
+   - **Image classification:** "Nonetheless, we have found it to be a rather unexplored domain. The work conducted in [8], is the most similar found to our case. The authors, Sampat et al., used a 3-layered convolutional network to classify a dataset of laptop screenshots
+over 14 classes. The architecture was pre-trained on the Places205CNN dataset from MIT, with the weights then
+transferred over to classify the target laptop screenshots. They concluded that the architecture was not effective for
+classification. However the implications of training directly on screenshots (i.e., instead of using hyperparameters
+learned from more general image collections) were not addressed. Furthermore, our target images are still relatively
+different from the aforementioned set, as dealing with smartphone screenshots allows to skip the identification of the
+main active window on the screen, reducing the risk of error propagation from the latter step to the feature extraction
+phase."
+   - **Text classification:** When dealing with images, the classification problem is usually tackled from a Computer Vision perspective, rather
+than relying on extracted textual contents. In fact, text extraction is error-prone, and can introduce more noise in the
+data analysis. On the other hand, images that are not visually similar, could actually have similar contents. Furthermore,
+smartphone screenshot images are, on average, much more textually dense than the images included in popular image
+collections [12]. The evidence of segmentation defects on OCR-extracted text from digital screenshots [13], support the
+use of text as an auxiliary component that can be used in classification.
+  - **Multi-modal learning:** Joint-learning of image-text embeddings [14] has been applied to image datasets associated with transcribed captions to
+improve entity localization. Recent work has shown how multi-modality can lead to better knowledge capture, especially
+when extrapolating low-level concepts from the represented entities [15]. In this context, text was pre-processed by
+applying known techniques in Text Classification, e.g. word2vec [9] or GloVe [11], to be more uniformly merged with
+the image vectors [16]. In other cases, visual patterns and textual features have also been learned jointly for automated
+event extraction [17].
+However, to our knowledge, none of the reviewed multi-modal approaches have been tested on digital screenshots. In
+the related literature, these methods are typically applied on image caption learning [18], question answering tasks [16],
+or sematic triple representation learning [19]. Instead, we include the full textual data as a feature, and measure the
+relative impact of multi-modal feature sources on the resulting cluster validity.
+- **Text Processing:** For each input screenshot, the textual content extracted through a combination of Image Processing
+and OCR is also retrieved, when available. First, we applied whitespace-based tokenization to the raw text and removed
+punctuation. Then, all the resulting tokens were reduced to lowercase.
+- **Text Vector Representation:** To obtain a vectorized representation of the text that was similarly dense, when compared
+to the aforementioned visual feature vectors, we utilized GloVe pre-trained 300-dimensional word embeddings derived
+from the Wikipedia 2014 and Gigaword 5 data sets and accounting for 6 Billion tokens in total. Word embeddings
+are combined through the following workflow: (i) for each token in the screenshot text, the corresponding semantic
+vector is retrieved, if the considered token is found in the reference vocabulary, (ii) a zero-valued vector is associated to
+each unknown token, (iii) the overall vector describing the full document is obtained from the weighted average of
+word embeddings identified in the first phase, using TF-IDF values as weights. Finally, (iv) zero-valued vectors are
+associated to all the screenshots that did not contain any text.*
+- **Conclusion:** "This paper presented exploratory analyses on clustering smartphone screenshots based on multimodal (visual and
+textual) features. Semi-supervised clustering was applied in combination with two alternative supervised classifiers, to
+propagate class probabilities from the labeled subset. Manually annotated labels were produced through active learning methods, i.e., after informative and diverse batch selection.
+We found that performance, expressed in terms of cluster validity, was comparable with respect to the employed
+classifier and can, by all means, be further ameliorated. Further, **the current representation of textual features, on
+average, led to a slight performance decrease**. All cases, nonetheless, showed a quite persistent performance even after
+increasing the size of the labeled sample."
+- **Future work:** 
+   1. revising the strategies and methods used to create ad hoc image-text embeddings
+   2. refining the taxonomy used for annotating screenshots, mirroring
+the newly-formulated representation
+   3. Further, in the experimented setting, labels were simply provided by human
+annotators, based on the given taxonomy and on their sole judgement. However, refinements in representing and
+classifying the content could possibly lead to providing human judges with a set of top candidate label suggestions to
+choose from, to further leverage manual and automated categorization and in the attempt to minimize the individual
+bias.
 
-<br>
-
-**Conclusion:**
-
-
-## Article 3
-**(in progress...)**
-
-[Link to the article](https://dl.acm.org/doi/pdf/10.1145/3490099.3511109)
-
-**Title:** Understanding Screen Relationships from Screenshots of Smartphone Applications
-
-**Authors:**  Shirin Feiz, Jason Wu, Xiaoyi Zhang, Amanda Swearngin, Titus Barik, Jeffrey Nichols
-
-**Context:**
-
-<br>
-
-**Summary:**
-
-<br>
-
-**Core idea:**
-
-<br>
-
-**Conclusion:**
-
-### Article 4
-
+### Article 3
+#### **Screenomics: A New Approach for Observing and Studying Individuals’ Digital Lives**
 [Link to the article](https://journals.sagepub.com/doi/pdf/10.1177/0743558419883362)
-**Title:** Screenomics: A New Approach for Observing and Studying Individuals’ Digital Lives\
+
 **Authors:** Nilam Ram , Xiao Yang, Mu-Jung Cho, Miriam Brinberg, Fiona Muirhead, Byron Reeves, and Thomas N. Robinson\
+**Context:** Cited by: 39; Institution: Stanford University, Pennsylvania State University, University of Strathclyde; Journal: Journal of Adolescent Research\
 **Keywords:** screenomics, screenome, smartphone, social media, adolescence, digital media, intensive longitudinal data, experience sampling\
 **Abstract:** The article presents "screenomics," a new approach for studying individuals' digital experiences. The study analyzed over 500,000 smartphone screenshots from four Latino/Hispanic youth aged 14 to 15 years from low-income, racial/ethnic minority neighborhoods using computational machinery and machine learning algorithms. The results show how adolescents' digital lives differ across persons, days, and hours, highlighting their switching among multiple applications and exposure to different content. The authors suggest that screenomics can provide more detailed data for studying digital lives and testing theories about media use and development. \
 **Takeaways:**
@@ -202,8 +228,8 @@ valence, and scores less than zero indicate an overall negative valence.
 Altogether, our combined use of feature extraction tools (e.g., OCR of
 text, quantification of image complexity, logo detection), machine learning
 algorithms, human labeling, and qualitative inquiry provided for rich idiographic description of the digital experiences of these adolescents’ everyday
-smartphone use.
-\[**Limitations and Future Directions**]
+smartphone use.\
+[**Limitations and Future Directions**]
 - Second, although we have all the content that appeared on the smartphone
 screen, we only extracted a relatively small set of features from each screenshot
 (e.g., complexity of image), only quantified sentiment of text using a single
@@ -242,11 +268,13 @@ staff. Our protocols underscore that the richness of the data come with social
 responsibility for protection of the data contributors.
 <br>
 
-### Article 5
+### Article 4
 
 [Link to the article](https://www.tandfonline.com/doi/full/10.1080/07370024.2019.1578652)
+
 **Title:** Screenomics: A Framework to Capture and Analyze Personal Life Experiences and the Ways that Technology Shapes Them\
 **Authors:** Byron Reeves,Nilam Ram,Thomas N. Robinson,James J. Cummings,C. Lee Giles,Jennifer Pan,Agnese Chiatti,Mj Cho,Katie Roehrick,Xiao YangORCID Icon,Anupriya Gagneja,Miriam Brinberg,Daniel Muise,Yingdan Lu,Mufan Luo,Andrew Fitzgerald &Leo Yeykelis\
+**Context:** Cited by: 117; Institutions: Stanford University, Pennsylvania State University; Journal: Human–Computer Interaction\
 **Takeaways:**
 - **Screenome:** The authors propose a new approach called "screenomics" for studying individuals' digital experiences, specifically their unique "screenome," which is the record of experiences on digital devices with screens. The screenome is composed of smartphone, laptop, and cable screens, with information sequences describing the temporal organization, content, functions, and context of person-screen interactions. It can be linked to other levels of analysis, showing how biological and cultural factors may interact with digital experiences. The screenome can provide insights into unique social, psychological, and behavioral characteristics and experiences related to individuals.
 - Screenome workflow: ![Screenome](ScreenomeWorkflow.png)
@@ -267,12 +295,14 @@ responsibility for protection of the data contributors.
 - :star: **Use of the Screenome for Interventions**: One promising future use of the system and approach presented here is theability to“interact”with an individual’s screenome and to deliver interventions thatalter how people think, learn, feel and behave. This may help realize the promise ofprecision interventions to preempt or treat unwanted thoughts, emotions or beha-viors, and to promote desirable ones. Delivering the right intervention to the rightperson at the right time and in the right context with the lowest risks of adverse sideeffects could close the loop between feedback and optimization in real time. Someof the most exciting potentials for precision interventions are in health. Many healthparameters are dynamic, in that they change and vary over time (e.g., bloodpressure). The screenome may allow researchers to identify causal relations ata timescale that matches the speed at which symptoms and diseases actually vary.
 - **Privacy**: ... The screenome project collected data using strict privacy protocols and the data are securely stored and viewed only by trained staff in the lab. However, some people declined to participate due to concerns about privacy, particularly regarding text messages. Two-thirds of people accepted participation, higher than previous research, but additional research is needed to address privacy issues. The screenome framework is suggested as a new way to study human behavior and technology's impact, and data transfer risks can be reduced through local analysis and transferring only summary results.
 
-### Article 6
+### Article 5
+#### **Text Extraction from Smartphone Screenshots to Archive in situ Media Behavior**
 
 [Link to the article](https://dl.acm.org/doi/10.1145/3148011.3154468)
 
-**Title:** Text Extraction from Smartphone Screenshots to Archive in situ Media Behavior\
-**Authors:** Agnese Chiatti, Xiao Yang, Miriam Brinberg, Mu Jung Cho, Anupriya Gagneja, Nilam Ram, Byron Reeves, C. Lee Giles\
+**Authors:** Agnese Chiatti, Xiao Yang, Miriam Brinberg, Mu Jung Cho, Anupriya Gagneja, Nilam Ram, Byron Reeves, C. Lee Giles \
+(VERY SIMILAR ARTICLE - same authors: [Text Extraction and Retrieval from Smartphone Screenshots:
+Building a Repository for Life in Media](https://dl.acm.org/doi/abs/10.1145/3167132.3167236))\
 **Keywords:** information extraction, image processing, OCR, Information systems → Digital libraries and archives; Applied computing → Optical character recognition; • Computing
 methodologies → Image processing;
 \
@@ -359,6 +389,18 @@ Results associated with the application of the marginal noise removal heuristic 
       4. the partially overlapping segmented regions leading to duplicated recognition of characters (e.g. Figure 1c)
       5. the human error inherent in the transcription loop.
 
+### Article 6
+#### **Understanding Screen Relationships from Screenshots of Smartphone Applications**
+
+[Link to the article](https://dl.acm.org/doi/pdf/10.1145/3490099.3511109)
+
+**Authors:** Shirin Feiz, Jason Wu, Xiaoyi Zhang, Amanda Swearngin, Titus Barik, Jeffrey Nichols\
+**Context:** Cited by: 4; Institution: Apple, Stony Brook University,  Carnegie Mellon
+University
+**Keywords:** user interface similarity, ui modeling, ui semantics
+**Abstract:** The text describes the challenge of identifying and understanding different screens in a graphical user interface and the type of changes that occur on them, which is useful for tasks such as automatic app crawling and large-scale app dataset analysis. The paper proposes two machine learning models: a screen similarity model that combines a UI object detector with a transformer model architecture, and a screen transition model that uses a siamese network architecture to identify similarity and events such as keyboards or dialog boxes appearing or disappearing. The models achieve high accuracy in identifying and understanding screens and transitions, improving on comparable baselines.
+**Takeaways:**
+- The text describes the challenge of identifying and understanding different screens in a graphical user interface and the type of changes that occur on them, which is useful for tasks such as automatic app crawling and large-scale app dataset analysis. The paper proposes two machine learning models: a screen similarity model that combines a UI object detector with a transformer model architecture, and a screen transition model that uses a siamese network architecture to identify similarity and events such as keyboards or dialog boxes appearing or disappearing. The models achieve high accuracy in identifying and understanding screens and transitions, improving on comparable baselines.
     
 ## Other references
 
