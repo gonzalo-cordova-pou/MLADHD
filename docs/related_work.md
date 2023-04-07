@@ -40,7 +40,7 @@ Media Behavior
 ### Article 2 
 **(in progress...)**
 
-[Link to the article](https://arxiv.org/pdf/1805.07964.pdf)
+[Link to the article](https://arxiv.org/abs/1901.02701)
 
 **Title:** Guess What's on my Screen? Clustering Smartphone Screenshots with Active Learning
 
