@@ -443,7 +443,7 @@ University
     
 ## Other references
 
-:mag_right: -> References that will be mentioned in the article, but not necessarily analyzed in detail.
+:mag_right: -> References that will be mentioned in the article, but not necessarily analyzed in detail.\
 :white_check_mark: -> References that have already been analyzed in detail.
 
 
@@ -456,7 +456,7 @@ University
 7. :white_check_mark: Chiatti, A., Yang, X., Brinberg, M., Cho, M. J., Gagneja, A., Ram, N., … Giles, C. L. (2017). Text extraction from smartphone screenshots to archive in situ media behavior. Proceedings of the Ninth International Conference on Knowledge Capture, Austin, TX. ACM.. [Crossref], [Google Scholar]
 8. Chittaranjan, G., Blom, J., & Gatica-Perez, D. (2013). Mining large-scale smartphone data for personality studies. Personal and Ubiquitous Computing, 17(3), 433–450. doi:10.1007/s00779-011-0490-1 [Crossref], [Web of Science ®], [Google Scholar]
 9. Brown, J. S. (2000). Growing up: Digital: How the web changes work, education, and the ways people learn. Change: the Magazine of Higher Learning, 32(2), 11–20. doi:10.1080/00091380009601719 [Taylor & Francis Online], [Google Scholar]
-10. Breuel, T. M. (2008). The OCRopus open source OCR system. In Proc. SPIE 6815, document recognition and retrieval XV (Vol. 6815, pp. 68150F1–68150F15). Bellingham, WA: International Society for Photonics and Electronics. [Crossref], [Google Scholar]
+10. :mag_right: Breuel, T. M. (2008). The OCRopus open source OCR system. In Proc. SPIE 6815, document recognition and retrieval XV (Vol. 6815, pp. 68150F1–68150F15). Bellingham, WA: International Society for Photonics and Electronics. [Crossref], [Google Scholar]
 11. Vogelsang, Andreas, and Markus Borg. "Requirements engineering for machine learning: Perspectives from data scientists." 2019 IEEE 27th International Requirements Engineering Conference Workshops (REW). IEEE, 2019.
 12. :white_check_mark: Reeves, Byron, Thomas Robinson, and Nilam Ram. "Time for the human screenome project." Nature 577.7790 (2020): 314-317.
 13. Suatap, Chayanin, and Karn Patanukhom. "Game genre classification from icon and screenshot images using convolutional neural networks." Proceedings of the 2019 2nd Artificial Intelligence and Cloud Computing Conference. 2019.
@@ -464,14 +464,14 @@ University
 15. :white_check_mark: Reeves, Byron, et al. "Screenomics: A framework to capture and analyze personal life experiences and the ways that technology shapes them." Human–Computer Interaction 36.2 (2021): 150-201.
 16. Abdali, Sara, et al. "Identifying Misinformation from Website Screenshots." Proceedings of the International AAAI Conference on Web and Social Media. Vol. 15. 2021.
 17. Cockburn, A., & McKenzie, B. (2001). What do web users do? An empirical analysis of web use. International Journal of Human-Computer Studies, 54(6), 903–922. doi:10.1006/ijhc.2001.0459 [Crossref], [Web of Science ®], [Google Scholar]
-18. Culjak, I., Abram, D., Pribanic, T., Dzapo, H., & Cifrek, M. (2012, May). A brief introduction to OpenCV. MIPRO, 2012 Proceedings of the 35th international convention, Opatija, Croatia, 2012 (pp. 1725–1730). IEEE. [Google Scholar]
+18. :mag_right: Culjak, I., Abram, D., Pribanic, T., Dzapo, H., & Cifrek, M. (2012, May). A brief introduction to OpenCV. MIPRO, 2012 Proceedings of the 35th international convention, Opatija, Croatia, 2012 (pp. 1725–1730). IEEE. [Google Scholar]
 19. Dingler, T., Agroudy, P. E., Matheis, G., & Schmidt, A. (2016, February). Reading-based screenshot summaries for supporting awareness of desktop activities. In Proceedings of the 7th Augmented Human International Conference 2016 (pp. 27). New York, NY: ACM. [Crossref], [Google Scholar]
 20. Do, T. M. T., & Gatica-Perez, D. (2014). The places of our lives: Visiting patterns and automatic labeling from longitudinal smartphone data. IEEE Transactions on Mobile Computing, 13(3), 638–648. doi:10.1109/TMC.2013.19 [Crossref], [Web of Science ®], [Google Scholar]
 21. Hembrooke, H., & Gay, G. (2003). The laptop and the lecture: The effects of multitasking in learning environments. Journal of Computing in Higher Education, 15(1), 46–64. doi:10.1007/BF02940852 [Crossref], [Google Scholar]
 22. Kumar, R., & Tomkins, A. (2010, April). A characterization of online browsing behavior. In Proceedings of the 19th international conference on World Wide Web, Raleigh, NC (pp. 561–570). New York, NY: ACM. [Crossref], [Google Scholar]
 23. Ophir, E., Nass, C., & Wagner, A. D. (2009). Cognitive control in media multitaskers. Proceedings of the National Academy of Sciences, 106(37), 15583–15587. doi:10.1073/pnas.0903620106 [Crossref], [PubMed], [Web of Science ®], [Google Scholar]
-24. Otsu, N. (1979). A threshold selection method from gray-level histograms,”. IEEE Trans. Systems, Man, and Cybernetics, 9(1), 62–66. doi:10.1109/TSMC.1979.4310076 [Crossref], [Web of Science ®], [Google Scholar]
-25. Smith, R. (2007, September). An overview of the Tesseract OCR engine. Proceedings of the ninth international conference on document analysis and recognition, Parana, Brazil (Vol. 2, pp. 629–633). IEEE. [Crossref], [Google Scholar]
+24. :mag_right: Otsu, N. (1979). A threshold selection method from gray-level histograms,”. IEEE Trans. Systems, Man, and Cybernetics, 9(1), 62–66. doi:10.1109/TSMC.1979.4310076 [Crossref], [Web of Science ®], [Google Scholar]
+25. :mag_right: Smith, R. (2007, September). An overview of the Tesseract OCR engine. Proceedings of the ninth international conference on document analysis and recognition, Parana, Brazil (Vol. 2, pp. 629–633). IEEE. [Crossref], [Google Scholar]
 26. Szegedy, C., Liu, W., Jia, Y., Sermanet, P., Reed, S., Anguelov, D., … Rabinovich, A. (2015). Going deeper with convolutions. In Proceedings of the IEEE conference on computer vision and pattern recognition, Boston, MA (pp. 1–9). IEEE. [Crossref], [Google Scholar]
 27. Talukder, K. H., & Mallick, T. (2014). Connected component based approach for text extraction from color image. In Proceedings of the 17th IEEE International Conference on Computer and Information Technology, Helsinki, Finland (pp. 204–209). IEEE. [Crossref], [Google Scholar]
 28. Tossell, C., Kortum, P., Rahmati, A., Shepard, C., & Zhong, L. (2012, May). Characterizing web use on smartphones. In Proceedings of the SIGCHI conference on human factors in computing systems, Austin, TX (pp. 2769–2778). ACM. [Crossref], [Google Scholar]
