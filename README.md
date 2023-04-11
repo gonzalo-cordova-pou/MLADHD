@@ -9,9 +9,9 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 - [X] Add a README.md file to the repository
 - [X] Agree on a Python version (suggestion: 3.10)
 - [X] Migrate data to a cloud storage (suggestion: AWS S3 or Google Drive)
-- [ ] Finish related work document
-    - [ ] Summarize key takeaways
-- [ ] Create ML Training System
+- [X] Finish related work document
+    - [X] Summarize key takeaways
+- [X] Create ML Training System
     - [X] Create a notebook to train models
     - [X] Mount data in Google Colab from Google Drive
     - [X] Clone repo in Google Colab
@@ -25,6 +25,25 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 - [X] Read: [Requirements Engineering for Machine Learning:
 Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - [X] Start Overleaf project
+- [ ] Deploy the CNN-based binary classifier to Alerta
+    - [ ] Paralel extraction and classification of screenshots
+        - [X] Extract screenshots from Alerta (screenshotter)
+        - [ ] Classify screenshots (classifier) 
+    - [ ] Alerta Intervention
+- [ ] Using text recognition techniques 
+    - [X] Implement OpenCV + Tesseract OCR to extract text from screenshots
+    - [ ] Fine-tune the method for the screenshots
+- [ ] NLP
+    - [X] Test Topic Modeling with ChatGPT
+    - [ ] Explore Topic Modeling with LLMs
+    - [ ] Create a dataset with text from screenshots
+    - [ ] Train a model with the text dataset
+        - [ ] Topic Modeling
+        - [ ] Binary Classifier: Focused / Distracted
+- [ ] Multi-label classifier
+    - [ ] Define the labels 
+    - [ ] Create a dataset with multi-labels
+    - [ ] Train a model with the multi-label dataset
 
 ## Index
 
@@ -57,6 +76,8 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
     **GPU is available** for use in local enviroment (empirical boost on speed shown).
 - **[27 Mar 2023]** New dataset with +92% samples.
 - **[27 Mar 2023]** CO2 Emission tracker implemented.
+- **[11 Apr 2023]** Related work document finished.
+- **[11 Apr 2023]** Screenshotter implemented.
 
 ## Data
 
