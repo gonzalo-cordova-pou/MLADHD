@@ -11,6 +11,10 @@ Media Behavior
 - [Article 6](#article-6) Understanding Screen Relationships from Screenshots of Smartphone Applications
 - [Article 7](#article-7) Time for the human screenome project. Nature, 577(7790), 314-317.
 - [Article 8](#article-8) The Fragmentation of Work, Entertainment, E-Mail, and News on a Personal Computer: Motivational Predictors of Switching Between Media Content
+- [Article 9](#article-9) Identifying Misinformation from Website Screenshots
+- [Article 10](#article-10) Reading-based Screenshot Summaries for Supporting Awareness of Desktop Activities
+- [Article 11](#article-11) Reading Detection in Real-time
+- [Article 12](#article-12) Game Genre Classification from Icon and Screenshot Images Using Convolutional Neural Networks
 
 ### Article 1
 #### **CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems.**
@@ -271,10 +275,11 @@ responsibility for protection of the data contributors.
 <br>
 
 ### Article 4
+#### **Screenomics: A Framework to Capture and Analyze Personal Life Experiences and the Ways that Technology Shapes Them**
 
 [Link to the article](https://www.tandfonline.com/doi/full/10.1080/07370024.2019.1578652)
 
-**Title:** Screenomics: A Framework to Capture and Analyze Personal Life Experiences and the Ways that Technology Shapes Them\
+
 **Authors:** Byron Reeves,Nilam Ram,Thomas N. Robinson,James J. Cummings,C. Lee Giles,Jennifer Pan,Agnese Chiatti,Mj Cho,Katie Roehrick,Xiao YangORCID Icon,Anupriya Gagneja,Miriam Brinberg,Daniel Muise,Yingdan Lu,Mufan Luo,Andrew Fitzgerald &Leo Yeykelis\
 **Context:** Cited by: 117; Institutions: Stanford University, Pennsylvania State University; Journal: Human–Computer Interaction\
 **Takeaways:**
@@ -440,7 +445,75 @@ University
     - News—newspaper web sites (e.g.,NY Times, Huffington Post), televisionnews broadcasts, industry-related news blogs; and
     - Other—content that does not fall into any of the aforementioned cate-gories, such as blank open tabs, folder navigation, settings dialogs, andsystem prompts.
    - To this end, online content was coded automatically as the URLfor that content, while offline content was coded manually. Offline contentwas coded by a team of research assistants based on an established codebookof content types. explicit heuristic cues as to which offline program is indeedtargeted or in current use (e.g., application name listed in menu bar at thetop of the screen)
-    
+
+## Article 9
+#### **Identifying Misinformation from Website Screenshots**
+
+[Link to the article](https://arxiv.org/abs/2104.00101)
+
+**Authors:** Sara Abdali1, Rutuja Gurav1, Siddharth Menon1, Daniel Fonseca1, Negin Entezari1, Neil Shah2, Evangelos E. Papalexakis \
+**Context:** Cited by: 7; Institutions: Engineering University of California,  Snap Inc ; Journal: Proceedings of the International AAAI Conference on Web and Social Media (ICWSM) 2021
+**Abstract:** The paper proposes a new approach, called VizFake, to detect misinformativeness of news articles based on the overall look of the webpage where they are served. The approach uses screenshots of news articles from misinformative and trustworthy web domains and leverages a tensor decomposition-based semi-supervised classification technique. The proposed approach is insensitive to a number of image transformations, requires only a small amount of known labels, and achieves an F1 score of roughly 85% using only 5% of ground truth labels. The paper also compares VizFake with other popular approaches, such as deep transfer learning and text-based methods, and shows that VizFake achieves competitive accuracy while being faster and not requiring laborious hyperparameter tuning.
+**Takeaways:**
+- In contrast to deep learning approaches such as
+convolutional neural networks (CNNs) which take a relatively long time to train, are data-hungry, and require careful hyperparameter tuning, we propose a novel tensor-based
+semi-supervised classification approach which is fast, efficient, robust to image resolution, and missing image segments, and data-limited
+- The tensor-based modeling is done by constructing a 4-mode tensor out of all the screenshots, with each mode representing a different aspect of the screenshot. The tensor is then decomposed into a factor matrix, which comprises latent patterns of screenshots, and is used for classification. Each row of the factor matrix is an R-dimensional representation of the corresponding screenshot, and the K-nearest neighbor graph (K-NN) is used for classification. 
+<div align="center"><img src="./VizFake.png" width="50%" height="50%"></div>
+
+## Article 10
+#### **Reading-based Screenshot Summaries for Supporting Awareness of Desktop Activities**
+
+
+**Authors:** Tilman Dingler, Passant El Agroudy, Gerd Matheis, Albrecht Schmidt \
+**Context:** Cited by: 5; Institutions: University of Stuttgart; Journal: Proceedings of the 7th Augmented Human International Conference 2016 \
+**Abstract:** The paper investigates the use of eyetracking data to create activity summaries for desktop computer users. The authors propose three heuristics to create such summaries based on screenshots: a fixed time interval, people's focus of attention as indicated by their eye gaze, and a reading detection algorithm. They conducted a field study with 12 participants who logged their desktop activities for 3 consecutive days to evaluate the usefulness of screenshot summaries based on these heuristics. The results suggest that using reading detection is a useful heuristic for reducing image volume and increasing the relevance of reviews.
+**Takeaways:**
+- The authors outline the challenge of having to deal with a large amount of screenshots to log/summarize desktop activities.
+- :star: "We adapted the **reading detection algorithm** described
+by [49] (Campbell, C. S., & Maglio "A robust algorithm for reading detection."). Therefore, we cleaned the data stream provided by
+the Tobii EyeX trackers by clustering incoming data points
+to eliminate outliers caused by measurement errors. Using these clusters, the algorithm calculates a regression line,
+which is roughly horizontal for eye movements along a line.
+This works especially well for detecting regressions, i.e. eye
+movements against the reading direction as it is the case for
+line breaks. In a pilot study we fine-tuned the algorithm by
+asking participants to read, skim, and search short texts for
+certain keywords."
+
+## Article 11
+#### **Reading Detection in Real-time**
+**Authors:** Conor Kelton, Zijun Wei, Seoyoung Ahn, Aruna Balasubramanian, Samir R. Das, Dimitris Samaras, Gregory Zelinsky \
+**Context:** Cited by: 17; Institutions: University of Illinois at Urbana-Champaign; Journal: Proceedings of the 11th ACM Symposium on Eye Tracking Research & Applications; Year: 2019 \
+**Abstract:** With this RRSVM reading detector, a method now exists for near
+real-time reading detection without the need for hand-labeling of
+local fixation windows. With real-time reading detection capability
+comes the potential for applications ranging from education and
+training to intelligent interfaces that learn what a user is likely to
+know based on previous detection of their reading behavior.
+
+## Article 12
+#### **Game Genre Classification from Icon and Screenshot Images Using Convolutional Neural Networks**
+
+[Link to the article](https://dl-acm-org.recursos.biblioteca.upc.edu/doi/abs/10.1145/3375959.3375988)
+
+**Authors:** Chayanin Suatap, Karn Patanukhom
+**Context:** Cited by: 3; Institutions: Chiang Mai University; Journal: Proceedings of the 2019 2nd Artificial Intelligence and Cloud Computing Conference; Year: 2019 \
+**Abstract:** Genre classification using typical game
+images provided in game stores such as an icon or screenshots. The
+proposed method is based on a convolutional neural network and a
+soft voting ensemble technique.
+**Takeaways:**
+<div align="center"><img src="./CNN_GenreClassification.png" width="80%" height="80%"></div>
+
+- The proposed model can perform both icon and
+screenshot classification tasks better than human testers on average.
+It can provide the accuracy up to 40.3% and 46.7% for the single
+icon and single screenshot classification tasks, respectively. In
+addition, when the screenshots and icon of each game are combined
+to classify the game genre, it can yield the accuracy up to 55.3%,
+which is 8.6% better than the single image classification.
+
 ## Other references
 
 :mag_right: -> References that will be mentioned in the article, but not necessarily analyzed in detail.\
@@ -462,7 +535,7 @@ University
 13. Suatap, Chayanin, and Karn Patanukhom. "Game genre classification from icon and screenshot images using convolutional neural networks." Proceedings of the 2019 2nd Artificial Intelligence and Cloud Computing Conference. 2019.
 14. :white_check_mark: Ram, Nilam, et al. "Screenomics: A new approach for observing and studying individuals’ digital lives." Journal of Adolescent Research 35.1 (2020): 16-50.
 15. :white_check_mark: Reeves, Byron, et al. "Screenomics: A framework to capture and analyze personal life experiences and the ways that technology shapes them." Human–Computer Interaction 36.2 (2021): 150-201.
-16. Abdali, Sara, et al. "Identifying Misinformation from Website Screenshots." Proceedings of the International AAAI Conference on Web and Social Media. Vol. 15. 2021.
+16. :white_check_mark: Abdali, Sara, et al. "Identifying Misinformation from Website Screenshots." Proceedings of the International AAAI Conference on Web and Social Media. Vol. 15. 2021.
 17. Cockburn, A., & McKenzie, B. (2001). What do web users do? An empirical analysis of web use. International Journal of Human-Computer Studies, 54(6), 903–922. doi:10.1006/ijhc.2001.0459 [Crossref], [Web of Science ®], [Google Scholar]
 18. :mag_right: Culjak, I., Abram, D., Pribanic, T., Dzapo, H., & Cifrek, M. (2012, May). A brief introduction to OpenCV. MIPRO, 2012 Proceedings of the 35th international convention, Opatija, Croatia, 2012 (pp. 1725–1730). IEEE. [Google Scholar]
 19. Dingler, T., Agroudy, P. E., Matheis, G., & Schmidt, A. (2016, February). Reading-based screenshot summaries for supporting awareness of desktop activities. In Proceedings of the 7th Augmented Human International Conference 2016 (pp. 27). New York, NY: ACM. [Crossref], [Google Scholar]
@@ -502,3 +575,7 @@ and Recognition, 2007. ICDAR 2007. Ninth International Conference on, Vol. 2. IE
 629–633.
 46. Naab, Teresa K., Veronika Karnowski, and Daniela Schlütz. "Reporting mobile social media use: How survey and experience sampling measures differ." Communication Methods and Measures 13.2 (2019): 126-147.
 47. Yeykelis, L., Cummings, J. J., & Reeves, B. (2018). The fragmentation of work, entertainment, E-Mail, and news on a personal computer: Motivational predictors of switching between media content. Media psychology, 21(3), 377-402.
+48. Abdali, S. (2022). Multi-modal Misinformation Detection: Approaches, Challenges and Opportunities. arXiv preprint arXiv:2203.13883.
+49. Campbell, C. S., & Maglio, P. P. (2001, November). A robust algorithm for reading detection. In Proceedings of the 2001 workshop on Perceptive user interfaces (pp. 1-7).
+50. Kelton, C., Wei, Z., Ahn, S., Balasubramanian, A., Das, S. R., Samaras, D., & Zelinsky, G. (2019, June). Reading detection in real-time. In Proceedings of the 11th ACM Symposium on Eye Tracking Research & Applications (pp. 1-5).
+51. Landsmann, M., Augereau, O., & Kise, K. (2019, September). Classification of reading and not reading behavior based on eye movement analysis. In Adjunct Proceedings of the 2019 ACM International Joint Conference on Pervasive and Ubiquitous Computing and Proceedings of the 2019 ACM International Symposium on Wearable Computers (pp. 109-112).
