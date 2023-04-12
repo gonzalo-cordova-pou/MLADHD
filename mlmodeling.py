@@ -356,10 +356,11 @@ class MLADHD():
         # Plot the confusion matrix
         self.plot_confusion_matrix(y_true, y_pred)
 
-    def predict(self, image_path):
+    def predict(self, image_path, raw_output=False):
         """
         This function will predict the class of an image
         :param image_path: The path of the image
+        :param raw_output: If True, it will return the raw output of the model
         :return: Tuple (real class, predicted class, probability)
         """
         transform = transforms.Compose([
@@ -375,6 +376,10 @@ class MLADHD():
             output = self.model(image)
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
+        
+        if raw_output:
+            # class and probability
+            return top_class.cpu().numpy()[0][0], top_p.cpu().numpy()[0][0]
         return os.path.split(os.path.split(image_path)[0])[1].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
 
     def test_random_images(self, data_dir, n_images=3):
