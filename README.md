@@ -26,9 +26,9 @@ This repository contains the code for the project "Machine Learning for ADHD" at
 Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - [X] Start Overleaf project
 - [ ] Deploy the CNN-based binary classifier to Alerta
-    - [ ] Paralel extraction and classification of screenshots
+    - [X] Paralel extraction and classification of screenshots
         - [X] Extract screenshots from Alerta (screenshotter)
-        - [ ] Classify screenshots (classifier) 
+        - [X] Classify screenshots (classifier) 
     - [ ] Alerta Intervention
 - [ ] Using text recognition techniques 
     - [X] Implement OpenCV + Tesseract OCR to extract text from screenshots
