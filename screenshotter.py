@@ -5,11 +5,16 @@ import time
 import os
 import pyautogui
 from mlmodeling import *
+import winsound
 
 label = "distracted"
 
+frequency1 = 500  # Set Frequency To 2500 Hertz, 
+frequency2 = 150  # Set Frequency To 1000 Hertz
+duration = 1000  # Set Duration To 1000 ms == 1 second
+
 # Global variables
-INTERVAL = 10 # interval in seconds
+INTERVAL = 5 # interval in seconds
 SCREENSHOT_COUNTER = 1
 DEPLOYMENT_PATH = os.path.join(os.getcwd(), '..', 'screenshots')
 CLASSIFIER_PATH = os.path.join(os.getcwd(), '..', 'models')
@@ -32,11 +37,17 @@ def start_session():
     global SCREENSHOT_COUNTER
 
     if SESSION_ID is None:
-        SESSION_ID = time.strftime('%Y%m%d_%H%M%S')
+        SESSION_ID = label + '_' + time.strftime('%Y%m%d_%H%M%S')
     
-    SCREENSHOT_PATH =  os.path.join(DEPLOYMENT_PATH, SESSION_ID, label)
+    SCREENSHOT_PATH =  os.path.join(DEPLOYMENT_PATH, SESSION_ID)
     if not os.path.exists(SCREENSHOT_PATH):
         os.makedirs(SCREENSHOT_PATH)
+    
+    if not os.path.exists(os.path.join(SCREENSHOT_PATH, "classified_Distracted")):
+        os.makedirs(os.path.join(SCREENSHOT_PATH, "classified_Distracted"))
+    
+    if not os.path.exists(os.path.join(SCREENSHOT_PATH, "classified_Focused")):
+        os.makedirs(os.path.join(SCREENSHOT_PATH, "classified_Focused"))
 
 def take_screenshot():
     global SCREENSHOT_COUNTER
@@ -58,9 +69,13 @@ def main():
         print("Detecting distraction ({}).".format(screenshot_filename))
         pred, prob = distraction_detection(os.path.join(SCREENSHOT_PATH, screenshot_filename))
         if pred == 1:
+            winsound.Beep(frequency1, duration)
             print("Predicted: distracted")
+            os.rename(os.path.join(SCREENSHOT_PATH, screenshot_filename), os.path.join(SCREENSHOT_PATH, "classified_Distracted", screenshot_filename))
         else:
+            winsound.Beep(frequency2, duration)
             print("Predicted: focused")
+            os.rename(os.path.join(SCREENSHOT_PATH, screenshot_filename), os.path.join(SCREENSHOT_PATH, "classified_Focused", screenshot_filename))
         elapsed = time.time() - start
         sleeping = INTERVAL - elapsed
         print("Time elapsed: ", round(elapsed, 2), "seconds")
