@@ -78,6 +78,7 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - **[27 Mar 2023]** CO2 Emission tracker implemented.
 - **[11 Apr 2023]** Related work document finished.
 - **[11 Apr 2023]** Screenshotter implemented.
+- **[17 Apr 2023]** New `screenshotter.py` for data collection with real-time prediction
 
 ## Data
 
