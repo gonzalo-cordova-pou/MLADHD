@@ -373,13 +373,14 @@ class MLADHD():
         image = image.to(device)
         with torch.no_grad():
             self.model.eval()
-            output = self.model(image)
+            output = self.model(image).cpu()
             ps = torch.exp(output)
             top_p, top_class = ps.topk(1, dim=1)
         
         if raw_output:
             # class and probability
             return top_class.cpu().numpy()[0][0], top_p.cpu().numpy()[0][0]
+        # real class, predicted class and probability
         return os.path.split(os.path.split(image_path)[0])[1].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
 
     def test_random_images(self, data_dir, n_images=3):
