@@ -16,12 +16,10 @@ MODEL = "model_with_extended_dataset_resnet50_2023-03-27_13-23-33"
 SESSION_ID = None
 LOG_PATH = None
 
-
 model_name = "model_with_extended_dataset"
-with open(os.path.join(CLASSIFIER_PATH, MODEL+".json"), "r") as fp:
-    hyperparams = json.load(fp)
-classifier = classifier = MLADHD(model_name, None, CLASSIFIER_PATH, hyperparams)
-classifier.load_model(os.path.join(CLASSIFIER_PATH, MODEL+".pth"))
+
+hyperparams = None
+classifier = None
 
 SCREENSHOT_PATH =  None
 
@@ -34,6 +32,13 @@ def start_session():
     global SCREENSHOT_PATH
     global LOG_PATH
     global SCREENSHOT_COUNTER
+    global hyperparams
+    global classifier
+
+    with open(os.path.join(CLASSIFIER_PATH, MODEL+".json"), "r") as fp:
+        hyperparams = json.load(fp)
+    classifier = MLADHD(model_name, None, CLASSIFIER_PATH, hyperparams)
+    classifier.load_model(os.path.join(CLASSIFIER_PATH, MODEL+".pth"))
 
     if SESSION_ID is None:
         SESSION_ID = time.strftime('%Y%m%d_%H%M%S')
@@ -166,4 +171,5 @@ def main():
             print("Sleeping for ", round(sleeping, 2), "seconds")
             time.sleep(INTERVAL - (time.time() - start))
 
-main()
+if __name__ == "__main__":
+    main()
