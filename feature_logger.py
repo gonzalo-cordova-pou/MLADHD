@@ -5,10 +5,15 @@ import time
 import os
 import pyautogui
 from mlmodeling import *
+import winsound
+
+frequency1 = 2500  # Set Frequency To 2500 Hertz, 
+frequency2 = 200  # Set Frequency To 1000 Hertz
+duration = 1000  # Set Duration To 1000 ms == 1 second
 
 
 # Global variables
-INTERVAL = 10 # interval in seconds
+INTERVAL = 5 # interval in seconds
 SCREENSHOT_COUNTER = 1
 DEPLOYMENT_PATH = os.path.join(os.getcwd(), '..', 'deployment')
 CLASSIFIER_PATH = os.path.join(os.getcwd(), '..', 'models')
@@ -54,7 +59,7 @@ def start_session():
     # Create a csv log file for the current session
     file = open(os.path.join(LOG_PATH, f"{SESSION_ID}.csv"), "w")
     # Write the header: timestamp , text , prediction , probability
-    file.write("timestamp|screenshot|text|prediction|probability\n")
+    file.write("timestamp;screenshot;text;prediction;probability\n")
     file.close()
 
 def take_screenshot():
@@ -140,7 +145,7 @@ def distraction_detection(img):
 
 def log(log_dir, screenshot_filename, text, pred, prob):
     file = open(os.path.join(log_dir, f"{SESSION_ID}.csv"), "a")
-    file.write(f"{time.strftime('%Y%m%d_%H%M%S')}|{text}|{pred}|{prob}")
+    file.write(f"{time.strftime('%Y%m%d_%H%M%S')};{screenshot_filename};{text};{pred};{prob}\n")
     file.close()
 
 def main():
@@ -155,11 +160,12 @@ def main():
         contours = bounding_box(dilated_img)
         text = OCR(img, contours, include_annotations=False)
         print("Text extracted")
-        print("Detecting distraction")
         pred, prob = distraction_detection(os.path.join(SCREENSHOT_PATH, screenshot_filename))
         if pred == 1:
+            winsound.Beep(frequency1, duration)
             print("Predicted: distracted")
         else:
+            winsound.Beep(frequency2, duration)
             print("Predicted: focused")
         
         log(LOG_PATH, screenshot_filename, text, pred, prob)
