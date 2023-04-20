@@ -82,6 +82,7 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - **[11 Apr 2023]** Screenshotter implemented.
 - **[17 Apr 2023]** New `screenshotter.py` for data collection with real-time prediction
 - **[19 Apr 2023]** New dataset. Name: `data_clean_large` (11k samples) (+175% wrt previous)
+- **[20 Apr 2023]** New notebook (`NLP.ipynb`) to test NLP techniques.
 
 ---
 
@@ -95,6 +96,7 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - `Experiment_colab.ipynb`: Notebook to run experiments in Google Colab.
 - `Experiment_local.ipynb`: Notebook to run experiments in local environment.
 - `LocalDatasetPreprocessing.ipynb`: Notebook to preprocess the local dataset (from raw to structured).
+- `NLP.ipynb`: Notebook to test NLP techniques (Binary classifier).
 - `OCRtest.py`: Script to test OCR techniques.
 - `emissions.csv`: CSV file with the CO2 emissions of the training experiments.
 - `feature_logger.py`: Script to take screenshots and log the feature extraction (text and class).
