@@ -48,11 +48,13 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 ## Index
 
 1. [New updates](#new-updates)
-2. [Data](#data)
-3. [Experiment guide](#experiment-guide)
-4. [Experiment tracking](#experiment-tracking)
-5. [Wrong predictions analysis](#wrong-predictions-analysis)
-6. [Related Work](#related-work)
+2. [Structure](#structure)
+3. [Data](#data)
+4. [Experiment guide](#experiment-guide)
+5. [Experiment tracking](#experiment-tracking)
+6. [Wrong predictions analysis](#wrong-predictions-analysis)
+7. [Related Work](#related-work)
+
 ---
 
 ## New updates
@@ -80,6 +82,27 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - **[11 Apr 2023]** Screenshotter implemented.
 - **[17 Apr 2023]** New `screenshotter.py` for data collection with real-time prediction
 - **[19 Apr 2023]** New dataset. Name: `data_clean_large` (11k samples) (+175% wrt previous)
+
+---
+
+## Structure
+
+
+- `docs`: Documentation files.
+    - `related_work.md`: Related work document.
+- `mlruns`: MLFlow tracking files.
+- `DriftDetector.ipynb`: Notebook to test the drift detector.
+- `Experiment_colab.ipynb`: Notebook to run experiments in Google Colab.
+- `Experiment_local.ipynb`: Notebook to run experiments in local environment.
+- `LocalDatasetPreprocessing.ipynb`: Notebook to preprocess the local dataset (from raw to structured).
+- `OCRtest.py`: Script to test OCR techniques.
+- `emissions.csv`: CSV file with the CO2 emissions of the training experiments.
+- `feature_logger.py`: Script to take screenshots and log the feature extraction (text and class).
+- `image2text.py`: Script to create a text dataset from the image dataset (using OCR).
+- `mlmodeling.py`: Script with the ML modeling functions.
+- `screenshotter.py`: Script to take screenshots and save them in the local storage (for data collection). Sound effects are also included with real-time prediction.
+
+---
 
 ## Data
 
@@ -124,10 +147,7 @@ However, as with any application of Deep Learning for Computer Vision, it is sti
 ![img1](https://user-images.githubusercontent.com/71346949/225948123-11ed82f4-e9f4-4d9c-9051-5a3137c273ea.png) ![image](https://user-images.githubusercontent.com/71346949/225976126-06261c12-1024-4a1f-b492-fec5d61288ae.png)
 
 
-## Possible OCR (optical character recognition) Python Package 
-
-- [pytesseract](https://pypi.org/project/pytesseract/)
-- [OpenCV](https://pypi.org/project/opencv-python/)
+---
 
 ## Experiment guide
 
@@ -141,9 +161,13 @@ However, as with any application of Deep Learning for Computer Vision, it is sti
     - Performance metrics analysis
     - Wrong output analysis
 
+---
+
 ## Experiment tracking
 
 We decided to use [mlflow](https://mlflow.org/) to track our experiments. You can read the official documentation [here](https://mlflow.org/docs/latest/tracking.html).
+
+---
 
 ## Wrong predictions analysis
 
@@ -169,6 +193,8 @@ Interesting cases:
 - work_Genetics_partial_767.jpg and work_Literature_one_811.jpg: The model classified these images as distracted because it is a screenshot of the desktop + the OBS window. For a human, it is not clear if the person is focused or distracted. The model predicts distracted, but the probability () shows that the decision is not very clear.
 
 - work_Genetics_partial_789.jpg: in this case we see a divided screen. One side is focused (the person is reading a document in WordPad) and the other side could be considered distracted (you can see gossip news in the browser). The model predicts distracted, but the probability () shows that the decision is not very clear.
+
+---
 
 ## Related Work
 
