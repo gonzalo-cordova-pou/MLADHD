@@ -3,6 +3,8 @@ import numpy as np
 import pytesseract
 import time
 import os
+import csv
+import concurrent.futures
 import pyautogui
 from mlmodeling import *
 import winsound
@@ -13,11 +15,11 @@ duration = 1000  # Set Duration To 1000 ms == 1 second
 
 
 # Global variables
-INTERVAL = 5 # interval in seconds
+INTERVAL = None # interval in seconds, None for no interval
 SCREENSHOT_COUNTER = 1
 DEPLOYMENT_PATH = os.path.join(os.getcwd(), '..', 'deployment')
 CLASSIFIER_PATH = os.path.join(os.getcwd(), '..', 'models')
-MODEL = "model_with_extended_dataset_resnet50_2023-03-27_13-23-33"
+MODEL = "model_with_extended_dataset_resnet50_2023-04-20_11-24-17"
 SESSION_ID = None
 LOG_PATH = None
 
@@ -55,12 +57,10 @@ def start_session():
     LOG_PATH = os.path.join(DEPLOYMENT_PATH, SESSION_ID, "log")
     if not os.path.exists(LOG_PATH):
         os.makedirs(LOG_PATH)
-
-    # Create a csv log file for the current session
-    file = open(os.path.join(LOG_PATH, f"{SESSION_ID}.csv"), "w")
-    # Write the header: timestamp , text , prediction , probability
-    file.write("timestamp;screenshot;text;prediction;probability\n")
-    file.close()
+    
+    with open(os.path.join(LOG_PATH, f"{SESSION_ID}.csv"), "w", newline='', encoding='utf-8') as fp:
+        wr = csv.writer(fp, delimiter=';')
+        wr.writerow(["timestamp", "screenshot", "text", "prediction", "probability"])
 
 def take_screenshot():
     global SCREENSHOT_COUNTER
@@ -100,53 +100,51 @@ def bounding_box(img):
                                                     cv2.CHAIN_APPROX_NONE)
     # Sort all the contours avoiding annotations
     # by x-coordinate (left to right), then y-coordinate (top to bottom), then area (big to small)
-    lambda_sort = lambda x: (cv2.boundingRect(x)[0], cv2.boundingRect(x)[1], cv2.contourArea(x))
-    contours = sorted(contours, key=lambda_sort)
+    #lambda_sort = lambda x: (cv2.boundingRect(x)[0], cv2.boundingRect(x)[1], cv2.contourArea(x))
+    #contours = sorted(contours, key=lambda_sort)
     return contours
 
-def OCR(img, contours, include_annotations=False):
+def OCR(img, contours):
     
     im2 = img.copy()
 
-    OCRtext = ""
+    text_list = []
+
+    def contour2text(contour):
+        x, y, w, h = cv2.boundingRect(contour)
+        # Cropping the text block for giving input to OCR
+        cropped = im2[y:y + h, x:x + w]
+        # Apply OCR on the cropped image
+        text = pytesseract.image_to_string(cropped)
+        return text
 
     # Looping through the identified contours
     # Then rectangular part is cropped and passed on
     # to pytesseract for extracting text from it
     # Extracted text is then written into the text file
-    for cnt in contours:
-        x, y, w, h = cv2.boundingRect(cnt)
-        
-        # If the area of the rectangle is more than 95% of the image area, ignore
-        if (w * h) / (img.shape[0] * img.shape[1]) > 0.95:
-            continue
+    
+    # parallelize the OCR
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        text_list = executor.map(contour2text, contours)
 
-        # Cropping the text block for giving input to OCR
-        cropped = im2[y:y + h, x:x + w]
-
-        # Apply OCR on the cropped image
-        text = pytesseract.image_to_string(cropped)
-
-        if len(text) > 3:
-            OCRtext += text + "\n"
-
-            if include_annotations:
-                # Creating a rectangle around the identified text
-                rect = cv2.rectangle(im2, (x, y), (x + w, y + h), (36, 255, 12), 2)
-            
-            if include_annotations:
-                return OCRtext, im2
-            
-            return OCRtext
+    text = " ".join(text_list)
+    # remove newlines, tabs
+    text = text.replace("\n", " ").replace("\t", " ")
+    # remove multiple spaces
+    text = " ".join(text.split())
+    # remove csv delimiter
+    text = text.replace(";", " ")
+    return text
 
 def distraction_detection(img):
     pred, prob = classifier.predict(img, raw_output=True)
     return pred, prob
 
 def log(log_dir, screenshot_filename, text, pred, prob):
-    file = open(os.path.join(log_dir, f"{SESSION_ID}.csv"), "a")
-    file.write(f"{time.strftime('%Y%m%d_%H%M%S')};{screenshot_filename};{text};{pred};{prob}\n")
-    file.close()
+    # write a line to the log file
+    with open(os.path.join(log_dir, f"{SESSION_ID}.csv"), "a", newline='', encoding='utf-8') as fp:
+        wr = csv.writer(fp, delimiter=';')
+        wr.writerow([time.strftime('%Y%m%d_%H%M%S'), screenshot_filename, text, pred, prob])
 
 def main():
     start_session()
@@ -158,7 +156,7 @@ def main():
         img = cv2.imread(os.path.join(SCREENSHOT_PATH, screenshot_filename))
         dilated_img = process_screenshot(img)
         contours = bounding_box(dilated_img)
-        text = OCR(img, contours, include_annotations=False)
+        text = OCR(img, contours)
         print("Text extracted")
         pred, prob = distraction_detection(os.path.join(SCREENSHOT_PATH, screenshot_filename))
         if pred == 1:
@@ -171,11 +169,10 @@ def main():
         log(LOG_PATH, screenshot_filename, text, pred, prob)
 
         elapsed = time.time() - start
-        sleeping = INTERVAL - elapsed
         print("Logged | Time elapsed: ", round(elapsed, 2), "seconds")
-        if time.time() - start < INTERVAL:
+        if INTERVAL is not None and time.time() - start < INTERVAL:
+            sleeping = INTERVAL - elapsed
             print("Sleeping for ", round(sleeping, 2), "seconds")
             time.sleep(INTERVAL - (time.time() - start))
 
-if __name__ == "__main__":
-    main()
+main()

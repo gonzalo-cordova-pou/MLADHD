@@ -19,8 +19,9 @@ import time
 # Binary classification problem
 idx_to_class = {0: 'focused', 1: 'distracted'}
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print("Using {} device".format(device))
+# setting device on GPU if available, else CPU
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#print('Using device:', device)
 
 class MLADHD():
     """
@@ -268,6 +269,8 @@ class MLADHD():
             model_name = self.name+'_'+self.hyperparams['pretrained_model']+'_'+self.date
             model_path = self.models_dir + model_name
             torch.save(self.model, model_path+'.pth')
+            # Log model name to mlflow as string
+            mlflow.log_param("model_filename", model_name)
             # save the hyperparams in a json file
             with open(model_path + '.json', 'w') as fp:
                 json.dump(self.hyperparams, fp)

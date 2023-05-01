@@ -2,30 +2,65 @@ import os
 import pytesseract
 import cv2
 import csv
+import time
 from feature_logger import process_screenshot, bounding_box, OCR
 
+dataset = "data_clean_large"
+limit_per_class = 4292
+
 # Path to the folder containing the images
-imagePath = 'D:\\Alerta Backup Data\\gonzalo_data\\datsets\\image\\sample_dataset\\'
+dataPath = os.path.join('E:\\mladhd\\datasets\\', dataset)
 
 # Path to the folder that will contain the text dataset
-textPath = 'D:\\Alerta Backup Data\\gonzalo_data\\datsets\\text\\'
+textPath = 'E:\\mladhd\\datasets\\text\\'
 
 # Path to the tesseract executable
-pytesseract.pytesseract.tesseract_cmd = 'C:\\Users\\Gonzalo\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe'
+# pytesseract.pytesseract.tesseract_cmd = 'C:\\Users\\Gonzalo\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = "E:\\Users\\ADHD Project\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe"
 
-# For each class in the dataset
-for class_name in os.listdir(imagePath):
-    # For each image in the class
-    for image_name in os.listdir(os.path.join(imagePath, class_name)):
-        # Read the image
-        img = cv2.imread(os.path.join(imagePath, class_name, image_name))
-        # Process the image
-        img = process_screenshot(img)
-        # Get the bounding boxes
-        boxes = bounding_box(img)
-        # Extract the text from the image
-        text = OCR(img, boxes)
-        # Write the text to the csv file
-        with open(os.path.join(textPath, "text_dataset.csv"), "a", newline='') as fp:
-            wr = csv.writer(fp, dialect='excel')
-            wr.writerow([image_name, text, class_name])
+# Create the text dataset csv file
+with open(os.path.join(textPath, f"{dataset}_focused2.csv"), "w", newline='', encoding='utf-8') as fp:
+    wr = csv.writer(fp, delimiter=';')
+    wr.writerow(["class", "text", "image"])
+
+def process_image(image_path):
+    img = cv2.imread(image_path)
+    dilation = process_screenshot(img)
+    contours = bounding_box(dilation)
+    im2 = img.copy()
+    text_list = []
+    for cnt in contours:
+        x,y,w,h = cv2.boundingRect(cnt)
+        cropped = im2[y:y + h, x:x + w]
+        text = pytesseract.image_to_string(cropped)
+        text_list.append(text)
+    text = " ".join(text_list)
+    # remove newlines, tabs
+    text = text.replace("\n", " ").replace("\t", " ")
+    # remove multiple spaces
+    text = " ".join(text.split())
+    # remove csv delimiter
+    text = text.replace(";", " ")
+    return text
+
+if __name__ == '__main__':
+    # For each class in the dataset
+    for class_name in os.listdir(dataPath):
+        # For each image in the class
+        c = 0
+        for image_name in os.listdir(os.path.join(dataPath, class_name)):
+            start = time.time()
+            c += 1
+            #if c > limit_per_class:
+            #    break
+            print(f"Processing {c}: {image_name}")
+            image_path = os.path.join(dataPath, class_name, image_name)
+            text = process_image(image_path)
+            with open(os.path.join(textPath, f"{dataset}_focused2.csv"), "a", newline='', encoding='utf-8') as fp:
+                wr = csv.writer(fp, delimiter=';')
+                if class_name == "0_focused":
+                    wr.writerow([0, text, image_name])
+                else:
+                    wr.writerow([1, text, image_name])
+            end = time.time()
+            print(f"Time elapsed (s): {end - start}")
