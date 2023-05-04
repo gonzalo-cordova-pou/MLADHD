@@ -15,6 +15,7 @@ Media Behavior
 - [Article 10](#article-10) Reading-based Screenshot Summaries for Supporting Awareness of Desktop Activities
 - [Article 11](#article-11) Reading Detection in Real-time
 - [Article 12](#article-12) Game Genre Classification from Icon and Screenshot Images Using Convolutional Neural Networks
+- [Article 13](#article-13) Web page classification with Google Image Search results
 
 ### Article 1
 #### **CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems.**
@@ -513,6 +514,132 @@ icon and single screenshot classification tasks, respectively. In
 addition, when the screenshots and icon of each game are combined
 to classify the game genre, it can yield the accuracy up to 55.3%,
 which is 8.6% better than the single image classification.
+
+## Article 13
+#### **Web page classification with Google Image Search results**
+
+[Link to the article](https://arxiv.org/pdf/2006.00226.pdf)
+
+**Authors:** Fahri Aydosa, A. Murat Ozbayo˘glu ¨ a, Yahya S¸irinb, M. Fatih Demircia \
+**Context:** Cited by: 1; Institutions: TOBB University of Economics & Technologies, Istanbul Sabahattin Zaim University; Journal: arXiv preprint ; Year: 2020 \
+**Abstract:** In this paper, we introduce a novel method that combines multiple neural network results to decide the class of the input.
+This is the first study which used the method for web pages classification. In our model, each element is represented
+by multiple descriptive images. After the training process of the neural network model, each element is classified by
+calculating its descriptive image results. We apply our idea to the web page classification problem using Google Image
+Search results as descriptive images. We obtained a classification rate of 94.90% on the WebScreenshots dataset that
+contains 20000 web sites in 4 classes. The method is easily applicable to similar problems.
+**Takeaways:**
+- Deep learning methods have become more popular and
+applied to supervised, semi-supervised, unsupervised, and
+reinforcement learning problems in the last decade. Especially convolutional neural networks (CNN) show the enormous success in visual problems, such as object detection,
+classification, face recognition. In 1989 LeCun et al. used
+a neural network with 3 hidden layers to recognize handwritten digits [15]. Over time, computers become more
+powerful, and GPU usage improved. As a result, new architectures of CNN developed for different problems with
+having different input analysis styles. Transfer learning
+was also started to be used to save time and operation
+costs.
+- To find an adequate dataset is an essential problem for
+all Machine Learning researches. This is also true for Internet related problems. Internet content can change very
+quickly, and a web site can be closed, parked, or change
+topic. Most of the web site datasets are small and cannot
+represent the Internet to the desired extent. Some of them
+can stay old and require renewal.
+With this paper, we also introduce our WebScreenshots
+dataset, that is suitable for content based or screenshot
+based web site classifications. WebScreenshots contains
+20000 web sites in 4 classes.
+- **Related work**
+   - Web pages have different kinds of features. Hashemi divided the studies in the web pages classification field into
+three groups: Text-based, image-based, and combined usage of text-based and image-based features [10]. Despite
+Hashemi, we divided into four main groups according to
+what features are used as classifier: (1) Textual classifications: URL address, text content, title, HTML description, HTML code, etc. (2) Visual classifications: images,
+design, videos, etc. (3) Graph-based classifications: hyperlink structures, neighbor web sites. (4) And other information: user behaviors, web directories, semantic web, raw
+data of domain (IP address, owner, hosting server, hosting
+country). As Hashemi, we can add combined methods as
+another group.
+Our papers lies in image-based, visual classfification
+group. In image based classifications, there are four image
+sources for a web page: (1) screenshots of the web page, (2)
+image and video content on the web page, (3) preclassified
+images, and (4) related images to the web page. Below we
+will examine the use of these sources in the literature.
+   - **Web page screenshots**
+In screenshot based classifications, the screenshot of the
+web page is used as the descriptor of the web page. Mirdehghani and Monadjemi analyzed web page screenshots
+to automatically evaluate the web page’s aesthetic quality
+[16]. They extracted color space histogram and Gabor features and fed them to Artificial Neural Networks (ANN).
+They used university web sites as the dataset. De Boer et
+al. used the same method and added Edge histogram and
+Tamura features [5]. Along with aesthetic quality, they
+also tried to classify recency and the topic of web pages.
+Their dataset consisted of 120 web pages. Videira and
+Goncalves improved the method by feature selection techniques and applied Bag of Visual Words to SIFT descriptors [23]. 82,50% accuracy was achieved for four classes,
+and 63.75% for eight classes. Their dataset consisted of
+90 web pages for each class. In 2019 Dou et al. rated web
+pages for their aesthetics value with deep learning methods
+[8], using a dataset that contained 398 web page screenshots. They build a neural network architecture and used
+transfer learning. They made a comparison with user’s
+ratings for the web pages with their deep learning model
+results.
+   - **Image content**
+Another method to classify web sites is categorizing a
+web page with the class of its image content. In this
+method, the images on the web page are analyzed with
+image processing techniques, and the web page is classified with the class of the statically dominant images. This
+method is mostly used for binary classification problems
+such as detecting pornographic web pages. Arentz and Olstad extracted image features from skin regions and used
+a genetic algorithm to train their system [3]. Rowley et
+al. used the same method and added clutter features and
+face detection techniques [17]. Hammami et al. improved
+previous works by combining textual and visual analyzing
+results [9]. Their method was to use the ratio of skin-color
+pixels to all pixels. Hu et al. made a similar approach and
+added contour-based features to detect skin areas [12], Ahmadi et al. added shape based characteristics [1] to previous works. Dong et al. combined the bag of visual words
+features of the images and textual information of the image
+and the web site to detect pornographic web sites [7].
+   - **Preclassified images**
+Hashemi and Hall used image based classification to determine dark propaganda of violent extremist organizations with the help of deep learning methods [11]. To
+realize their project, they built a dataset that contained
+120000, manually classified images. They spent four years
+for building their dataset. To build the dataset, they used
+images from social media besides web pages. The downside
+of the dataset was that it was only related to one extreme
+group. For another threat, the dataset must be renewed
+with related images. They used AlexNet [14] architecture for CNN, and their overall generalization accuracy
+for eight classes was 86.08%.
+   - **Related images**
+As far as we know, this is the first study in the literature
+that uses related pictures to classify web pages. We use
+Google Image Search results as the related images for the
+web pages. So we don’t need to build an image dataset
+as Hashemi and Hall did [11]. In their dataset, images are
+directly related to the class. In our case, we use images
+related to the item in the class, and we don’t need to pay
+too much attention to how they describe the item.
+- **Dataset**: As can be seen in Section 2, researchers using images in
+web page classification have created their datasets. Since
+existing databases are small and do not contain descriptive
+images for the web pages, we also needed to create a new
+dataset, and build our WebScreenshots [4] dataset.
+- **Experiments**: In our experiments, we used 6 different CNN architectures: VGG16 [20], DenseNet121, DenseNet169,
+DenseNet201 [13], RestNet50, and InceptionRestNetV2
+[22]. These are well known CNN architectures and used in
+many problems. For example, VGG16 won the ImageNet
+Large Scale Visual Recognition Challenge (ILSVRC) in
+2014 and ResNet won in 2015 [18]. We also took advantage
+of transfer learning from the ImageNet dataset. ImageNet is a dataset containing 1000 classes and over 1.2 million
+natural images [6]. Having built the CNN architecture, we replaced the
+weights with pre-trained ImageNet weights. Each architecture had different pre-trained ImageNet weights. Since
+we have 4 classes instead of 1000 classes, we replaced the
+last dense layer with a layer for 4 classes. We trained
+only the last two layers: last dense layer and the previous
+average pooling layer. We used categorical cross-entropy
+as the loss function, and we set up the learning rate to
+0.00001. Since popular deep learning frameworks contain
+all used CNN architectures and their ImageNet weights
+for transfer learning, any researcher can easily build up
+our experimental setup.
+
 
 ## Other references
 
