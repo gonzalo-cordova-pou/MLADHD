@@ -30,20 +30,41 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
         - [X] Extract screenshots from Alerta (screenshotter)
         - [X] Classify screenshots (classifier) 
     - [ ] Alerta Intervention
-- [ ] Using text recognition techniques 
+- [X] Using text recognition techniques 
     - [X] Implement OpenCV + Tesseract OCR to extract text from screenshots
-    - [ ] Fine-tune the method for the screenshots
+    - [X] Fine-tune the method for the screenshots
 - [ ] NLP
     - [X] Test Topic Modeling with ChatGPT
     - [ ] Explore Topic Modeling with LLMs
-    - [ ] Create a dataset with text from screenshots
-    - [ ] Train a model with the text dataset
+        - [ ] Talk to NLP expert
+    - [X] Create a dataset with text from screenshots
+    - [ ] Train/Code a model with the text dataset
         - [ ] Topic Modeling
-        - [ ] Binary Classifier: Focused / Distracted
-- [ ] Multi-label classifier
-    - [ ] Define the labels 
-    - [ ] Create a dataset with multi-labels
-    - [ ] Train a model with the multi-label dataset
+        - [X] Binary Classifier: Focused / Distracted
+ - [ ] Write the Follow-up report
+    - [ ] Introduction
+    - [ ] Related work
+    - [ ] Goals
+    - [ ] Solution
+    - [ ] Follow up
+        - [ ] Done
+        - [ ] To be done
+ - [ ] Test the Alerta + Logger + Intervention with ADHD users
+ - [ ] Dashboards: Generate Visualizations from logs
+ - [ ] Documentation
+    - [ ] final README
+    - [ ] Dataset Card
+    - [ ] Model Card
+    - [ ] Thesis document
+        - [ ] Abstract
+        - [ ] Introduction
+        - [ ] Related work
+        - [ ] Goals
+        - [ ] Solution
+        - [ ] Results and evaluation
+        - [ ] Concclusions
+        - [ ] Future work
+ - [ ] Reproducibility
 
 ## Index
 
