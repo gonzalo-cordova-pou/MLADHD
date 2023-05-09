@@ -16,6 +16,8 @@ Media Behavior
 - [Article 11](#article-11) Reading Detection in Real-time
 - [Article 12](#article-12) Game Genre Classification from Icon and Screenshot Images Using Convolutional Neural Networks
 - [Article 13](#article-13) Web page classification with Google Image Search results
+- [Article 14](#article-14) OCR-free Document Understanding Transformer
+- [Article 15](#article-15) Evaluation of Deep Convolutional Nets for Document Image Classification and Retrieval
 
 ### Article 1
 #### **CNN for task classification using computer screenshots for integration into dynamic calendar/task management systems.**
@@ -640,6 +642,67 @@ all used CNN architectures and their ImageNet weights
 for transfer learning, any researcher can easily build up
 our experimental setup.
 
+## Article 14
+#### **OCR-free Document Understanding Transformer**
+
+[Link to the article](https://arxiv.org/pdf/2111.15664.pdf)
+
+**Authors:** Geewook Kim, Teakgyu Hong, Moonbin Yim, Jeongyeon Nam, Jinyoung Park, Jinyeong Yim, Wonseok Hwang, Sangdoo Yun, Dongyoon Han, and Seunghyun Park.
+**Context:** Cited by: 22; Institutions: NAVER CLOVA, NAVER Search, NAVER AI Lab, Upstage, Tmax, Google, LBox; Journal: Proceedings, Computer Vision--ECCV 2022: 17th European Conference; Year: 2022 \
+**Abstract:** Current Visual Document Understanding (VDU) methods outsource the task of reading text to off-the-shelf Optical Character Recognition (OCR) engines and focus on the understanding task with the OCR outputs. Although such OCR-based approaches have shown promising performance, they suffer from 1) high computational costs for using OCR; 2) inflexibility of OCR models on languages or types of documents; 3) OCR error propagation to the subsequent process. In this paper, we introduce a
+novel OCR-free VDU model named Donut, which stands for Document understanding transformer. As the first step in OCR-free VDU research, we propose a simple architecture (i.e., Transformer) with a pre-training objective (i.e., cross-entropy loss). Donut is conceptually simple yet effective. Donut, achieves state-of-the-art performances on various VDU tasks in terms of both speed and accuracy. In addition, we offer a synthetic data generator that helps the model pre-training to be flexible in various languages and domains. The code, trained model, and synthetic data are available at https://github.com/clovaai/donut. \
+**Takeaways:**
+- **Model**. Encoder-Decoder transformer. Visual encoder in the input. Text decoder in the output. The model is trained with a cross-entropy loss. The model is pre-trained to read all texts in the image in reading order (top-left to bottom-right). After the model learns how to read, in the application stage (i.e., fine-tuning), we
+teach the model how to understand the document image.
+- **Fine-tunning**. The decoder is trained to generate a token sequence that can be converted
+into a JSON that represents the desired output information. For example, in the
+document classification task, the decoder is trained to generate a token sequence
+[START class][memo][END class] which is 1-to-1 invertible to a JSON {“class”:
+“memo”}. We introduce some special tokens (e.g., [memo] is used for representing
+the class “memo”), if such replacement is available in the target task. Downstream tasks: Document Classification, Document Information Extraction and Document Visual QA.
+- **Document Classification**. To see whether the model can distinguish across
+different types of documents, we test a classification task. Unlike other models
+that predict the class label via a softmax on the encoded embedding, Donut
+generate a JSON that contains class information to maintain the uniformity of
+the task-solving method. We report overall classification accuracy on a test set.
+RVL-CDIP. The RVL-CDIP dataset [16] consists of 400K images in 16 classes,
+with 25K images per class. The classes include letter, memo, email, and so on.
+There are 320K training, 40K validation, and 40K test images. The 16 categories are "letter", "merno", "email", "file folder", "form", "handwritten",
+"invoice", "advertisement", "budget", "news article", "presentation", "scientific publication", "questionnaire", "resume",
+"scientific report", and "specification".
+   - The results are shown in Table 1. Without relying on any other resource (e.g., off-the-shelf OCR engine), Donut shows a
+state-of-the-art performance among the general-purpose VDU models such as
+LayoutLM [65] and LayoutLMv2 [64]. In particular, Donut surpasses the LayoutLMv2 accuracy reported in [64], while using fewer parameters with the 2x
+faster speed. Note that the OCR-based models must consider additional model
+parameters and speed for the entire OCR framework, which is not small in general. For example, a recent advanced OCR-based model [4,3] requires more than
+80M parameters. Also, training and maintaining the OCR-based systems are
+costly [23], leading to needs for the Donut-like end-to-end approach.
+- We also observe that a larger
+input resolution, 2560×1920, shows more robust scores on the extremely lowresourced situation, e.g., 80 samples.
+- **Related work**
+   - **Optical Character Recognition**. Recent trends of OCR study are to utilize deep learning models in its two substeps: 1) text areas are predicted by a detector; 2) a text recognizer then recognizes all characters in the cropped image instances. Both are trained with a large-scale datasets including the synthetic images [26,13] and real images [28,47].
+Early detection methods used CNNs to predict local segments and apply
+heuristics to merge them [19,69]. Later, region proposal and bounding box regression based methods were proposed [36]. Recently, focusing on the homogeneity
+and locality of texts, component-level approaches were proposed [56,4]
+   - **Visual Document Understanding**. Classification of the document type is a core step towards automated document
+processing. Early methods treated the problem as a general image classification,
+so various CNNs were tested [27,1,15]. Recently, with BERT [8], the methods
+based on a combination of CV and NLP were widely proposed [65,34]. As a
+common approach, most methods rely on an OCR engine to extract texts; then
+the OCR-ed texts are serialized into a token sequence; finally they are fed into
+a language model (e.g., BERT) with some visual features if available. Although
+the idea is simple, the methods showed remarkable performance improvements
+and became a main trend in recent years [64,35,2]. Despite the needs in the industry,
+only a few works have been attempted on end-to-end parsing. Recently, some
+works are proposed to simplify the complex parsing processes [25,23]. But they
+still rely on a separate OCR to extract text information. Currently, most state-of-the-arts follow a simple pipeline consisting of applying OCR followed by BERT-like transformers [65,64].
+
+ 
+
+## Article 15
+#### **Evaluation of Deep Convolutional Nets for Document Image Classification and Retrieval**
+- Evaluation of Deep Convolutional Nets for
+Document Image Classification and Retrieval
 
 ## Other references
 
@@ -706,3 +769,35 @@ and Recognition, 2007. ICDAR 2007. Ninth International Conference on, Vol. 2. IE
 49. Campbell, C. S., & Maglio, P. P. (2001, November). A robust algorithm for reading detection. In Proceedings of the 2001 workshop on Perceptive user interfaces (pp. 1-7).
 50. Kelton, C., Wei, Z., Ahn, S., Balasubramanian, A., Das, S. R., Samaras, D., & Zelinsky, G. (2019, June). Reading detection in real-time. In Proceedings of the 11th ACM Symposium on Eye Tracking Research & Applications (pp. 1-5).
 51. Landsmann, M., Augereau, O., & Kise, K. (2019, September). Classification of reading and not reading behavior based on eye movement analysis. In Adjunct Proceedings of the 2019 ACM International Joint Conference on Pervasive and Ubiquitous Computing and Proceedings of the 2019 ACM International Symposium on Wearable Computers (pp. 109-112).
+52. Hwang, W., Lee, H., Yim, J., Kim, G., Seo, M.: Cost-effective end-to-end information extraction for semi-structured document images. In: Proceedings of the
+2021 Conference on Empirical Methods in Natural Language Processing. pp. 3375–3383. Association for Computational Linguistics, Online and Punta Cana, Dominican Republic (Nov 2021). https://doi.org/10.18653/v1/2021.emnlp-main.271,
+https://aclanthology.org/2021.emnlp-main.271 2, 4, 7, 9, 10, 11, 14, 27
+53. Hwang, W., Yim, J., Park, S., Yang, S., Seo, M.: Spatial dependency parsing for semi-structured document information extraction. In:
+Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021. pp. 330–343. Association for Computational Linguistics, Online (Aug
+2021). https://doi.org/10.18653/v1/2021.findings-acl.28, https://aclanthology.
+org/2021.findings-acl.28 2, 4, 9, 10
+54. Hwang, W., Yim, J., Park, S., Yang, S., Seo, M.: Spatial dependency parsing for semi-structured document information extraction. In:
+Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021. pp. 330–343. Association for Computational Linguistics, Online (Aug
+2021). https://doi.org/10.18653/v1/2021.findings-acl.28, https://aclanthology.
+org/2021.findings-acl.28 3, 10, 14, 27
+55. Xu, Y., Xu, Y., Lv, T., Cui, L., Wei, F., Wang, G., Lu, Y., Florencio,
+D., Zhang, C., Che, W., Zhang, M., Zhou, L.: LayoutLMv2: Multi-modal
+pre-training for visually-rich document understanding. In: Proceedings of the
+59th Annual Meeting of the Association for Computational Linguistics and
+the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers). pp. 2579–2591. Association for Computational Linguistics, Online (Aug 2021). https://doi.org/10.18653/v1/2021.acl-long.201, https:
+//aclanthology.org/2021.acl-long.201 2, 4, 9, 10, 11, 14, 22, 27, 28
+56. Hong, T., Kim, D., Ji, M., Hwang, W., Nam, D., Park, S.: Bros: A pre-trained
+language model focusing on text and layout for better key information extraction from documents. Proceedings of the AAAI Conference on Artificial Intelligence 36(10), 10767–10775 (Jun 2022). https://doi.org/10.1609/aaai.v36i10.21322,
+https://ojs.aaai.org/index.php/AAAI/article/view/21322 2, 3, 4, 7, 9, 10, 22,
+27
+57. Xu, Y., Li, M., Cui, L., Huang, S., Wei, F., Zhou, M.: Layoutlm: Pre-training of
+text and layout for document image understanding. In: Proceedings of the 26th
+ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. p. 1192–1200. KDD ’20, Association for Computing Machinery, New York,
+NY, USA (2020). https://doi.org/10.1145/3394486.3403172, https://doi.org/
+10.1145/3394486.3403172 2, 3, 7, 9, 10, 11, 14, 22, 28
+58.  Li, C., Bi, B., Yan, M., Wang, W., Huang, S., Huang, F., Si, L.: StructuralLM: Structural pre-training for form understanding. In: Proceedings of the
+59th Annual Meeting of the Association for Computational Linguistics and
+the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers). pp. 6309–6318. Association for Computational Linguistics, Online (Aug 2021). https://doi.org/10.18653/v1/2021.acl-long.493, https:
+//aclanthology.org/2021.acl-long.493 14
+59. Appalaraju, S., Jasani, B., Kota, B.U., Xie, Y., Manmatha, R.: Docformer: End-toend transformer for document understanding. In: Proceedings of the IEEE/CVF
+International Conference on Computer Vision (ICCV). pp. 993–1003 (October 2021) 14
