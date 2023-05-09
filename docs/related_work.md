@@ -701,8 +701,40 @@ still rely on a separate OCR to extract text information. Currently, most state-
 
 ## Article 15
 #### **Evaluation of Deep Convolutional Nets for Document Image Classification and Retrieval**
-- Evaluation of Deep Convolutional Nets for
-Document Image Classification and Retrieval
+
+[Link to the article](https://arxiv.org/pdf/1502.07058.pdf)
+
+**Authors:** Adam W. Harley, Alex Ufkes, and Konstantinos G. Derpanis \
+**Context:** Cited by: 317; Institutions: Ryerson University; Journal: IEEE, 2015 13th International Conference on Document Analysis and Recognition (ICDAR); Year: 2015 \
+**Abstract:** This paper presents a new state-of-the-art for document image classification and retrieval, using features learned
+by deep convolutional neural networks (CNNs). In object and
+scene analysis, deep neural nets are capable of learning a
+hierarchical chain of abstraction from pixel inputs to concise
+and descriptive representations. The current work explores this
+capacity in the realm of document analysis, and confirms that
+this representation strategy is superior to a variety of popular
+hand-crafted alternatives. Experiments also show that (i) features
+extracted from CNNs are robust to compression, (ii) CNNs trained
+on non-document images transfer well to document analysis tasks,
+and (iii) enforcing region-specific feature-learning is unnecessary
+given sufficient training data. This work also makes available a
+new labelled subset of the IIT-CDIP collection, containing 400,000
+document images across 16 categories, useful for training new
+CNNs for document analysis.
+**Takeaways:**
+- **Conclusion:** This paper established a new state-of-the-art for document
+image classification and retrieval, using features learned by
+deep convolutional neural networks (CNNs). Generic features
+extracted from a CNN trained on ImageNet exceeded the
+performance of the state-of-the-art alternatives, and fine-tuning
+these features on document images pushed results even higher.
+Interestingly, experiments also showed that given sufficient
+training data, enforcing region-specific feature-learning is unnecessary; a single CNN trained on entire images performed
+approximately as well as an ensemble of CNNs trained on
+specific subregions of document images. In all, this work
+showed that the CNN approach to document image representation exceeds the power of hand-crafted alternatives.
+
+
 
 ## Other references
 
