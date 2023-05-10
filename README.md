@@ -49,6 +49,10 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
     - [ ] Follow up
         - [ ] Done
         - [ ] To be done
+ - [ ] Deploy Models in HuggingFace with Gradio
+    - [ ] CNN
+    - [ ] NLP Binary Classifier
+    - [ ] NLP Topic Modeling
  - [ ] Test the Alerta + Logger + Intervention with ADHD users
  - [ ] Dashboards: Generate Visualizations from logs
  - [ ] Documentation
