@@ -63,9 +63,10 @@ class MLADHD():
         self.test_recall = None
         self.test_f1 = None
 
-        self.criterion = nn.BCELoss()
+        self.criterion = None
         self.model = None
-   
+        self.classes = None
+    
     def set_hyperparams(self, hyperparams):
         self.hyperparams = hyperparams
 
@@ -109,6 +110,7 @@ class MLADHD():
         #Creating the datasets
         #The number of classes will be the number of dirs
         data = datasets.ImageFolder(self.data_dir, transform=train_transf)
+        self.classes = len(data.classes)
 
         #Creating the train, valid and test sets using random_split
         train_size = int(percent[0] * len(data))
@@ -157,10 +159,17 @@ class MLADHD():
         self.model.fc = nn.Sequential(nn.Linear(fc_inputs, 512),
                                         nn.ReLU(),
                                         nn.Dropout(0.2),
-                                        nn.Linear(512, 1),
-                                        nn.Sigmoid())
+                                        nn.Linear(512, self.classes),
+                                        nn.LogSoftmax(dim=1))
         
-        self.criterion = nn.BCELoss()
+        # define the loss function
+        if self.hyperparams['loss'] == 'NLLLoss':
+            self.criterion = nn.NLLLoss()
+        elif self.hyperparams['loss'] == 'CrossEntropyLoss':
+            self.criterion = nn.CrossEntropyLoss()
+        else:
+            print("Choose a valid loss: NLLLoss, CrossEntropyLoss")
+            return None
     
     def train_model(self, save_model=True):
         """
@@ -367,25 +376,15 @@ class MLADHD():
         image = image.to(device)
         with torch.no_grad():
             self.model.eval()
-            output = self.model(image).cpu() # one neuron probability
+            output = self.model(image).cpu()
+            ps = torch.exp(output)
+            top_p, top_class = ps.topk(1, dim=1)
         
-        distracted_prob = round(output.item(), 2)
-        focused_prob = round(1 - output.item(), 2)
-        print("Distracted: ", distracted_prob)
-        print("Focused: ", focused_prob)
-
-        if distracted_prob > focused_prob:
-            top_p = distracted_prob
-            top_class = 1
-        else:
-            top_p = focused_prob
-            top_class = 0
-
         if raw_output:
             # class and probability
-            return top_class, top_p
+            return top_class.cpu().numpy()[0][0], top_p.cpu().numpy()[0][0]
         # real class, predicted class and probability
-        return os.path.split(os.path.split(image_path)[0])[1].split("_")[-1], idx_to_class[top_class], top_p
+        return os.path.split(os.path.split(image_path)[0])[1].split("_")[-1], idx_to_class[top_class.cpu().numpy()[0][0]], round(top_p.cpu().numpy()[0][0], 2)
 
     def test_random_images(self, data_dir, n_images=3):
         """
