@@ -20,7 +20,8 @@ INTERVAL = None # interval in seconds, None for no interval
 SCREENSHOT_COUNTER = 1
 DEPLOYMENT_PATH = os.path.join(os.getcwd(), '..', 'deployment')
 CLASSIFIER_PATH = os.path.join(os.getcwd(), '..', 'models')
-MODEL = "model_with_extended_dataset_resnet50_2023-04-20_11-24-17"
+CNN_MODEL = "model_with_extended_dataset_resnet50_2023-04-20_11-24-17"
+NLP_MODEL = "runs:/8747e2d5b450477eab8336fbd91179e2/model" # Run id mlflow
 SESSION_ID = None
 LOG_PATH = None
 
@@ -30,6 +31,9 @@ hyperparams = None
 classifier = None
 
 SCREENSHOT_PATH =  None
+
+WINDOW = 5
+LAST_PREDICTIONS = []
 
 # Mention the installed location of Tesseract-OCR in your system
 pytesseract.pytesseract.tesseract_cmd = "E:\\Users\\ADHD Project\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe"
@@ -42,11 +46,6 @@ def start_session():
     global SCREENSHOT_COUNTER
     global hyperparams
     global classifier
-
-    with open(os.path.join(CLASSIFIER_PATH, MODEL+".json"), "r") as fp:
-        hyperparams = json.load(fp)
-    classifier = MLADHD(model_name, None, CLASSIFIER_PATH, hyperparams)
-    classifier.load_model(os.path.join(CLASSIFIER_PATH, MODEL+".pth"))
 
     if SESSION_ID is None:
         SESSION_ID = time.strftime('%Y%m%d_%H%M%S')
@@ -61,7 +60,7 @@ def start_session():
     
     with open(os.path.join(LOG_PATH, f"{SESSION_ID}.csv"), "w", newline='', encoding='utf-8') as fp:
         wr = csv.writer(fp, delimiter=';')
-        wr.writerow(["timestamp", "screenshot", "text", "prediction", "probability"])
+        wr.writerow(["timestamp", "screenshot", "text", "prediction", "probability", "type"])
 
 def take_screenshot():
     global SCREENSHOT_COUNTER
@@ -141,46 +140,62 @@ def distraction_detection(img):
     pred, prob = classifier.predict(img, raw_output=True)
     return pred, prob
 
-def log(log_dir, screenshot_filename, text, pred, prob):
+def log(log_dir, screenshot_filename, text, pred, prob, type):
     # write a line to the log file
     with open(os.path.join(log_dir, f"{SESSION_ID}.csv"), "a", newline='', encoding='utf-8') as fp:
         wr = csv.writer(fp, delimiter=';')
-        wr.writerow([time.strftime('%Y%m%d_%H%M%S'), screenshot_filename, text, pred, prob])
+        wr.writerow([time.strftime('%Y%m%d_%H%M%S'), screenshot_filename, text, pred, prob, type])
 
 def main(argv):
-    mode = "both"
-    if len(argv) > 0:
+    global classifier
+    if len(argv) == 1:
         if argv[0] == "cnn":
             mode = "cnn"
         elif argv[0] == "text":
             mode = "text"
-        elif argv[0] == "both":
-            mode = "both"
+            sk_model = mlflow.sklearn.load_model(NLP_MODEL)
         else:
-            print("Invalid argument. Usage: python screenshotter.py [cnn|text|both]")
+            print("Invalid argument. Usage: python screenshotter.py [cnn|text]")
             sys.exit(2)
+    elif len(argv) == 0:
+        mode = "cnn"
+    else:
+        print("Invalid argument. Usage: python screenshotter.py [cnn|text]")
+        sys.exit(2)
+    if mode == "cnn":
+        with open(os.path.join(CLASSIFIER_PATH, CNN_MODEL+".json"), "r") as fp:
+            hyperparams = json.load(fp)
+            classifier = MLADHD(model_name, None, CLASSIFIER_PATH, hyperparams)
+            classifier.load_model(os.path.join(CLASSIFIER_PATH, CNN_MODEL+".pth"))
+    print("Starting session with {} model.".format(mode))
     start_session()
     while True:
         start = time.time()
+        print("Screenshot #", SCREENSHOT_COUNTER)
+        screenshot_filename = take_screenshot()
+        print("Processing screenshot ({}).".format(screenshot_filename))
         if mode == "cnn":
-            print("Screenshot #", SCREENSHOT_COUNTER)
-            screenshot_filename = take_screenshot()
-            print("Processing screenshot ({}).".format(screenshot_filename))
             pred, prob = distraction_detection(os.path.join(SCREENSHOT_PATH, screenshot_filename))
-            if pred == 1:
-                winsound.Beep(frequency1, duration)
-                print("Predicted: distracted")
-            else:
-                winsound.Beep(frequency2, duration)
-                print("Predicted: focused")
-            log(LOG_PATH, screenshot_filename, None, pred, prob)
-        if mode == "slow":
+            LAST_PREDICTIONS.append(pred)
+            if len(LAST_PREDICTIONS) > WINDOW:
+                LAST_PREDICTIONS.pop(0)
+            text = None
+        else:
             img = cv2.imread(os.path.join(SCREENSHOT_PATH, screenshot_filename))
             dilated_img = process_screenshot(img)
             contours = bounding_box(dilated_img)
             text = OCR(img, contours)
+            pred = sk_model.predict([text])
+            pred = pred[0]
+            prob = None
             print("Text extracted")
-            log(LOG_PATH, None, text, None, None)
+        if len(LAST_PREDICTIONS) == WINDOW and 1 == LAST_PREDICTIONS[0] == LAST_PREDICTIONS[1] == LAST_PREDICTIONS[2]:
+            winsound.Beep(frequency2, duration)
+            print("Predicted: distracted")
+        else:
+            # winsound.Beep(frequency1, duration)
+            print("Predicted: focused")
+        log(LOG_PATH, screenshot_filename, text, pred, prob, mode)
         elapsed = time.time() - start
         print("Logged | Time elapsed: ", round(elapsed, 2), "seconds")
         if INTERVAL is not None and time.time() - start < INTERVAL:
