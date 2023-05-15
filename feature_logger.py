@@ -4,6 +4,7 @@ import pytesseract
 import time
 import os
 import csv
+import sys
 import concurrent.futures
 import pyautogui
 from mlmodeling import *
@@ -146,28 +147,40 @@ def log(log_dir, screenshot_filename, text, pred, prob):
         wr = csv.writer(fp, delimiter=';')
         wr.writerow([time.strftime('%Y%m%d_%H%M%S'), screenshot_filename, text, pred, prob])
 
-def main():
+def main(argv):
+    mode = "both"
+    if len(argv) > 0:
+        if argv[0] == "cnn":
+            mode = "cnn"
+        elif argv[0] == "text":
+            mode = "text"
+        elif argv[0] == "both":
+            mode = "both"
+        else:
+            print("Invalid argument. Usage: python screenshotter.py [cnn|text|both]")
+            sys.exit(2)
     start_session()
     while True:
         start = time.time()
-        print("Screenshot #", SCREENSHOT_COUNTER)
-        screenshot_filename = take_screenshot()
-        print("Processing screenshot ({}).".format(screenshot_filename))
-        img = cv2.imread(os.path.join(SCREENSHOT_PATH, screenshot_filename))
-        dilated_img = process_screenshot(img)
-        contours = bounding_box(dilated_img)
-        text = OCR(img, contours)
-        print("Text extracted")
-        pred, prob = distraction_detection(os.path.join(SCREENSHOT_PATH, screenshot_filename))
-        if pred == 1:
-            winsound.Beep(frequency1, duration)
-            print("Predicted: distracted")
-        else:
-            winsound.Beep(frequency2, duration)
-            print("Predicted: focused")
-        
-        log(LOG_PATH, screenshot_filename, text, pred, prob)
-
+        if mode == "cnn":
+            print("Screenshot #", SCREENSHOT_COUNTER)
+            screenshot_filename = take_screenshot()
+            print("Processing screenshot ({}).".format(screenshot_filename))
+            pred, prob = distraction_detection(os.path.join(SCREENSHOT_PATH, screenshot_filename))
+            if pred == 1:
+                winsound.Beep(frequency1, duration)
+                print("Predicted: distracted")
+            else:
+                winsound.Beep(frequency2, duration)
+                print("Predicted: focused")
+            log(LOG_PATH, screenshot_filename, None, pred, prob)
+        if mode == "slow":
+            img = cv2.imread(os.path.join(SCREENSHOT_PATH, screenshot_filename))
+            dilated_img = process_screenshot(img)
+            contours = bounding_box(dilated_img)
+            text = OCR(img, contours)
+            print("Text extracted")
+            log(LOG_PATH, None, text, None, None)
         elapsed = time.time() - start
         print("Logged | Time elapsed: ", round(elapsed, 2), "seconds")
         if INTERVAL is not None and time.time() - start < INTERVAL:
@@ -175,4 +188,5 @@ def main():
             print("Sleeping for ", round(sleeping, 2), "seconds")
             time.sleep(INTERVAL - (time.time() - start))
 
-main()
+if __name__ == "__main__":
+   main(sys.argv[1:])
