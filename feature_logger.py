@@ -5,6 +5,7 @@ import time
 import os
 import csv
 import sys
+import shutil
 import concurrent.futures
 import pyautogui
 from mlmodeling import *
@@ -16,11 +17,14 @@ duration = 1000  # Set Duration To 1000 ms == 1 second
 
 
 # Global variables
-INTERVAL = None # interval in seconds, None for no interval
+INTERVAL = 3 # interval in seconds, None for no interval
+WINDOW = 3 # look at the last {WINDOW} screenshots for intervention
+LAST_PREDICTIONS = []
+
 SCREENSHOT_COUNTER = 1
 DEPLOYMENT_PATH = os.path.join(os.getcwd(), '..', 'deployment')
 CLASSIFIER_PATH = os.path.join(os.getcwd(), '..', 'models')
-CNN_MODEL = "model_with_extended_dataset_resnet50_2023-04-20_11-24-17"
+CNN_MODEL = "resnet50_xlarge_resnet50_2023-05-19_21-41-02"
 NLP_MODEL = "runs:/8747e2d5b450477eab8336fbd91179e2/model" # Run id mlflow
 SESSION_ID = None
 LOG_PATH = None
@@ -31,9 +35,8 @@ hyperparams = None
 classifier = None
 
 SCREENSHOT_PATH =  None
-
-WINDOW = 5
-LAST_PREDICTIONS = []
+FOCUSED_PATH = None
+DISTRACTED_PATH = None
 
 # Mention the installed location of Tesseract-OCR in your system
 pytesseract.pytesseract.tesseract_cmd = "E:\\Users\\ADHD Project\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe"
@@ -42,6 +45,8 @@ def start_session():
     
     global SESSION_ID
     global SCREENSHOT_PATH
+    global FOCUSED_PATH
+    global DISTRACTED_PATH
     global LOG_PATH
     global SCREENSHOT_COUNTER
     global hyperparams
@@ -53,6 +58,14 @@ def start_session():
     SCREENSHOT_PATH =  os.path.join(DEPLOYMENT_PATH, SESSION_ID, "screenshots")
     if not os.path.exists(SCREENSHOT_PATH):
         os.makedirs(SCREENSHOT_PATH)
+    
+    # make a dir for focused and distracted screenshots
+    FOCUSED_PATH = os.path.join(SCREENSHOT_PATH, "focused")
+    if not os.path.exists(FOCUSED_PATH):
+        os.makedirs(FOCUSED_PATH)
+    DISTRACTED_PATH = os.path.join(SCREENSHOT_PATH, "distracted")
+    if not os.path.exists(DISTRACTED_PATH):
+        os.makedirs(DISTRACTED_PATH)
     
     LOG_PATH = os.path.join(DEPLOYMENT_PATH, SESSION_ID, "log")
     if not os.path.exists(LOG_PATH):
@@ -148,6 +161,10 @@ def log(log_dir, screenshot_filename, text, pred, prob, type):
 
 def main(argv):
     global classifier
+    global LAST_PREDICTIONS
+    # cnn: use the CNN model for distraction detection, no OCR is performed
+    # text: use the text model for distraction detection, OCR is performed on the screenshots
+    # Parse arguments and load model. If no argument is given, use CNN by default
     if len(argv) == 1:
         if argv[0] == "cnn":
             mode = "cnn"
@@ -169,11 +186,15 @@ def main(argv):
             classifier.load_model(os.path.join(CLASSIFIER_PATH, CNN_MODEL+".pth"))
     print("Starting session with {} model.".format(mode))
     start_session()
+    
+    # Start the session loop. Take screenshot -> process -> predict -> log -> repeat
     while True:
         start = time.time()
         print("Screenshot #", SCREENSHOT_COUNTER)
         screenshot_filename = take_screenshot()
         print("Processing screenshot ({}).".format(screenshot_filename))
+        
+        # Classify the screenshot
         if mode == "cnn":
             pred, prob = distraction_detection(os.path.join(SCREENSHOT_PATH, screenshot_filename))
             LAST_PREDICTIONS.append(pred)
@@ -181,6 +202,8 @@ def main(argv):
                 LAST_PREDICTIONS.pop(0)
             text = None
         else:
+            
+            # Read -> process -> OCR -> predict
             img = cv2.imread(os.path.join(SCREENSHOT_PATH, screenshot_filename))
             dilated_img = process_screenshot(img)
             contours = bounding_box(dilated_img)
@@ -189,13 +212,29 @@ def main(argv):
             pred = pred[0]
             prob = None
             print("Text extracted")
-        if len(LAST_PREDICTIONS) == WINDOW and 1 == LAST_PREDICTIONS[0] == LAST_PREDICTIONS[1] == LAST_PREDICTIONS[2]:
+        
+        # Move the screenshot to the focused or distracted folder based on the prediction
+        if pred == 0:
+            shutil.move(os.path.join(SCREENSHOT_PATH, screenshot_filename), os.path.join(FOCUSED_PATH, screenshot_filename))
+        else:
+            shutil.move(os.path.join(SCREENSHOT_PATH, screenshot_filename), os.path.join(DISTRACTED_PATH, screenshot_filename))
+        
+        # INTERVENTION: if the last {WINDOW} predictions are distracted, play a sound
+        if len(LAST_PREDICTIONS) == WINDOW and LAST_PREDICTIONS[ : WINDOW] == [1] * WINDOW:
             winsound.Beep(frequency2, duration)
             print("Predicted: distracted")
+            # to avoid multiple beeps
+            LAST_PREDICTIONS = [0] * WINDOW
         else:
             # winsound.Beep(frequency1, duration)
             print("Predicted: focused")
+        
+
+        
+        # Log the prediction
         log(LOG_PATH, screenshot_filename, text, pred, prob, mode)
+        
+        # Sleep for the remaining time of the interval (if any)
         elapsed = time.time() - start
         print("Logged | Time elapsed: ", round(elapsed, 2), "seconds")
         if INTERVAL is not None and time.time() - start < INTERVAL:
