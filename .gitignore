@@ -14,6 +14,9 @@ mlruns/**/artifacts/models/*
 # Visual Studio
 .vs/
 
+# fastText
+*.vec
+
 # Environments
 .env
 .venv
