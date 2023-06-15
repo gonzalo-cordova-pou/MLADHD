@@ -35,7 +35,7 @@ topic_keywords = {
 course_groups = {
     'ComputerScience': ['Algorithms', 'VRdevelopment', 'ComputerScience'],
     'Chemistry': ['Chemistry', 'PhysicalChemistry'],
-    'Physics': ['Physics'],
+    'Physics': ['Physics', 'GeneralPhysics'],
     'Math&Statistics': ['Data Analytics', 'QuantitativeAnalysis', 'LinearAlgebra'],
     'Pharma' : ['Pharmacology'],
     'Biology': ['Biology', 'Genetics', 'DrugBiology', 'Neuroscience', 'Phisiology'],
