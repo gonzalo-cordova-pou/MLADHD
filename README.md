@@ -1,123 +1,36 @@
-# MLADHD
+# Computer Screenshot Classification for Boosting ADHD Productivity in a VR environment
 
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org/downloads/release/python-3100/)
 
-This repository contains the code for the project "Machine Learning for ADHD" at the Virginia Commonwealth University.
+This repository contains the code for the author's Bachelor's Thesis. You can find the written report [here]().
+- **Title**: Computer Screenshot Classification for Boosting ADHD Productivity in a VR environment
+- **Author**: Gonzalo Córdova Pou
+- **Supervisor**: Silverio Martínez-Fernández, Department of Service and Information System Engineering
+- **Institution**: Universitat Politècnica de Catalunya (UPC)
+    - Schools: Barcelona school of Informatics, Barcelona School of Telecommunications Engineering, School of Mathematics and Statistics
+- **Co-supervisors**: David C. Shepherd (Louisiana State University), Juliana Souza (Virginia Commonwealth University)
 
-## TODOs
+Individuals with ADHD face significant challenges in their daily lives due to difficulties with attention, hyperactivity, and impulsivity. These challenges are especially pronounced in the workplace or educational settings, where the ability to sustain attention and manage time effectively is crucial for success. Virtual reality (VR) software has emerged as a promising tool for improving productivity in individuals with ADHD. However, the effectiveness of such software depends on the identification of potential distractions and timely intervention.
 
-- [X] Add a README.md file to the repository
-- [X] Agree on a Python version (suggestion: 3.10)
-- [X] Migrate data to a cloud storage (suggestion: AWS S3 or Google Drive)
-- [X] Finish related work document
-    - [X] Summarize key takeaways
-- [X] Create ML Training System
-    - [X] Create a notebook to train models
-    - [X] Mount data in Google Colab from Google Drive
-    - [X] Clone repo in Google Colab
-    - [X] Set hyperparameters as global variables
-    - [X] Implement ML tracking tool (suggestion: MLFlow or WandB)
-    - [X] Set up GPU (cuda) local training
-    - [X] Energy Consumption Tracker ~[NVIDIA System Management Interface program](https://developer.download.nvidia.com/compute/DCGM/docs/nvidia-smi-367.38.pdf)~ using [CodeCarbon](https://github.com/mlco2/codecarbon)
-    - [X] Add new metrics: Precision and F1-Score
-- [X] Modify `MLADHD` to support binary/multiclass classifier and freezed/unfreezed experiments
-- [X] Create a notebook for wrong output analysis
-- [X] Read: [Requirements Engineering for Machine Learning:
-Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
-- [X] Start Overleaf project
-- [ ] Deploy the CNN-based binary classifier to Alerta
-    - [X] Paralel extraction and classification of screenshots
-        - [X] Extract screenshots from Alerta (screenshotter)
-        - [X] Classify screenshots (classifier) 
-    - [ ] Alerta Intervention
-- [X] Using text recognition techniques 
-    - [X] Implement OpenCV + Tesseract OCR to extract text from screenshots
-    - [X] Fine-tune the method for the screenshots
-- [ ] NLP
-    - [X] Test Topic Modeling with ChatGPT
-    - [ ] Explore Topic Modeling with LLMs
-        - [ ] Talk to NLP expert
-    - [X] Create a dataset with text from screenshots
-    - [ ] Train/Code a model with the text dataset
-        - [ ] Topic Modeling
-        - [X] Binary Classifier: Focused / Distracted
- - [ ] Write the Follow-up report
-    - [ ] Introduction
-    - [ ] Related work
-    - [ ] Goals
-    - [ ] Solution
-    - [ ] Follow up
-        - [ ] Done
-        - [ ] To be done
- - [ ] Deploy Models in HuggingFace with Gradio
-    - [X] CNN
-    - [ ] NLP Binary Classifier
-    - [ ] NLP Topic Modeling
- - [ ] Test the Alerta + Logger + Intervention with ADHD users
- - [ ] Dashboards: Generate Visualizations from logs
- - [ ] Documentation
-    - [ ] final README
-    - [ ] Dataset Card
-    - [ ] Model Card
-    - [ ] Thesis document
-        - [ ] Abstract
-        - [ ] Introduction
-        - [ ] Related work
-        - [ ] Goals
-        - [ ] Solution
-        - [ ] Results and evaluation
-        - [ ] Concclusions
-        - [ ] Future work
- - [ ] Reproducibility
+The proposed computer screenshot classification approach addresses this need by providing a means for identifying and analyzing potential distractions within VR software. By integrating Convolutional Neural Networks (CNNs), Optical Character Recognition (OCR), and Natural Language Processing (NLP), the proposed approach can accurately classify screenshots and extract features, facilitating the identification of distractions and enabling timely intervention to minimize their impact on productivity.
+
+The implications of this research are significant, as ADHD affects a substantial portion of the population and has a significant impact on productivity and quality of life. By providing a novel approach for studying, detecting, and enhancing productivity, this research has the potential to improve outcomes for individuals with ADHD and increase the efficiency and effectiveness of workplaces and educational settings. Moreover, the proposed approach holds promise for wider applicability to other productivity studies involving computer users, where the classification of screenshots and feature extraction play a crucial role in discerning behavioral patterns.
 
 ## Index
 
-1. [New updates](#new-updates)
-2. [Structure](#structure)
+1. [Repository structure](#repository-structure)
+2. [Related Work](#related-work)
 3. [Data](#data)
-4. [Experiment guide](#experiment-guide)
 5. [Experiment tracking](#experiment-tracking)
-6. [Wrong predictions analysis](#wrong-predictions-analysis)
-7. [Related Work](#related-work)
 
 ---
 
-## New updates
-
-- **[15 Dec 2022]** I have created a notebook (`Experiment.ipynb`) to be executed in Google Colaboratory (you can open a GitHub file in Google Colab). This notebook mounts the Drive data (from the shared folder) and clones the repo. By doing this, we can train / test models in Google GPUs using the updated data from the Drive and the functions we code in the repo.
-- **[07 Jan 2023]** I have made quite a few modifications to the `mlmodeling.py` file. These include a refactoring of code to handle experiments with a class. I have also parameterized all the hyperparameters so that I can initialize them with the experiment.
-- **[07 Jan 2023]** I have created a new notebook (`Experiment_wandb.ipynb`) and made the necessary modifications to include experiment tracking with [Weights & Biases](https://wandb.ai/site). This is not the final version, but a preliminary to show how can it be used. WandB is a central dashboard to keep track of your hyperparameters, system metrics, and predictions so you can compare models live, and share your findings.
-- **[23 Feb 2023]** We decided to work with a binary classifier for now. See [Experiment guide](#experiment-guide) for more info.
-- **[09 Mar 2023]** Updates in the MLADHD class in `mlmodeling.py` file:
-    - *load_model* method to load a model from pretrained weights
-    - *predict* to make a prediction of a single image
-    - *test_random_images* to make prediction of N random images and see results
-- **[09 Mar 2023]** The (`Experiment.ipynb`) notebook has been updated with new sections:
-    - A one image prediction
-    - N random images prediction
-    - Wrong predictions analysis
-- **[23 Mar 2023]** The (`Experiment.ipynb`) notebook has been forked to two versions:
-    - (`Experiment_colab.ipynb`) For training in Google Colab (+ Drive) enviroment.
-    - (`Experiment_local.ipynb`) For training in Local (+ Local storage) enviroment.\
-    **ML Tracking system** is up and running in local enviroment.\
-    **GPU is available** for use in local enviroment (empirical boost on speed shown).
-- **[27 Mar 2023]** New dataset with +92% samples.
-- **[27 Mar 2023]** CO2 Emission tracker implemented.
-- **[11 Apr 2023]** Related work document finished.
-- **[11 Apr 2023]** Screenshotter implemented.
-- **[17 Apr 2023]** New `screenshotter.py` for data collection with real-time prediction
-- **[19 Apr 2023]** New dataset. Name: `data_clean_large` (11k samples) (+175% wrt previous)
-- **[20 Apr 2023]** New notebook (`NLP.ipynb`) to test NLP techniques.
-
----
-
-## Structure
+## Repository Structure
 
 
 - `docs`: Documentation files.
     - `related_work.md`: Related work document.
 - `mlruns`: MLFlow tracking files.
-- `DriftDetector.ipynb`: Notebook to test the drift detector.
 - `Experiment_colab.ipynb`: Notebook to run experiments in Google Colab.
 - `Experiment_local.ipynb`: Notebook to run experiments in local environment.
 - `LocalDatasetPreprocessing.ipynb`: Notebook to preprocess the local dataset (from raw to structured).
@@ -128,6 +41,12 @@ Perspectives from Data Scientists](https://arxiv.org/pdf/1908.04674.pdf)
 - `image2text.py`: Script to create a text dataset from the image dataset (using OCR).
 - `mlmodeling.py`: Script with the ML modeling functions.
 - `screenshotter.py`: Script to take screenshots and save them in the local storage (for data collection). Sound effects are also included with real-time prediction.
+
+---
+
+## Related Work
+
+You can find the related work in the [related_work](/docs/related_work.md) file.
 
 ---
 
@@ -173,58 +92,8 @@ However, as with any application of Deep Learning for Computer Vision, it is sti
 
 ![img1](https://user-images.githubusercontent.com/71346949/225948123-11ed82f4-e9f4-4d9c-9051-5a3137c273ea.png) ![image](https://user-images.githubusercontent.com/71346949/225976126-06261c12-1024-4a1f-b492-fec5d61288ae.png)
 
-
----
-
-## Experiment guide
-
- 1. The first set of experiments will be focused in training a binary classifier.
-    - Performance metrics analysis
-    - Wrong output analysis
- 2. Based on the results above we will decide on:
-    - Creating new classes (multiclass classifier instead of binary)
-    - Introducing new ML techniques and features (eg. OCR + NLP)
- 3. Redo the experiments with the new changes
-    - Performance metrics analysis
-    - Wrong output analysis
-
 ---
 
 ## Experiment tracking
 
-We decided to use [mlflow](https://mlflow.org/) to track our experiments. You can read the official documentation [here](https://mlflow.org/docs/latest/tracking.html).
-
----
-
-## Wrong predictions analysis
-
-In this section we will analyze the wrong predictions made by the model. We will try to understand why the model made the wrong prediction and try to improve the model.
-
-- **Experiment 1**
-    - **Model**: test_newData_resnet50_2023-03-08_16-51-52
-    - **Dataset**: 2219 images (66.79% focused, 33.21% distracted)
-    - **Training**: 1553 images
-    - **Validation**: 221 images
-    - **Testing**: 200 images
-    - **Results**:
-        - **Accuracy**: 0.99
-        - **Precision**: 0.99
-        - **Recall**: 0.99
-        - **F1**: 0.99
-    - **Wrong predictions for the full dataset**:
-        - 6 focused images classified as distracted
-        - 2 distracted images classified as focused
-
-Interesting cases:
-
-- work_Genetics_partial_767.jpg and work_Literature_one_811.jpg: The model classified these images as distracted because it is a screenshot of the desktop + the OBS window. For a human, it is not clear if the person is focused or distracted. The model predicts distracted, but the probability () shows that the decision is not very clear.
-
-- work_Genetics_partial_789.jpg: in this case we see a divided screen. One side is focused (the person is reading a document in WordPad) and the other side could be considered distracted (you can see gossip news in the browser). The model predicts distracted, but the probability () shows that the decision is not very clear.
-
----
-
-## Related Work
-
-You can find the related work in the [related_work](/docs/related_work.md) file.
-
----
+In the development of our machine learning project, we adopted the use of the [MLflow Python library](https://mlflow.org/). MLflow is a comprehensive platform designed to facilitate and streamline the process of machine learning development. It offers functionalities for experiment tracking, packaging code into reproducible runs, and enables sharing and deployment of models.
