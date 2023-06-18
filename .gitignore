@@ -9,7 +9,7 @@
 # mlruns/
 
 # Models
-mlruns/**/artifacts/models/*
+./mlruns/
 
 # Visual Studio
 .vs/
