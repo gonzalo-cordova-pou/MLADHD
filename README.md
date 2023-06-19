@@ -188,3 +188,16 @@ biases (e.g. location, operating system, desktop background) due to the specific
 were developed.*
 
 ---
+
+## License
+
+Distributed under the MIT License. See LICENSE.txt for more information.
+
+---
+
+## Contact
+
+Gonzalo Córdova Pou
+
+<a href="https://www.linkedin.com/in/gonzalo-cordova-pou"><img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+ <a href="mailto:gonzalocp6@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"></a>
