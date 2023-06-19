@@ -2,7 +2,7 @@
 
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org/downloads/release/python-3100/)
 
-This repository contains the code for the author's Bachelor's Thesis. You can find the written report [here]().
+This repository contains the code for the author's Bachelor's Thesis. You can find the written report [here](/docs/GonzaloCordova_TFG.pdf).
 - **Title**: Computer Screenshot Classification for Boosting ADHD Productivity in a VR environment
 - **Author**: Gonzalo Córdova Pou
 - **Supervisor**: Silverio Martínez-Fernández, Department of Service and Information System Engineering
@@ -29,6 +29,7 @@ The implications of this research are significant, as ADHD affects a substantial
 
 
 - `docs`: Documentation files.
+    - `GonzaloCordova_TFG.pdf`: Bachelor's Thesis report.
 - `.codecarbon.config`: Configuration file for the CodeCarbon tool.
 - `.gitignore`: Git ignore file.
 - `CNNclassifier.py`: Python module with the CNN model and the functions to train, test and predict.
