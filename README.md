@@ -179,7 +179,7 @@ Results:
 
 **For those seeking to directly test and utilize the Distraction Detector (CNN binary classification model) we have provided a Hugging Face Space:**
 
-<a href="https://huggingface.co/spaces/mladhd/DistractionDetecto"><img alt="Open in Spaces" src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-xl-dark.svg"></a>
+<a href="https://huggingface.co/spaces/mladhd/TopicDeTextor"><img alt="Open in Spaces" src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-xl-dark.svg"></a>
 
 *Disclaimer: It is important to acknowledge that the training, testing, and deployment
 experiments of the models were conducted within the constraints and controlled domain of the Alerta
