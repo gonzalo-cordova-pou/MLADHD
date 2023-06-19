@@ -117,15 +117,12 @@ were developed.*
 
 Results:
 
-| Accuracy | F1-score | Precision | Recall | Model |
-| --- | --- | --- | --- | --- |
-| 0.962 | 0.944 | 0.938 | 0.95 | Random Forest |
-| 0.928 | 0.89 | 0.976 | 0.818 | Multinomial Naive Bayes |
-| 0.667 | 0.15 | 1 | 0.081 | Logistic Regression (C = 0.01) |
-| 0.904 | 0.841 | 0.98 | 0.736 | Logistic Regression (C = 0.1) |
-| 0.966 | 0.951 | 0.967 | 0.935 | Logistic Regression (C = 1) |
-| 0.972 | 0.959 | 0.978 | 0.941 | Logistic Regression (C = 2) |
-| 0.968 | 0.953 | 0.965 | 0.941 | Logistic Regression (C = 5) |
+| Frozen | Optimizer | Batch size | Learning rate | Accuracy | F1-score | Precision | Recall |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| False | Adam | 128 | 0.01 | 0.951 | 0.951 | 0.955 | 0.951 |
+| False | Adam | 128 | 0.001 | 0.99 | 0.99 | 0.99 | 0.99 |
+| False | Adam | 128 | 0.0001 | 0.992 | 0.992 | 0.992 | 0.992 |
+| False | Adam | 64 | 0.001 | 0.992 | 0.992 | 0.993 | 0.992 |
 
 <a href="https://energy-label.streamlit.app/About#about"><img src="./docs/images/EfficiencyLabel.png"   height="300"> </a>
 
@@ -146,6 +143,19 @@ Results:
 - You can use the `NLP_BinaryClassifier_demo.ipynb` notebook to load and test the Binary Classifier.
 
 ![NLP Classifier diagram](./docs/images/NLPdiagram.png)
+
+Results:
+
+| Accuracy | F1-score | Precision | Recall | Model |
+| --- | --- | --- | --- | --- |
+| 0.962 | 0.944 | 0.938 | 0.95 | Random Forest |
+| 0.928 | 0.89 | 0.976 | 0.818 | Multinomial Naive Bayes |
+| 0.667 | 0.15 | 1 | 0.081 | Logistic Regression (C = 0.01) |
+| 0.904 | 0.841 | 0.98 | 0.736 | Logistic Regression (C = 0.1) |
+| 0.966 | 0.951 | 0.967 | 0.935 | Logistic Regression (C = 1) |
+| 0.972 | 0.959 | 0.978 | 0.941 | Logistic Regression (C = 2) |
+| 0.968 | 0.953 | 0.965 | 0.941 | Logistic Regression (C = 5) |
+
 
 ---
 
