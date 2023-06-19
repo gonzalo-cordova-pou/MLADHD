@@ -5,10 +5,10 @@
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# MLflow
-# mlruns/
+# Visualizations
+Visualizations.ipynb
 
-# Models
+# MLflow
 ./mlruns/
 
 # Visual Studio
