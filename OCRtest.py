@@ -3,13 +3,11 @@ import os
 import numpy as np
 import pytesseract
 
-imagePath = "F:\\Alerta Backup Data\\gonzalo_data\\datasets\\image\\sample_dataset\\"
-outputPath = "F:\\Alerta Backup Data\\gonzalo_data\\OCR\\"
-
-imagePath = 'E:\\mladhd\\datasets\\data_clean_large\\'
+imagePath = ".\\sample_dataset\\"
+outputPath = ".\\results\\"
 
 # Mention the installed location of Tesseract-OCR in your system
-pytesseract.pytesseract.tesseract_cmd = "E:\\Users\\ADHD Project\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "tesseract.exe"
 
 # For each folder in the dataset
 for folder in os.listdir(imagePath):
