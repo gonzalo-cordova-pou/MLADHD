@@ -1,6 +1,9 @@
 # Computer Screenshot Classification for Boosting ADHD Productivity in a VR environment
 
-[![Python 3.10](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org/downloads/release/python-3100/) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white)
+[![Python 3.10](https://img.shields.io/badge/python-3.10-blue)](https://www.python.org/downloads/release/python-3100/) <a href="https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
+  </a>
+  ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white)
 
 **This repository contains the code for the author's Bachelor's Thesis. You can find the written report [here](/docs/GonzaloCordova_TFG.pdf).**
 - **Title**: Computer Screenshot Classification for Boosting ADHD Productivity in a VR environment
@@ -189,15 +192,29 @@ were developed.*
 
 ---
 
-## License
+## 🤝 Contributing
 
-Distributed under the MIT License. See LICENSE.txt for more information.
+Contributions, issues and feature requests are welcome.<br />
+Feel free to check [issues page](https://github.com/gonzalo-cordova-pou/MLADHD/issues) if you want to contribute.<br />
 
 ---
 
-## Contact
+## Author
 
-Gonzalo Córdova Pou
+👤 **Gonzalo Córdova Pou**
 
 <a href="https://www.linkedin.com/in/gonzalo-cordova-pou"><img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
  <a href="mailto:gonzalocp6@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"></a>
+
+ Institutions:
+
+ - [Universitat Politècnica de Catalunya (UPC) - Barcelona School of Informatics (FIB)](https://www.fib.upc.edu/en)
+    - [GESSI Research Group](https://gessi.upc.edu/en)
+- [Virginia Commonwealth University (VCU) - School of Engineering](https://egr.vcu.edu/)
+
+ ---
+
+## 📝 License
+
+Copyright © 2023 [Gonzalo Córdova Pou](https://github.com/gonzalo-cordova-pou).<br />
+This project is [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE) licensed.
