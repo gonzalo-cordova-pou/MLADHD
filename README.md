@@ -29,18 +29,26 @@ The implications of this research are significant, as ADHD affects a substantial
 
 
 - `docs`: Documentation files.
-    - `related_work.md`: Related work document.
-- `mlruns`: MLFlow tracking files.
-- `Experiment_colab.ipynb`: Notebook to run experiments in Google Colab.
-- `Experiment_local.ipynb`: Notebook to run experiments in local environment.
+- `.codecarbon.config`: Configuration file for the CodeCarbon tool.
+- `.gitignore`: Git ignore file.
+- `CNNclassifier.py`: Python module with the CNN model and the functions to train, test and predict.
+- `distraction_detector_lab.py`: Distraction Detector Loop with intervention (CNN model, for testing intervention parameters).
+- `distraction_detector.py`: Distraction Detector Loop with intervention (CNN model, for deployment).
+- `environment.yml`: Conda environment file.
+- `Experiment_colab.ipynb`: Notebook to run experiments(train, test...) for the CNN Distraction Detector in Google Colab.
+- `Experiment_local.ipynb`: Notebook to run experiments (train, test...) for the CNN Distraction Detector in local environment. Main notebook used for the experiments during the development of the project.
+- `image2text.py`: Script to create a text dataset from the image dataset (using OCR).
 - `LocalDatasetPreprocessing.ipynb`: Notebook to preprocess the local dataset (from raw to structured).
-- `NLP.ipynb`: Notebook to test NLP techniques (Binary classifier).
-- `OCRtest.py`: Script to test OCR techniques.
-- `emissions.csv`: CSV file with the CO2 emissions of the training experiments.
+- `NLP_BinaryClassifier_demo.ipynb`: Demo notebook to load and test the Binary Classifier.
+- `NLP_BinaryClassifier.ipynb`: Notebook to train and test the Binary Classifier model.
+- `NLPutils.py`: Python module with the functions to preprocess the text data and apply NLP techniques for topic modeling.
+- `OCRtest.py`: Script to test OCR techniques on screenshots.
+- `README.md`: This file.
+- `requirements.txt`: Python requirements file.
 - `feature_logger.py`: Script to take screenshots and log the feature extraction (text and class).
 - `image2text.py`: Script to create a text dataset from the image dataset (using OCR).
-- `mlmodeling.py`: Script with the ML modeling functions.
-- `screenshotter.py`: Script to take screenshots and save them in the local storage (for data collection). Sound effects are also included with real-time prediction.
+- `BinaryClassifier_demo.ipynb`: Notebook to test the Binary Classifier.
+- `TopicModeling.ipynb`: Notebook showcasing the topic modeling process.
 
 ---
 
