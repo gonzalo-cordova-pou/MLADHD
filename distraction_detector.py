@@ -8,7 +8,7 @@ import sys
 import shutil
 import concurrent.futures
 import pyautogui
-from mlmodeling import *
+from CNNclassifier import *
 import winsound
 
 frequency1 = 2500  # Set Frequency To 2500 Hertz, 
@@ -39,7 +39,7 @@ FOCUSED_PATH = None
 DISTRACTED_PATH = None
 
 # Mention the installed location of Tesseract-OCR in your system
-pytesseract.pytesseract.tesseract_cmd = "E:\\Users\\ADHD Project\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "tesseract.exe"
 
 def start_session():
     

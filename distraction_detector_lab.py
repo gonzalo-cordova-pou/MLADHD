@@ -4,7 +4,7 @@ import pytesseract
 import time
 import os
 import pyautogui
-from mlmodeling import *
+from CNNclassifier import *
 import winsound
 
 label = "distracted"
