@@ -1,6 +1,3 @@
-import pandas as pd
-from numpy import dot
-from numpy.linalg import norm
 import numpy as np
 import gensim
 from scipy.spatial import distance
@@ -60,7 +57,7 @@ def get_vector_centroid(coords):
     for i in range(len(coords)):
         centroid1 += coords[i]
     centroid1 /= float(len(coords))
-    return centroid1 
+    return centroid1
 
 def text2emb(words, model):
     '''
@@ -73,24 +70,21 @@ def nearest_cat(refs, word, model):
     '''
     From a list of references, return the nearest category to a given word.
     
-    @param refs: A dictionary of references, where the keys are the categories and the values are the embeddings of the references.
+    @param refs: A dictionary of references, where the keys are the categories
+                and the values are the embeddings of the references.
     @param word: The word to be classified.
     @param model: The word2vec model.
     @return: The nearest category to the word and the distance to the category.
     '''
     emb = model[word]
     d_min = 9999
-    
-    for cat in refs.keys():
-        
-        #d = dot(emb, refs[cat])/(norm(emb)*norm(refs[cat]))
-        d = distance.euclidean(emb, refs[cat])
-        #d = np.linalg.norm(emb-refs[cat]) # minus eucl
-        if (d < d_min):
 
+    for cat in refs.keys():
+        d = distance.euclidean(emb, refs[cat])
+        if (d < d_min):
             d_min = d
             final_cat = cat
-    
+
     return final_cat, d_min
 
 def get_k_nearest_words_from_cat(centroids, model, k=10):
@@ -142,7 +136,7 @@ def sent_to_words(sentences, only_nouns=False):
         nouns = []
         for word,pos in nltk.pos_tag(nltk.word_tokenize(str(sentence))):
             if only_nouns:
-                if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS'):
+                if pos in ['NN', 'NNP', 'NNS', 'NNPS']:
                     nouns.append(word)
             else:
                 nouns.append(word)
@@ -174,7 +168,8 @@ def get_stopwords():
 
 def get_topic_keywords_embed(model):
     '''
-    Returns the dictionary of topic keywords embeddings, where the keys are the topics and the values are the embeddings of the keywords.
+    Returns the dictionary of topic keywords embeddings, where the keys are the
+    topics and the values are the embeddings of the keywords.
     '''
     topic_keywords_embed = dict()
     for k,l in topic_keywords.items():
@@ -186,7 +181,8 @@ def get_topic_keywords_embed(model):
 
 def get_topic_centroids(topic_keywords_embed):
     '''
-    Returns the dictionary of topic centroids, where the keys are the topics and the values are the embeddings of the centroids.
+    Returns the dictionary of topic centroids, where the keys are the topics and
+    the values are the embeddings of the centroids.
     '''
     topic_centroids = dict()
     for cat in topic_keywords_embed.keys():
@@ -198,7 +194,9 @@ def sentence_nearest_cat(words, topic_centroids, model):
     From a list of words, return the nearest category.
 
     @param words: A list of words.
-    @param topic_centroids: A dictionary of topic centroids, where the keys are the topics and the values are the embeddings of the centroids.
+    @param topic_centroids: A dictionary of topic centroids, where the keys are
+                            the topics and the values are the embeddings of the
+                            centroids.
     @param model: The word2vec model.
     @return: The nearest category to the words and the distance to the category.
     '''
@@ -209,10 +207,10 @@ def sentence_nearest_cat(words, topic_centroids, model):
 
     for cat in topic_centroids.keys():
         d = distance.euclidean(cent, topic_centroids[cat])
-        if (d < d_min):
+        if d < d_min:
             d_min = d
             final_cat = cat
-    
+
     return final_cat, d_min
 
 def sentence_cats_probs(words, topic_centroids, model, topic_to_idx):
@@ -220,10 +218,13 @@ def sentence_cats_probs(words, topic_centroids, model, topic_to_idx):
     From a list of words, return the probability of each belonging to each topic.
     
     @param words: A list of words.
-    @param topic_centroids: A dictionary of topic centroids, where the keys are the topics and the values are the embeddings of the centroids.
+    @param topic_centroids: A dictionary of topic centroids, where the keys are
+                            the topics and the values are the embeddings of the
+                            centroids.
     @param model: The word2vec model.
     @param topic_to_idx: A dictionary that maps each topic to an index.
-    @return: A list of probabilities, where the index of each probability corresponds to the index of the topic in the topic_to_idx dictionary.
+    @return: A list of probabilities, where the index of each probability
+            corresponds to the index of the topic in the topic_to_idx dictionary.
     '''
     emb = text2emb(words, model)
     cent = get_vector_centroid(emb)
@@ -236,5 +237,5 @@ def sentence_cats_probs(words, topic_centroids, model, topic_to_idx):
         result[topic_to_idx[cat]] = -d
     # softmax
     result = np.exp(result) / np.sum(np.exp(result), axis=0)
-    
+
     return result
