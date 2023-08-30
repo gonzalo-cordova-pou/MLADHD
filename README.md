@@ -5,7 +5,7 @@
   </a>
   ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white)
 
-**This repository contains the code for the author's Bachelor's Thesis. You can find the written report [here](/docs/GonzaloCordova_TFG.pdf).**
+**This repository contains the code for the author's Bachelor's Thesis. You can find the written report [here](/docs/ThesisReport.pdf).**
 - **Title**: Computer Screenshot Classification for Boosting ADHD Productivity in a VR environment
 - **Author**: Gonzalo Córdova Pou
 - **Supervisor**: Silverio Martínez-Fernández, Department of Service and Information System Engineering
