@@ -59,7 +59,7 @@ def process_image(image_path):
 
 if __name__ == '__main__':
     # For each class in the dataset
-    for class_name in os.listdir(DATA_PATH)[1:]:
+    for class_name in os.listdir(DATA_PATH):
         C = 0
         # For each image in the class
         for image_name in os.listdir(os.path.join(DATA_PATH, class_name)):
